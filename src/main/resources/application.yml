@@ -1,1 +1,11 @@
-spring.application.name=fisherman
+spring:
+  application:
+    name: fisherman
+  config:
+    import:
+      - optional:file:.env[.properties]
+  profiles:
+    include:
+      - db
+      - security
+      - redis
