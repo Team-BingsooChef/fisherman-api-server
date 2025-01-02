@@ -1,4 +1,4 @@
-package my.fisherman.fisherman.auth.application;
+package my.fisherman.fisherman.auth.application.util;
 
 import java.security.SecureRandom;
 import java.util.List;
