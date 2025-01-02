@@ -1,4 +1,4 @@
-package my.fisherman.fisherman.auth.application;
+package my.fisherman.fisherman.auth.application.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,7 +19,7 @@ class CodeGeneratorTest {
 
         // when
         var code = CodeGenerator.generateCode(codeLength);
-        
+
         // then
         assertThat(code).hasSize(codeLength);
     }
