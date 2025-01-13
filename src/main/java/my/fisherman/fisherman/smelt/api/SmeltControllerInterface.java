@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeCountResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
 
@@ -31,4 +32,14 @@ public interface SmeltControllerInterface {
         responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltTypeCountResponse.class), mediaType = "application/json")
     )
     ResponseEntity<SmeltTypeCountResponse> getMySmeltTypes();
+
+
+    @Operation(
+        summary = "내가 보낸 빙어 조회 API",
+        description = "Access token 내 user id를 가진 사용자가 보낸 빙어의 배열을 반환합니다.<br>" + "페이지네이션 적용: ."
+    )
+    @ApiResponse(
+        responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltPageResponse.class), mediaType = "application/json")
+    )
+    ResponseEntity<SmeltTypeCountResponse> getSentSmelts();
 }

@@ -24,4 +24,11 @@ public class SmeltController implements SmeltControllerInterface {
         return null;
     }
 
+    @Override
+    @GetMapping(value = "/users/sent-smelt")
+    public ResponseEntity<SmeltTypeCountResponse> getSentSmelts() {
+        // TODO
+        return null;
+    }
+
 }
