@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import my.fisherman.fisherman.smelt.api.request.SendSmeltRequest;
+import my.fisherman.fisherman.smelt.api.response.FishingSpotResponse;
 import my.fisherman.fisherman.smelt.api.response.SendSmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeCountResponse;
@@ -58,4 +59,13 @@ public interface SmeltControllerInterface {
         responseCode = "200", content = @Content(schema = @Schema(implementation = SendSmeltResponse.class), mediaType = "application/json")
     )
     ResponseEntity<SendSmeltResponse> sendSmelt(@PathVariable Long fishingSpotId, @RequestBody(description = "빙어와 함께 보낼 편지") SendSmeltRequest request);
+
+    @Operation(
+        summary = "낚시터 조회 API",
+        description = "지정한 사용자의 낚시터에 있는 빙어의 배열을 조회합니다. <br>" + "이때 배열은 페이지네이션이 적용됩니다."
+    )
+    @ApiResponse(
+        responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.class), mediaType = "application/json")
+    )
+    ResponseEntity<FishingSpotResponse> getFishingSpot(@ParameterObject Pageable pageable, @PathVariable Long fishingSpotId);
 }

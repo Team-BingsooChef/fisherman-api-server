@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import my.fisherman.fisherman.smelt.api.request.SendSmeltRequest;
+import my.fisherman.fisherman.smelt.api.response.FishingSpotResponse;
 import my.fisherman.fisherman.smelt.api.response.SendSmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeCountResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class SmeltController implements SmeltControllerInterface {
@@ -44,6 +47,13 @@ public class SmeltController implements SmeltControllerInterface {
     public ResponseEntity<SendSmeltResponse> sendSmelt(
         @PathVariable Long Id,
         @RequestBody SendSmeltRequest request) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    @GetMapping("/fishing-spot/{id}")
+    public ResponseEntity<FishingSpotResponse> getFishingSpot(@PageableDefault(page = 0, size = 8) Pageable pageable, @PathVariable Long id) {
         // TODO
         return null;
     }
