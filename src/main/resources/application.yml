@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: bingsoochef
+  profiles:
+    include:
+      - datasource
+
+springdoc:
+  use-fqn: true
+
+jackson:
+  deserialization:
+    FAIL_ON_NULL_FOR_PRIMITIVES: true
