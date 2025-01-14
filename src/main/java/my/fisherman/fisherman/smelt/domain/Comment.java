@@ -1,4 +1,4 @@
-package my.fisherman.fisherman.letter.domain;
+package my.fisherman.fisherman.smelt.domain;
 
 import java.time.LocalDateTime;
 

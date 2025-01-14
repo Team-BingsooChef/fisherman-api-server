@@ -14,7 +14,6 @@ import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import my.fisherman.fisherman.letter.domain.Letter;
 import my.fisherman.fisherman.quiz.domain.Quiz;
 import my.fisherman.fisherman.user.domain.User;
 
