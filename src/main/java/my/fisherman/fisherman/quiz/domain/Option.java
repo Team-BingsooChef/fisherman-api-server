@@ -27,7 +27,7 @@ public class Option {
     @Column(nullable = false)
     private Boolean isAnwer;
 
-    @JoinColumn(name = "quiz_id")
+    @JoinColumn(name = "quiz_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Quiz quiz;
 }
