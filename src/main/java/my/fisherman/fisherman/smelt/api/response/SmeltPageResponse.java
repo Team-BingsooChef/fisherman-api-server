@@ -16,5 +16,6 @@ public class SmeltPageResponse {
         private Long senderId;
         private Long receiverId;
         private Long smeltTypeId;
+        private String status;   // TODO: String -> SmeltStatus
     }
 }

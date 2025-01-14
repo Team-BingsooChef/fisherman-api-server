@@ -1,5 +1,7 @@
 package my.fisherman.fisherman.smelt.api;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import my.fisherman.fisherman.smelt.api.request.SendSmeltRequest;
 import my.fisherman.fisherman.smelt.api.response.SendSmeltResponse;
+import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeCountResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
 
@@ -31,7 +34,7 @@ public class SmeltController implements SmeltControllerInterface {
 
     @Override
     @GetMapping(value = "/users/sent-smelt")
-    public ResponseEntity<SmeltTypeCountResponse> getSentSmelts() {
+    public ResponseEntity<SmeltPageResponse> getSentSmelts(@PageableDefault(page = 0, size = 8) Pageable pageable) {
         // TODO
         return null;
     }

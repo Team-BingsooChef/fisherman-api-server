@@ -1,5 +1,8 @@
 package my.fisherman.fisherman.smelt.api;
 
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -40,12 +43,12 @@ public interface SmeltControllerInterface {
 
     @Operation(
         summary = "내가 보낸 빙어 조회 API",
-        description = "Access token 내 user id를 가진 사용자가 보낸 빙어의 배열을 반환합니다.<br>" + "페이지네이션 적용: ."
+        description = "Access token 내 user id를 가진 사용자가 보낸 빙어의 배열을 반환합니다.<br>" + "이때 배열은 페이지네이션이 적용되어 있습니다."
     )
     @ApiResponse(
         responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltPageResponse.class), mediaType = "application/json")
     )
-    ResponseEntity<SmeltTypeCountResponse> getSentSmelts();
+    ResponseEntity<SmeltPageResponse> getSentSmelts(@ParameterObject Pageable pageable);
 
 
     @Operation(
