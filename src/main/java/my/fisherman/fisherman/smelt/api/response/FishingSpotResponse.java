@@ -4,6 +4,7 @@ import java.util.List;
 
 import lombok.Getter;
 
+@Getter
 public class FishingSpotResponse {
     private int page;
     private int total;
