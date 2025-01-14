@@ -26,7 +26,7 @@ public class Smelt {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "sender_id")
+    @JoinColumn(name = "sender_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private User sender;
 
@@ -34,13 +34,13 @@ public class Smelt {
     @ManyToOne(fetch = FetchType.LAZY)
     private User receiver;
 
-    @JoinColumn(name = "smelt_type_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private SmeltType type;
-
     @Column(name = "smelt_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private SmeltStatus status;
+
+    @JoinColumn(name = "smelt_type_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SmeltType type;
 
     @JoinColumn(name = "quiz_id")
     @OneToOne(fetch = FetchType.LAZY)
