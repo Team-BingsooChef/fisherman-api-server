@@ -59,7 +59,7 @@ public interface SmeltControllerInterface {
     @ApiResponse(
         responseCode = "200", content = @Content(schema = @Schema(implementation = SendSmeltResponse.class), mediaType = "application/json")
     )
-    ResponseEntity<SendSmeltResponse> sendSmelt(@PathVariable Long fishingSpotId, @RequestBody(description = "빙어와 함께 보낼 편지") SendSmeltRequest request);
+    ResponseEntity<SendSmeltResponse> sendSmelt(Long fishingSpotId, @RequestBody(description = "빙어와 함께 보낼 편지") SendSmeltRequest request);
 
     @Operation(
         summary = "낚시터 조회 API",
@@ -68,7 +68,7 @@ public interface SmeltControllerInterface {
     @ApiResponse(
         responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.class), mediaType = "application/json")
     )
-    ResponseEntity<FishingSpotResponse> getFishingSpot(@ParameterObject Pageable pageable, @PathVariable Long fishingSpotId);
+    ResponseEntity<FishingSpotResponse> getFishingSpot(@ParameterObject Pageable pageable, Long fishingSpotId);
 
     @Operation(
         summary = "빙어 상세 조회 API",
@@ -77,5 +77,5 @@ public interface SmeltControllerInterface {
     @ApiResponse(
         responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltDetailResponse.class), mediaType = "application/json")
     )
-    ResponseEntity<SmeltDetailResponse> getSmeldDetail(@PathVariable Long smeltId);
+    ResponseEntity<SmeltDetailResponse> getSmeldDetail(Long smeltId);
 }

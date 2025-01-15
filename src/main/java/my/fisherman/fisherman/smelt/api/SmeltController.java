@@ -46,22 +46,24 @@ public class SmeltController implements SmeltControllerInterface {
     @Override
     @PostMapping(value = "/fishing-spot/{fishing-spot-id}/smelts")
     public ResponseEntity<SendSmeltResponse> sendSmelt(
-        @PathVariable Long Id,
+        @PathVariable(name = "fishing-spot-id") Long fishingSpotId,
         @RequestBody SendSmeltRequest request) {
         // TODO
         return null;
     }
 
     @Override
-    @GetMapping("/fishing-spot/{id}")
-    public ResponseEntity<FishingSpotResponse> getFishingSpot(@PageableDefault(page = 0, size = 8) Pageable pageable, @PathVariable Long id) {
+    @GetMapping("/fishing-spot/{fishing-spot-id}")
+    public ResponseEntity<FishingSpotResponse> getFishingSpot(@
+        PageableDefault(page = 0, size = 8) Pageable pageable,
+        @PathVariable(name = "fishing-spot-id") Long id) {
         // TODO
         return null;
     }
 
     @Override
-    @GetMapping("/smelts/{id}")
-    public ResponseEntity<SmeltDetailResponse> getSmeldDetail(@PathVariable Long id) {
+    @GetMapping("/smelts/{smelt-id}")
+    public ResponseEntity<SmeltDetailResponse> getSmeldDetail(@PathVariable(name = "smelt-id") Long smeltId) {
         // TODO
         return null;
     }
