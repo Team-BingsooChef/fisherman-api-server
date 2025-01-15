@@ -1,0 +1,63 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant permission to gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with gradle
+        run: ./gradlew clean build
+
+      - name: Build docker image
+        run: docker build -t wgwjh05169/bingsoochef .
+
+      - name: Login docker hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Publish to docker hub
+        run: docker push wgwjh05169/bingsoochef
+        
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Execute Application
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "${{ secrets.ENV }}" > .env
+            
+            docker stop $(docker ps -a -q) 
+            docker rm $(docker ps -a -q) 
+            
+            docker pull wgwjh05169/bingsoochef
+            docker run -d -p 8080:8080 \
+            --name bingsoochef-api-server \
+            --env-file .env \
+            wgwjh05169/bingsoochef
+            
+            rm -f .env

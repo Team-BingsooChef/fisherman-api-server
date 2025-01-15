@@ -6,6 +6,6 @@ spring:
       - optional:file:.env[.properties]
   profiles:
     include:
-      - db
+      - datasource
       - security
       - redis
