@@ -16,7 +16,6 @@ import my.fisherman.fisherman.smelt.api.response.SmeltDetailResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeCountResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
