@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import my.fisherman.fisherman.smelt.api.request.SendSmeltRequest;
 import my.fisherman.fisherman.smelt.api.response.FishingSpotResponse;
 import my.fisherman.fisherman.smelt.api.response.SendSmeltResponse;
+import my.fisherman.fisherman.smelt.api.response.SmeltDetailResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeCountResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
@@ -68,4 +69,13 @@ public interface SmeltControllerInterface {
         responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.class), mediaType = "application/json")
     )
     ResponseEntity<FishingSpotResponse> getFishingSpot(@ParameterObject Pageable pageable, @PathVariable Long fishingSpotId);
+
+    @Operation(
+        summary = "빙어 상세 조회 API",
+        description = "지정한 빙어의 자세한 정보를 조회합니다. <br>" + "권한이 없거나 (받거나 보낸 빙어가 아님), 아직 풀지 않은 받은 빙어는 조회할 수 없습니다."
+    )
+    @ApiResponse(
+        responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltDetailResponse.class), mediaType = "application/json")
+    )
+    ResponseEntity<SmeltDetailResponse> getSmeldDetail(@PathVariable Long smeltId);
 }

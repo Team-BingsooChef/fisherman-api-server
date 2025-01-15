@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import my.fisherman.fisherman.smelt.api.request.SendSmeltRequest;
 import my.fisherman.fisherman.smelt.api.response.FishingSpotResponse;
 import my.fisherman.fisherman.smelt.api.response.SendSmeltResponse;
+import my.fisherman.fisherman.smelt.api.response.SmeltDetailResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeCountResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
@@ -54,6 +55,13 @@ public class SmeltController implements SmeltControllerInterface {
     @Override
     @GetMapping("/fishing-spot/{id}")
     public ResponseEntity<FishingSpotResponse> getFishingSpot(@PageableDefault(page = 0, size = 8) Pageable pageable, @PathVariable Long id) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    @GetMapping("/smelts/{id}")
+    public ResponseEntity<SmeltDetailResponse> getSmeldDetail(@PathVariable Long id) {
         // TODO
         return null;
     }
