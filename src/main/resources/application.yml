@@ -1,6 +1,9 @@
 spring:
   application:
-    name: bingsoochef
+    name: fisherman
   profiles:
     include:
       - datasource
+      
+springdoc:
+  use-fqn: true
