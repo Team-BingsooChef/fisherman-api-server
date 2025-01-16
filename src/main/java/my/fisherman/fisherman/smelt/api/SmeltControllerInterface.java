@@ -15,6 +15,7 @@ import my.fisherman.fisherman.smelt.api.response.FishingSpotResponse;
 import my.fisherman.fisherman.smelt.api.response.SendSmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltDetailResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
+import my.fisherman.fisherman.smelt.api.response.SmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeCountResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
 
@@ -29,6 +30,15 @@ public interface SmeltControllerInterface {
         responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltTypeResponse.class), mediaType = "application/json")
     )
     ResponseEntity<SmeltTypeResponse> getSmeltTypes();
+
+    @Operation(
+        summary = "빙어 뽑기 API",
+        description = "Access token 내 user id를 가진 사용자에게 지정된 확률로 새로운 빙어를 생성합니다."
+    )
+    @ApiResponse(
+        responseCode = "201", content = @Content(schema = @Schema(implementation = SmeltResponse.Simple.class), mediaType = "application/json")
+    )
+    ResponseEntity<SmeltResponse.Simple> createRandomSmelt();
     
 
     @Operation(

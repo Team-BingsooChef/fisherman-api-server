@@ -14,6 +14,7 @@ import my.fisherman.fisherman.smelt.api.response.FishingSpotResponse;
 import my.fisherman.fisherman.smelt.api.response.SendSmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltDetailResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
+import my.fisherman.fisherman.smelt.api.response.SmeltResponse.Simple;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeCountResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
 
@@ -24,6 +25,13 @@ public class SmeltController implements SmeltControllerInterface {
     @Override
     @GetMapping(value = "/smelt/types")
     public ResponseEntity<SmeltTypeResponse> getSmeltTypes() {
+        // TODO
+        return null;
+    }
+
+    @Override
+    @PostMapping(value = "/users/smelts")
+    public ResponseEntity<Simple> createRandomSmelt() {
         // TODO
         return null;
     }
