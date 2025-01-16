@@ -8,8 +8,8 @@ public class UserCommand {
             String password,
             String nickname
     ) {
-        public User toEntity() {
-            return User.of(email, password, nickname);
+        public User toEntity(String encodedPassword) {
+            return User.from(email, encodedPassword, nickname);
         }
     }
 }
