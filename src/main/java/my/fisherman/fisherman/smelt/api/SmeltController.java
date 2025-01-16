@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import my.fisherman.fisherman.smelt.api.request.SendSmeltRequest;
 import my.fisherman.fisherman.smelt.api.response.FishingSpotResponse;
-import my.fisherman.fisherman.smelt.api.response.SendSmeltResponse;
-import my.fisherman.fisherman.smelt.api.response.SmeltDetailResponse;
-import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
-import my.fisherman.fisherman.smelt.api.response.SmeltResponse.Simple;
-import my.fisherman.fisherman.smelt.api.response.SmeltTypeCountResponse;
+import my.fisherman.fisherman.smelt.api.response.SmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
 
 
@@ -24,35 +20,35 @@ public class SmeltController implements SmeltControllerInterface {
 
     @Override
     @GetMapping(value = "/smelt/types")
-    public ResponseEntity<SmeltTypeResponse> getSmeltTypes() {
+    public ResponseEntity<SmeltTypeResponse.All> getSmeltTypes() {
         // TODO
         return null;
     }
 
     @Override
     @PostMapping(value = "/users/smelts")
-    public ResponseEntity<Simple> createRandomSmelt() {
+    public ResponseEntity<SmeltResponse.Simple> createRandomSmelt() {
         // TODO
         return null;
     }
 
     @Override
     @GetMapping(value = "/users/smelts/types")
-    public ResponseEntity<SmeltTypeCountResponse> getMySmeltTypes() {
+    public ResponseEntity<SmeltTypeResponse.Count> getMySmeltTypes() {
         // TODO
         return null;
     }
 
     @Override
     @GetMapping(value = "/users/sent-smelts")
-    public ResponseEntity<SmeltPageResponse> getSentSmelts(@PageableDefault(page = 0, size = 8) Pageable pageable) {
+    public ResponseEntity<SmeltResponse.Page> getSentSmelts(@PageableDefault(page = 0, size = 8) Pageable pageable) {
         // TODO
         return null;
     }
 
     @Override
     @PostMapping(value = "/fishing-spots/{fishing-spot-id}/smelts")
-    public ResponseEntity<SendSmeltResponse> sendSmelt(
+    public ResponseEntity<SmeltResponse.Detail> sendSmelt(
         @PathVariable(name = "fishing-spot-id") Long fishingSpotId,
         @RequestBody SendSmeltRequest request) {
         // TODO
@@ -61,7 +57,7 @@ public class SmeltController implements SmeltControllerInterface {
 
     @Override
     @GetMapping("/fishing-spots/{fishing-spot-id}")
-    public ResponseEntity<FishingSpotResponse> getFishingSpot(@
+    public ResponseEntity<FishingSpotResponse.Page> getFishingSpot(@
         PageableDefault(page = 0, size = 8) Pageable pageable,
         @PathVariable(name = "fishing-spot-id") Long id) {
         // TODO
@@ -70,7 +66,7 @@ public class SmeltController implements SmeltControllerInterface {
 
     @Override
     @GetMapping("/smelts/{smelt-id}")
-    public ResponseEntity<SmeltDetailResponse> getSmeldDetail(@PathVariable(name = "smelt-id") Long smeltId) {
+    public ResponseEntity<SmeltResponse.Detail> getSmeltDetail(@PathVariable(name = "smelt-id") Long smeltId) {
         // TODO
         return null;
     }

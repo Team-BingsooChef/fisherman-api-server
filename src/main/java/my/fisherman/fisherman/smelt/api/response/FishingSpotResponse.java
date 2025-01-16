@@ -6,14 +6,18 @@ import lombok.Getter;
 
 @Getter
 public class FishingSpotResponse {
-    private int page;
-    private int total;
-    private List<SmeltDto> smelts;
+
+    @Getter
+    public class Page {
+        private String nickname;
+        private int page;
+        private int total;
+        private List<SmeltDto> smelts;
+    }
 
     @Getter
     class SmeltDto {
         private Long id;
-        private Long receiverId;
         private Long smeltTypeId;
         private String status;   // TODO: String -> SmeltStatus
     }
