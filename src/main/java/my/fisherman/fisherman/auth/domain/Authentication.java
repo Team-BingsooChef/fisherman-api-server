@@ -19,7 +19,6 @@ public class Authentication {
         this.authCode = authCode.stream()
                 .map(String::valueOf)
                 .collect(Collectors.joining());
-        System.out.println("authCode: " + this.authCode);
         this.isVerified = false;
     }
 
