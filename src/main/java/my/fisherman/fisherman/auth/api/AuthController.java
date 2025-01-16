@@ -20,19 +20,16 @@ public class AuthController implements AuthSpecification {
 
     @Override
     @PostMapping("/email")
-    public void sendAuthCode(
-            @Valid @RequestBody
-            AuthRequest.Mail request
-    ) {
+    public void sendAuthCode(@RequestBody @Valid AuthRequest.Mail request) {
         authService.sendAuthCode(request.email());
     }
 
     @Override
     @PostMapping("/email/verify")
     public void verifyAuthCode(
-            @RequestBody AuthRequest.Mail requestBody,
+            @RequestBody @Valid AuthRequest.Mail request,
             @RequestParam("auth_code") String authCode
     ) {
-        authService.verifyAuthCode(requestBody.email(), authCode);
+        authService.verifyAuthCode(request.email(), authCode);
     }
 }
