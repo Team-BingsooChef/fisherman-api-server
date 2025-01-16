@@ -15,14 +15,14 @@ import my.fisherman.fisherman.quiz.api.response.SolveQuizResponse;
 public class QuizController implements QuizControllerInterface{
 
     @Override
-    @GetMapping("/smelts/{smelt-id}/quiz")
+    @GetMapping("/smelts/{smelt-id}/quizzes")
     public ResponseEntity<QuizResponse> solveQuiz(@PathVariable(name = "smelt-id") Long smeltId) {
         // TODO
         return null;
     }
 
     @Override
-    @PatchMapping("/smelts/quiz")
+    @PatchMapping("/smelts/quizzes")
     public ResponseEntity<SolveQuizResponse> solveQuiz(@RequestBody SolveQuizRequest request) {
         // TODO
         return null;

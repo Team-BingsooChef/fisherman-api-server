@@ -37,21 +37,21 @@ public class SmeltController implements SmeltControllerInterface {
     }
 
     @Override
-    @GetMapping(value = "/users/smelt/types")
+    @GetMapping(value = "/users/smelts/types")
     public ResponseEntity<SmeltTypeCountResponse> getMySmeltTypes() {
         // TODO
         return null;
     }
 
     @Override
-    @GetMapping(value = "/users/sent-smelt")
+    @GetMapping(value = "/users/sent-smelts")
     public ResponseEntity<SmeltPageResponse> getSentSmelts(@PageableDefault(page = 0, size = 8) Pageable pageable) {
         // TODO
         return null;
     }
 
     @Override
-    @PostMapping(value = "/fishing-spot/{fishing-spot-id}/smelts")
+    @PostMapping(value = "/fishing-spots/{fishing-spot-id}/smelts")
     public ResponseEntity<SendSmeltResponse> sendSmelt(
         @PathVariable(name = "fishing-spot-id") Long fishingSpotId,
         @RequestBody SendSmeltRequest request) {
@@ -60,7 +60,7 @@ public class SmeltController implements SmeltControllerInterface {
     }
 
     @Override
-    @GetMapping("/fishing-spot/{fishing-spot-id}")
+    @GetMapping("/fishing-spots/{fishing-spot-id}")
     public ResponseEntity<FishingSpotResponse> getFishingSpot(@
         PageableDefault(page = 0, size = 8) Pageable pageable,
         @PathVariable(name = "fishing-spot-id") Long id) {
