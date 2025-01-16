@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.auth.repository.AuthenticationRepository;
 import my.fisherman.fisherman.user.application.command.UserCommand;
 import my.fisherman.fisherman.user.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final AuthenticationRepository authenticationRepository;
 
@@ -24,13 +26,13 @@ public class UserService {
             throw new IllegalArgumentException("이메일 인증이 필요합니다.");
         }
 
-        userRepository.findUserByEmailForSignUp(email)
+        userRepository.findUserByEmailWithWriteLock(email)
                 .ifPresent(user -> {
                     throw new IllegalArgumentException("이미 가입된 이메일입니다.");
                 });
 
-        //TODO: 비밀번호 암호화 추가 로직
-        var user = command.toEntity();
+        var encodedPassword = passwordEncoder.encode(command.password());
+        var user = command.toEntity(encodedPassword);
         userRepository.save(user);
     }
 }

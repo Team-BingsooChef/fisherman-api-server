@@ -9,9 +9,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Table(name = "users")
 @NoArgsConstructor(access = PROTECTED)
 public class User {
@@ -47,7 +49,11 @@ public class User {
         this.role = Role.ROLE_USER;
     }
 
-    public static User of(String email, String password, String nickname) {
+    public static User from(String email, String password, String nickname) {
         return new User(email, password, nickname, true, OAuthProvider.SELF);
+    }
+
+    public static User from(String email, String nickname, OAuthProvider oauthType) {
+        return new User(email, "", nickname, true, oauthType);
     }
 }
