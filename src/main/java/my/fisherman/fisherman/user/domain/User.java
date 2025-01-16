@@ -47,7 +47,7 @@ public class User {
         this.role = Role.ROLE_USER;
     }
 
-    public static User from(String email, String password, String nickname) {
+    public static User of(String email, String password, String nickname) {
         return new User(email, password, nickname, true, OAuthProvider.SELF);
     }
 }

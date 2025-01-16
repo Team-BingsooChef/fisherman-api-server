@@ -9,7 +9,7 @@ public class UserCommand {
             String nickname
     ) {
         public User toEntity() {
-            return User.from(email, password, nickname);
+            return User.of(email, password, nickname);
         }
     }
 }
