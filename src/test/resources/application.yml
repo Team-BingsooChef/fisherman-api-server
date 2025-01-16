@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:bingsoochef_test_db;MODE=MySQL;
+    username: sa
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        allow-remote-access: true
+
+logging:
+  level:
+    org.hibernate.SQL: trace
