@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 public class UserRequest {
     public record Create(
             @Email String email,
-            String password,
+            @Length(min = 10, max = 15) String password,
             @Length(max = 8) String nickname
     ) {
         public UserCommand.SignUp toCommand() {
