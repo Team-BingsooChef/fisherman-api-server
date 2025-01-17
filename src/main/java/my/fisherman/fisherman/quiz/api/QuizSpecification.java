@@ -13,7 +13,7 @@ import my.fisherman.fisherman.quiz.api.response.QuizResponse;
 import my.fisherman.fisherman.quiz.api.response.SolveQuizResponse;
 
 @Tag(name = "Quiz")
-public interface QuizControllerInterface {
+public interface QuizSpecification {
 
 
     @Operation(

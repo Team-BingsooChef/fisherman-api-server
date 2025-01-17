@@ -12,7 +12,7 @@ import my.fisherman.fisherman.quiz.api.response.QuizResponse;
 import my.fisherman.fisherman.quiz.api.response.SolveQuizResponse;
 
 @RestController
-public class QuizController implements QuizControllerInterface{
+public class QuizController implements QuizSpecification{
 
     @Override
     @GetMapping("/smelts/{smelt-id}/quizzes")

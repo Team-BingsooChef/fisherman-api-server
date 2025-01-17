@@ -16,7 +16,7 @@ import my.fisherman.fisherman.smelt.api.response.SmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
 
 @Tag(name = "Smelt")
-public interface SmeltControllerInterface {
+public interface SmeltSpecification {
 
     @Operation(
         summary = "빙어 종류 조회 API",

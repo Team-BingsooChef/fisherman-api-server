@@ -16,7 +16,7 @@ import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
 
 
 @RestController
-public class SmeltController implements SmeltControllerInterface {
+public class SmeltController implements SmeltSpecification {
 
     @Override
     @GetMapping(value = "/smelt/types")
