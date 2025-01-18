@@ -4,3 +4,6 @@ spring:
   profiles:
     include:
       - datasource
+
+springdoc:
+  use-fqn: true
