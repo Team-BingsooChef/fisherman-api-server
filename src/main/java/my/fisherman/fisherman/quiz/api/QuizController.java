@@ -15,8 +15,8 @@ import my.fisherman.fisherman.quiz.api.response.SolveQuizResponse;
 public class QuizController implements QuizSpecification{
 
     @Override
-    @GetMapping("/smelts/{smelt-id}/quizzes")
-    public ResponseEntity<QuizResponse> solveQuiz(@PathVariable(name = "smelt-id") Long smeltId) {
+    @GetMapping("/smelts/quizzes/{quiz-id}")
+    public ResponseEntity<QuizResponse> getQuiz(@PathVariable(name = "quiz-id") Long quizId) {
         // TODO
         return null;
     }

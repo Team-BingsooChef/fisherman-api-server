@@ -20,5 +20,6 @@ public class FishingSpotResponse {
         private Long id;
         private Long smeltTypeId;
         private String status;   // TODO: String -> SmeltStatus
+        private Long quizId;
     }
 }
