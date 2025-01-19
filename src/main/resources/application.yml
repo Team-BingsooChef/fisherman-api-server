@@ -8,6 +8,7 @@ spring:
     include:
       - datasource
       - security
+      - redis
       - mail
       - redis
       - jwt
