@@ -28,7 +28,7 @@ public class SecurityUserService implements UserDetailsService {
         return UserPrinciple.from(user);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<UserPrinciple> getUserInfo(String email, String oauthProvider) {
         var oauthType = OAuthProvider.of(oauthProvider);
         return userRepository.findUserByEmailAndOauthType(email, oauthType)

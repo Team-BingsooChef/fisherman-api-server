@@ -1,7 +1,9 @@
 package my.fisherman.fisherman.security.config;
 
 import my.fisherman.fisherman.security.application.CustomOAuth2UserService;
+import my.fisherman.fisherman.security.application.JwtService;
 import my.fisherman.fisherman.security.application.SecurityUserService;
+import my.fisherman.fisherman.security.config.property.JwtProperties;
 import my.fisherman.fisherman.user.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,5 +28,10 @@ public class SecurityServiceConfig {
     @Bean
     public DefaultOAuth2UserService defaultOAuth2UserService() {
         return new DefaultOAuth2UserService();
+    }
+
+    @Bean
+    public JwtService jwtService(JwtProperties jwtProperties) {
+        return new JwtService(jwtProperties);
     }
 }
