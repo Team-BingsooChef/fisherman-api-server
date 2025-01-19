@@ -10,7 +10,6 @@ spring:
       - security
       - mail
       - redis
-      - security
       - jwt
 springdoc:
   use-fqn: true
