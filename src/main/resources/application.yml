@@ -9,3 +9,6 @@ spring:
       - datasource
       - security
       - redis
+      - mail
+      - redis
+      - security
