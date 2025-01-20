@@ -76,7 +76,7 @@ public interface SmeltSpecification {
             @ApiResponse(responseCode = "404", description = "S401 - 존재하지 않는 낚시터입니다. <br> S402 -존재하지 않는 빙어입니다.", content = @Content()),
         }
     )
-    ResponseEntity<SmeltResponse.Detail> sendSmelt(Long fishingSpotId, @RequestBody(description = "빙어와 함께 보낼 편지") SendSmeltRequest request);
+    ResponseEntity<SmeltResponse.Detail> sendSmelt(Long fishingSpotId, @RequestBody(description = "빙어와 함께 보낼 편지") SendSmeltRequest.Letter request);
 
     @Operation(
         summary = "낚시터 조회 API",

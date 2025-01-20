@@ -3,58 +3,48 @@ package my.fisherman.fisherman.smelt.api.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import lombok.Getter;
-
-@Getter
 public class SmeltResponse {
 
-    @Getter
-    public class Simple {
-        private SimpleSmeltDto smelt;
-    }
+    public record Simple (
+        SimpleSmeltDto smelt
+    ) {}
 
-    @Getter
-    public class Detail {
-        private DetailSmeltDto smelt;
-        private LetterDto letter;
-    }
+    public record Detail (
+        DetailSmeltDto smelt,
+        LetterDto letter
+    ) {}
     
-    @Getter
-    public class Page {
-        private int page;
-        private int total;
-        private List<DetailSmeltDto> smelts;
-    }
+    public record Page (
+        int page,
+        int total,
+        List<DetailSmeltDto> smelts
+    ) {}
 
-    @Getter
-    class SimpleSmeltDto {
-        private Long id;
-        private Long smeltTypeId;
-        private String status;   // TODO: String -> SmeltStatus
-    }
+    public record SimpleSmeltDto (
+        Long id,
+        Long smeltTypeId,
+        String status   // TODO: String -> SmeltStatus
+    ) {}
 
-    @Getter
-    class DetailSmeltDto {
-        private Long id;
-        private Long senderId;
-        private Long receiverId;
-        private Long smeltTypeId;
-        private String status;   // TODO: String -> SmeltStatus
-    }
+    public record DetailSmeltDto (
+        Long id,
+        Long senderId,
+        Long receiverId,
+        Long smeltTypeId,
+        String status   // TODO: String -> SmeltStatus
+    ) {}
 
-    @Getter
-    class LetterDto {
-        private Long id;
-        private String title;
-        private String content;
-        private LocalDateTime createdTime;
-        private CommentDto comment;
-    }
+    public record LetterDto (
+        Long id,
+        String title,
+        String content,
+        LocalDateTime createdTime,
+        CommentDto comment
+    ) {}
 
-    @Getter
-    class CommentDto {
-        private Long id;
-        private String content;
-        private LocalDateTime createdTime;
-    }
+    public record CommentDto (
+        Long id,
+        String content,
+        LocalDateTime createdTime
+    ) {}
 }

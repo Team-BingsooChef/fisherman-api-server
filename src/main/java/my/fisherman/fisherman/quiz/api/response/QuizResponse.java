@@ -2,26 +2,27 @@ package my.fisherman.fisherman.quiz.api.response;
 
 import java.util.List;
 
-import lombok.Getter;
-
-@Getter
 public class QuizResponse {
-    private QuizDto quiz;
-    private List<QuestionDto> questions;
-    
-    @Getter
-    class QuizDto {
-        private Long id;
-        private String title;
-        private String type;
-        private Short wrongCount;
-        private Boolean isSolved;
+
+    public record Quiz(
+        QuizDto quiz,
+        List<QuestionDto> questions
+    ) {
     }
 
-    @Getter
-    class QuestionDto {
-        private Long id;
-        private String content;
-        private Boolean isAnswer;
+    public record QuizDto(
+        Long id,
+        String title,
+        String type,
+        Short wrongCount,
+        Boolean isSolved
+    ) {
+    }
+
+    public record QuestionDto(
+        Long id,
+        String content,
+        Boolean isAnswer
+    ) {
     }
 }

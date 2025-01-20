@@ -1,15 +1,16 @@
 package my.fisherman.fisherman.smelt.api.request;
 
-import lombok.Getter;
-
-@Getter
 public class SendSmeltRequest {
-    Long smeltId;
-    LetterDto letter;
 
-    @Getter
-    class LetterDto {
-        String title;
-        String content;
+    public record Letter(
+        Long smeltId,
+        LetterDto letter
+    ) {
+    }
+
+    public record LetterDto (
+        String title,
+        String content
+    ) {
     }
 }

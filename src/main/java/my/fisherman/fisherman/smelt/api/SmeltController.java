@@ -50,7 +50,7 @@ public class SmeltController implements SmeltSpecification {
     @PostMapping(value = "/fishing-spots/{fishing-spot-id}/smelts")
     public ResponseEntity<SmeltResponse.Detail> sendSmelt(
         @PathVariable(name = "fishing-spot-id") Long fishingSpotId,
-        @RequestBody SendSmeltRequest request) {
+        @RequestBody SendSmeltRequest.Letter request) {
         // TODO
         return null;
     }

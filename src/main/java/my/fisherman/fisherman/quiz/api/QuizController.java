@@ -18,14 +18,14 @@ public class QuizController implements QuizSpecification{
 
     @Override
     @GetMapping("/{quiz-id}")
-    public ResponseEntity<QuizResponse> getQuiz(@PathVariable(name = "quiz-id") Long quizId) {
+    public ResponseEntity<QuizResponse.Quiz> getQuiz(@PathVariable(name = "quiz-id") Long quizId) {
         // TODO
         return null;
     }
 
     @Override
     @PatchMapping
-    public ResponseEntity<SolveQuizResponse> solveQuiz(@RequestBody SolveQuizRequest request) {
+    public ResponseEntity<SolveQuizResponse.Result> solveQuiz(@RequestBody SolveQuizRequest.Try request) {
         // TODO
         return null;
     }
