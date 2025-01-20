@@ -27,10 +27,6 @@ public class JwtService {
     public String createAccessToken(UserPrinciple userPrinciple) {
         return Jwts.builder()
                 .claim("id", userPrinciple.id())
-                .claim("email", userPrinciple.email())
-                .claim("nickname", userPrinciple.nickname())
-                .claim("isPublic", userPrinciple.isPublic())
-                .claim("oauthType", userPrinciple.oauthType())
                 .claim("role", userPrinciple.role())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + accessTokenExpiredTime))
