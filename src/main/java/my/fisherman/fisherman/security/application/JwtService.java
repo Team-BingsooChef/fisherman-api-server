@@ -25,20 +25,22 @@ public class JwtService {
     }
 
     public String createAccessToken(UserPrinciple userPrinciple) {
+        var time = System.currentTimeMillis();
         return Jwts.builder()
                 .claim("id", userPrinciple.id())
                 .claim("role", userPrinciple.role())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + accessTokenExpiredTime))
+                .issuedAt(new Date(time))
+                .expiration(new Date(time + accessTokenExpiredTime))
                 .signWith(accessSecret)
                 .compact();
     }
 
     public String createRefreshToken(UserPrinciple userPrinciple) {
+        var time = System.currentTimeMillis();
         return Jwts.builder()
                 .claim("id", userPrinciple.id())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + refreshTokenExpiredTime))
+                .issuedAt(new Date(time))
+                .expiration(new Date(time + refreshTokenExpiredTime))
                 .signWith(refreshSecret)
                 .compact();
     }
