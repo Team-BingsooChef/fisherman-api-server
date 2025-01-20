@@ -10,7 +10,7 @@ public class SecurityUserCommand {
             String provider
     ) {
         public User toEntity() {
-            return User.from(email, nickname, OAuthProvider.of(provider));
+            return User.of(email, nickname, OAuthProvider.of(provider));
         }
     }
 }
