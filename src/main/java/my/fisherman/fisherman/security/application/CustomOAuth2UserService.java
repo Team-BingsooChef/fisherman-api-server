@@ -47,19 +47,19 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         Map<String, String> attributes = new HashMap<>();
         attributes.put("email", (String) oAuth2User.getAttribute("email"));
         attributes.put("name", (String) oAuth2User.getAttribute("name"));
+        //TODO: 프로필 사진이 없는 경우 예외처리 추가
         attributes.put("picture", (String) oAuth2User.getAttribute("picture"));
         return attributes;
     }
 
     private Map<String, String> getKakaoAttributes(OAuth2User oAuth2User) {
         Map<String, String> attributes = new HashMap<>();
-        log.info("kakao attributes: {}", oAuth2User.getAttributes());
         Map<String, Object> kakaoAccount = oAuth2User.getAttribute("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
         attributes.put("email", (String) kakaoAccount.get("email"));
         attributes.put("name", (String) profile.get("nickname"));
-        attributes.put("picture", (String) profile.get("profile_image_url"));
+        attributes.put("picture", (String) profile.getOrDefault("profile_image_url", null));
         return attributes;
     }
 
@@ -69,7 +69,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         attributes.put("email", (String) response.get("email"));
         attributes.put("name", (String) response.get("name"));
-        attributes.put("picture", (String) response.get("profile_image"));
+        attributes.put("picture", (String) response.getOrDefault("profile_image", null));
         return attributes;
     }
 }
