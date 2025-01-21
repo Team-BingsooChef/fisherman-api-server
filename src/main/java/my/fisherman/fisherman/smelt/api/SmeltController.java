@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,47 +20,47 @@ import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
 public class SmeltController implements SmeltSpecification {
 
     @Override
-    @GetMapping(value = "/smelt/types")
+    @GetMapping(value = "/smelts/types")
     public ResponseEntity<SmeltTypeResponse.All> getSmeltTypes() {
         // TODO
         return null;
     }
 
     @Override
-    @PostMapping(value = "/users/smelts")
+    @PostMapping(value = "/smelts")
     public ResponseEntity<SmeltResponse.Simple> createRandomSmelt() {
         // TODO
         return null;
     }
 
     @Override
-    @GetMapping(value = "/users/smelts/types")
-    public ResponseEntity<SmeltTypeResponse.Count> getMySmeltTypes() {
+    @GetMapping(value = "/users/{user-id}/smelts/types")
+    public ResponseEntity<SmeltTypeResponse.Count> getMySmeltTypes(@PathVariable(name = "user-id") Long userId) {
         // TODO
         return null;
     }
 
     @Override
-    @GetMapping(value = "/users/sent-smelts")
+    @GetMapping(value = "/users/{user-id}/smelts/sent")
     public ResponseEntity<SmeltResponse.Page> getSentSmelts(@PageableDefault(page = 0, size = 8) Pageable pageable) {
         // TODO
         return null;
     }
 
     @Override
-    @PostMapping(value = "/fishing-spots/{fishing-spot-id}/smelts")
+    @PatchMapping(value = "/smelts/{smelt-id}")
     public ResponseEntity<SmeltResponse.Detail> sendSmelt(
-        @PathVariable(name = "fishing-spot-id") Long fishingSpotId,
+        @PathVariable(name = "smelt-id") Long smeltId,
         @RequestBody SendSmeltRequest.Letter request) {
         // TODO
         return null;
     }
 
     @Override
-    @GetMapping("/fishing-spots/{fishing-spot-id}")
+    @GetMapping("/users/{user-id}/smelts")
     public ResponseEntity<FishingSpotResponse.Page> getFishingSpot(@
         PageableDefault(page = 0, size = 8) Pageable pageable,
-        @PathVariable(name = "fishing-spot-id") Long id) {
+        @PathVariable(name = "user-id") Long userId) {
         // TODO
         return null;
     }

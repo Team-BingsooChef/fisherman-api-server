@@ -12,20 +12,20 @@ import my.fisherman.fisherman.quiz.api.request.SolveQuizRequest;
 import my.fisherman.fisherman.quiz.api.response.QuizResponse;
 import my.fisherman.fisherman.quiz.api.response.SolveQuizResponse;
 
-@RequestMapping("/smelts/quizzes")
+@RequestMapping("/smelts/{smelt-id}/quizzes")
 @RestController
 public class QuizController implements QuizSpecification{
 
     @Override
-    @GetMapping("/{quiz-id}")
-    public ResponseEntity<QuizResponse.Quiz> getQuiz(@PathVariable(name = "quiz-id") Long quizId) {
+    @GetMapping
+    public ResponseEntity<QuizResponse.Quiz> getQuiz(@PathVariable(name = "smelt-id") Long smeltId) {
         // TODO
         return null;
     }
 
     @Override
     @PatchMapping
-    public ResponseEntity<SolveQuizResponse.Result> solveQuiz(@RequestBody SolveQuizRequest.Try request) {
+    public ResponseEntity<SolveQuizResponse.Result> solveQuiz(@PathVariable(name = "smelt-id") Long smeltId, @RequestBody SolveQuizRequest.Try request) {
         // TODO
         return null;
     }
