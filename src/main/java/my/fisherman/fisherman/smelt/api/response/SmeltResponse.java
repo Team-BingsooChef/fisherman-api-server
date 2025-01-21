@@ -1,7 +1,6 @@
 package my.fisherman.fisherman.smelt.api.response;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class SmeltResponse {
 
@@ -13,13 +12,8 @@ public class SmeltResponse {
         DetailSmeltDto smelt,
         LetterDto letter
     ) {}
-    
-    public record Page (
-        int page,
-        int total,
-        List<DetailSmeltDto> smelts
-    ) {}
 
+    
     public record SimpleSmeltDto (
         Long id,
         Long smeltTypeId,

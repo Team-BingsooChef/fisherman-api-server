@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import my.fisherman.fisherman.smelt.api.request.SendSmeltRequest;
-import my.fisherman.fisherman.smelt.api.response.FishingSpotResponse;
+import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
 
@@ -28,21 +28,21 @@ public class SmeltController implements SmeltSpecification {
 
     @Override
     @PostMapping(value = "/smelts")
-    public ResponseEntity<SmeltResponse.Simple> createRandomSmelt() {
+    public ResponseEntity<SmeltResponse.Simple> drawSmelt() {
         // TODO
         return null;
     }
 
     @Override
     @GetMapping(value = "/users/{user-id}/smelts/types")
-    public ResponseEntity<SmeltTypeResponse.Count> getMySmeltTypes(@PathVariable(name = "user-id") Long userId) {
+    public ResponseEntity<SmeltTypeResponse.Count> getSmeltTypesOfUser(@PathVariable(name = "user-id") Long userId) {
         // TODO
         return null;
     }
 
     @Override
     @GetMapping(value = "/users/{user-id}/smelts/sent")
-    public ResponseEntity<SmeltResponse.Page> getSentSmelts(@PageableDefault(page = 0, size = 8) Pageable pageable) {
+    public ResponseEntity<SmeltResponse.Detail> getSentSmelts(@PageableDefault(page = 0, size = 8) Pageable pageable) {
         // TODO
         return null;
     }
@@ -58,7 +58,7 @@ public class SmeltController implements SmeltSpecification {
 
     @Override
     @GetMapping("/users/{user-id}/smelts")
-    public ResponseEntity<FishingSpotResponse.Page> getFishingSpot(@
+    public ResponseEntity<SmeltPageResponse.Simple> getReceivedSmelts(@
         PageableDefault(page = 0, size = 8) Pageable pageable,
         @PathVariable(name = "user-id") Long userId) {
         // TODO

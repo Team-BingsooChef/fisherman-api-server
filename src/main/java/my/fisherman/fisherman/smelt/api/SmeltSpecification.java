@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import my.fisherman.fisherman.smelt.api.request.SendSmeltRequest;
-import my.fisherman.fisherman.smelt.api.response.FishingSpotResponse;
+import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
 
@@ -39,7 +39,7 @@ public interface SmeltSpecification {
             @ApiResponse(responseCode = "400", description = "S001 - 사용자의 코인이 부족합니다.", content = @Content())
         }
     )
-    ResponseEntity<SmeltResponse.Simple> createRandomSmelt();
+    ResponseEntity<SmeltResponse.Simple> drawSmelt();
     
 
     @Operation(
@@ -51,19 +51,7 @@ public interface SmeltSpecification {
             )
         }
     )
-    ResponseEntity<SmeltTypeResponse.Count> getMySmeltTypes(Long userId);
-
-
-    @Operation(
-        summary = "보낸 빙어 조회 API",
-        description = "주어진 사용자가 타 사용자에게 보낸 빙어의 배열을 반환합니다.<br>" + "이때 배열은 페이지네이션이 적용되어 있습니다.<br>권한: 사용자 본인",
-        responses = {
-            @ApiResponse(
-                responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltResponse.Page.class), mediaType = "application/json")
-            )
-        }
-    )
-    ResponseEntity<SmeltResponse.Page> getSentSmelts(@ParameterObject Pageable pageable);
+    ResponseEntity<SmeltTypeResponse.Count> getSmeltTypesOfUser(Long userId);
 
 
     @Operation(
@@ -78,6 +66,19 @@ public interface SmeltSpecification {
     )
     ResponseEntity<SmeltResponse.Detail> sendSmelt(Long smeltId, @RequestBody(description = "빙어와 함께 보낼 편지") SendSmeltRequest.Letter request);
 
+
+    @Operation(
+        summary = "보낸 빙어 조회 API",
+        description = "주어진 사용자가 타 사용자에게 보낸 빙어의 배열을 반환합니다.<br>" + "이때 배열은 페이지네이션이 적용되어 있습니다.<br>권한: 사용자 본인",
+        responses = {
+            @ApiResponse(
+                responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltResponse.Detail.class), mediaType = "application/json")
+            )
+        }
+    )
+    ResponseEntity<SmeltResponse.Detail> getSentSmelts(@ParameterObject Pageable pageable);
+
+
     @Operation(
         summary = "받은 빙어 조회 API",
         description = "지정한 사용자가 받은 빙어의 배열을 조회합니다. <br>"
@@ -85,12 +86,12 @@ public interface SmeltSpecification {
             + "아직 낚시터 주인이 읽지 않은 빙어는 smelt type이 unknown으로 반환됩니다.",
         responses = {
             @ApiResponse(
-                responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.Page.class), mediaType = "application/json")
+                responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltPageResponse.Simple.class), mediaType = "application/json")
             ),
             @ApiResponse(responseCode = "404", description = "S401 - 존재하지 않는 낚시터입니다.", content = @Content())
         }
     )
-    ResponseEntity<FishingSpotResponse.Page> getFishingSpot(@ParameterObject Pageable pageable, Long userId);
+    ResponseEntity<SmeltPageResponse.Simple> getReceivedSmelts(@ParameterObject Pageable pageable, Long userId);
 
     @Operation(
         summary = "빙어 상세 조회 API",
