@@ -10,7 +10,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import my.fisherman.fisherman.smelt.api.request.SendSmeltRequest;
+import my.fisherman.fisherman.smelt.api.request.CommentRequest;
+import my.fisherman.fisherman.smelt.api.request.SmeltRequest;
 import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
@@ -64,7 +65,7 @@ public interface SmeltSpecification {
             @ApiResponse(responseCode = "404", description = "S401 - 존재하지 않는 낚시터입니다. <br> S402 -존재하지 않는 빙어입니다.", content = @Content()),
         }
     )
-    ResponseEntity<SmeltResponse.Detail> sendSmelt(Long smeltId, @RequestBody(description = "빙어와 함께 보낼 편지") SendSmeltRequest.Letter request);
+    ResponseEntity<SmeltResponse.Detail> sendSmelt(Long smeltId, @RequestBody(description = "빙어와 함께 보낼 편지") SmeltRequest.Send request);
 
 
     @Operation(
@@ -105,4 +106,17 @@ public interface SmeltSpecification {
         }
     )
     ResponseEntity<SmeltResponse.Detail> getSmeltDetail(Long smeltId);
+
+    @Operation(
+        summary = "빙어에 코멘트 작성 API",
+        description = "지정한 빙어에 코멘트를 작성합니다. <br>" + "권한: 받은 빙어고 퀴즈가 있다면 풀었음.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltResponse.Detail.class), mediaType = "application/json")
+            ),
+            @ApiResponse(responseCode = "404", description = "S402 - 존재하지 않는 빙어입니다.", content = @Content()),
+            @ApiResponse(responseCode = "403", description = "S302 - 빙어에 대한 권한이 없습니다.", content = @Content())
+        }
+    )
+    ResponseEntity<SmeltResponse.Detail> commentSmelt(Long smeltId, @RequestBody CommentRequest.Comment request);
 }

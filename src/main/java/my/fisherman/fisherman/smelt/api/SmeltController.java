@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import my.fisherman.fisherman.smelt.api.request.SendSmeltRequest;
+import my.fisherman.fisherman.smelt.api.request.CommentRequest;
+import my.fisherman.fisherman.smelt.api.request.SmeltRequest;
 import my.fisherman.fisherman.smelt.api.response.SmeltPageResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltResponse;
 import my.fisherman.fisherman.smelt.api.response.SmeltTypeResponse;
@@ -51,7 +52,7 @@ public class SmeltController implements SmeltSpecification {
     @PatchMapping(value = "/smelts/{smelt-id}")
     public ResponseEntity<SmeltResponse.Detail> sendSmelt(
         @PathVariable(name = "smelt-id") Long smeltId,
-        @RequestBody SendSmeltRequest.Letter request) {
+        @RequestBody SmeltRequest.Send request) {
         // TODO
         return null;
     }
@@ -68,6 +69,15 @@ public class SmeltController implements SmeltSpecification {
     @Override
     @GetMapping("/smelts/{smelt-id}")
     public ResponseEntity<SmeltResponse.Detail> getSmeltDetail(@PathVariable(name = "smelt-id") Long smeltId) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    @PostMapping("/smelts/{smelt-id}/comments")
+    public ResponseEntity<SmeltResponse.Detail> commentSmelt(
+        @PathVariable(name = "smelt-id") Long smeltId,
+        @RequestBody CommentRequest.Comment request) {
         // TODO
         return null;
     }
