@@ -16,7 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.inventory.domain.Inventory;
-import my.fisherman.fisherman.quiz.domain.Quiz;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

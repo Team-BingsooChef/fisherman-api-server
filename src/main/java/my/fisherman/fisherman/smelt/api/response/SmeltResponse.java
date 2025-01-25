@@ -1,44 +1,51 @@
 package my.fisherman.fisherman.smelt.api.response;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SmeltResponse {
 
-    public record Simple (
-        SimpleSmeltDto smelt
-    ) {}
-
     public record Detail (
-        DetailSmeltDto smelt,
-        LetterDto letter
-    ) {}
+        Smelt smelt,
+        Letter letter
+    ) {
+    }
 
-    
-    public record SimpleSmeltDto (
-        Long id,
-        Long smeltTypeId,
-        String status   // TODO: String -> SmeltStatus
-    ) {}
+    public record AllOfType(
+            List<SmeltType> smeltTypes
+    ) {
+    }
 
-    public record DetailSmeltDto (
+    record Smelt (
         Long id,
         Long senderId,
         Long receiverId,
         Long smeltTypeId,
-        String status   // TODO: String -> SmeltStatus
-    ) {}
+        String status
+    ) {
+    }
 
-    public record LetterDto (
+    record Letter (
         Long id,
         String title,
         String content,
+        String senderName,
         LocalDateTime createdTime,
-        CommentDto comment
-    ) {}
+        Comment comment
+    ) {
+    }
 
-    public record CommentDto (
+    record Comment (
         Long id,
         String content,
         LocalDateTime createdTime
-    ) {}
+    ) {
+    }
+
+    record SmeltType (
+            Long id,
+            String name,
+            String image
+    ) {
+    }
 }
