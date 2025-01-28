@@ -1,7 +1,5 @@
 package my.fisherman.fisherman.inventory.api.response;
 
-import my.fisherman.fisherman.smelt.domain.Comment;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
