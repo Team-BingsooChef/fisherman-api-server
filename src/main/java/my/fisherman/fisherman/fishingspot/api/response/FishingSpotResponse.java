@@ -11,8 +11,9 @@ public class FishingSpotResponse {
 
     public record Page(
             String nickname,
-            int page,
-            int total,
+            int currPage,
+            int totalPages,
+            int totalElements,
             List<SimpleSmelt> smelts
     ) {}
 

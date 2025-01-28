@@ -13,8 +13,9 @@ public class InventoryResponse {
 
     public record SentSmeltPage(
             String nickname,
-            int page,
-            int total,
+            int currPage,
+            int totalPages,
+            int totalElements,
             List<SmeltDetail> smelts
     ) {}
 
