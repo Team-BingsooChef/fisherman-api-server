@@ -7,7 +7,7 @@ import java.util.List;
 
 public class InventoryResponse {
 
-    public record DrawedSmelt(
+    public record DrewSmelt(
             SmeltSimple smelt
     ) {}
 

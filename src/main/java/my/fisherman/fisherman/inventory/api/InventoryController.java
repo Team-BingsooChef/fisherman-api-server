@@ -10,7 +10,7 @@ public class InventoryController implements InventorySpecification {
 
     @Override
     @PostMapping
-    public ResponseEntity<InventoryResponse.DrawedSmelt> drawSmelt(@PathVariable(name = "inventory-id") Long inventoryId) {
+    public ResponseEntity<InventoryResponse.DrewSmelt> drawSmelt(@PathVariable(name = "inventory-id") Long inventoryId) {
         // TODO
         return null;
     }
