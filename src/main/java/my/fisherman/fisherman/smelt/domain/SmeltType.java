@@ -18,9 +18,12 @@ public class SmeltType {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "smelt_name", nullable = false)
+    @Column(name = "smelt_type_name", nullable = false)
     private String name;
 
     @Column(name = "smelt_image", nullable = false)
     private String image;
+
+    @Column(name = "smelt_ice_image", nullable = false)
+    private String iceImage;
 }
