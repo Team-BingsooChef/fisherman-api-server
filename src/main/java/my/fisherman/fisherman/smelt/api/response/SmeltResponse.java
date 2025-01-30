@@ -45,7 +45,8 @@ public class SmeltResponse {
     record SmeltType (
             Long id,
             String name,
-            String image
+            String image,
+            String iceImage
     ) {
     }
 }
