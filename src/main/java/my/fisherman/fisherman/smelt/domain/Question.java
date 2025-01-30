@@ -1,4 +1,4 @@
-package my.fisherman.fisherman.quiz.domain;
+package my.fisherman.fisherman.smelt.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,7 +25,7 @@ public class Question {
     private String content;
     
     @Column(nullable = false)
-    private Boolean isAnwer;
+    private Boolean isAnswer;
 
     @JoinColumn(name = "quiz_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)

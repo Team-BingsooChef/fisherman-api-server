@@ -29,6 +29,9 @@ public class Letter {
     @Column(name = "letter_content", nullable = false)
     private String content;
 
+    @Column(name = "sender_name", nullable = false)
+    private String senderName;
+
     @Column(name = "letter_created_time", nullable = false)
     private LocalDateTime createdTime;
 
