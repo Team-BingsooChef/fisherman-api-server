@@ -18,7 +18,7 @@ import my.fisherman.fisherman.user.domain.User;
 @Entity
 public class FishingSpot {
 
-    @Column(name = "fishint_spot_id")
+    @Column(name = "fishing_spot_id")
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

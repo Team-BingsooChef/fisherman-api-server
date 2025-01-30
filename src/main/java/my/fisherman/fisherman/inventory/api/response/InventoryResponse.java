@@ -1,20 +1,19 @@
 package my.fisherman.fisherman.inventory.api.response;
 
-import my.fisherman.fisherman.smelt.domain.Comment;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class InventoryResponse {
 
-    public record DrawedSmelt(
+    public record DrewSmelt(
             SmeltSimple smelt
     ) {}
 
     public record SentSmeltPage(
             String nickname,
-            int page,
-            int total,
+            int currPage,
+            int totalPages,
+            int totalElements,
             List<SmeltDetail> smelts
     ) {}
 

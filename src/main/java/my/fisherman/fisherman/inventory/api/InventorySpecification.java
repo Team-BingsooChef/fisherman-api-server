@@ -16,14 +16,14 @@ public interface InventorySpecification {
             description = "지정한 인벤토리에 지정된 확률로 새로운 빙어를 생성합니다.<br>" + "권한: 사용자의 인벤토리",
             responses = {
                     @ApiResponse(
-                            responseCode = "201", content = @Content(schema = @Schema(implementation = InventoryResponse.DrawedSmelt.class), mediaType = "application/json")
+                            responseCode = "201", content = @Content(schema = @Schema(implementation = InventoryResponse.DrewSmelt.class), mediaType = "application/json")
                     ),
                     @ApiResponse(responseCode = "400", description = "I001 - 코인이 부족합니다.", content = @Content()),
                     @ApiResponse(responseCode = "403", description = "I301 - 인벤토리에 권한이 없습니다.", content = @Content()),
                     @ApiResponse(responseCode = "404", description = "I401 - 존재하지 않는 인벤토리입니다.", content = @Content())
             }
     )
-    ResponseEntity<InventoryResponse.DrawedSmelt> drawSmelt(Long inventoryId);
+    ResponseEntity<InventoryResponse.DrewSmelt> drawSmelt(Long inventoryId);
 
     @Operation(
             summary = "보낸 빙어 조회 API",
