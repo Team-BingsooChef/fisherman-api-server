@@ -5,7 +5,7 @@ import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/fishing-spot")
+@RequestMapping("/fishing-spots")
 @RestController
 public class FishingSpotController implements FishingSpotSpecification {
 
