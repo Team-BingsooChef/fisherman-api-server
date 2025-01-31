@@ -26,4 +26,9 @@ public class Inventory {
     @JoinColumn(name = "user_id", nullable = false)
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public boolean isReadableBy(User user) {
+        // TODO: ID 비교로 수정
+        return this.user == user;
+    }
 }
