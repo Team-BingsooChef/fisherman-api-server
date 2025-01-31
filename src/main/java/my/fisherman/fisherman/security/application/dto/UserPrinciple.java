@@ -12,30 +12,32 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public record UserPrinciple(
-        Long id,
-        String email,
-        String password,
-        String nickname,
-        Boolean isPublic,
-        OAuthProvider oauthType,
-        Role role
+    Long id,
+    String email,
+    String password,
+    String nickname,
+    Boolean isPublic,
+    OAuthProvider oauthType,
+    Role role,
+    Boolean isFreshUser
 ) implements OAuth2User, UserDetails {
 
     public static UserPrinciple from(User user) {
         return new UserPrinciple(
-                user.getId(), user.getEmail(), user.getPassword(),
-                user.getNickname(), user.getIsPublic(), user.getOauthType(), user.getRole());
+            user.getId(), user.getEmail(), user.getPassword(),
+            user.getNickname(), user.getIsPublic(), user.getOauthType(), user.getRole(),
+            user.getIsFreshUser());
     }
 
     @Override
     public Map<String, Object> getAttributes() {
         return Map.of(
-                "id", id,
-                "email", email,
-                "nickname", nickname,
-                "isPublic", isPublic,
-                "oauthType", oauthType,
-                "role", role
+            "id", id,
+            "email", email,
+            "nickname", nickname,
+            "isPublic", isPublic,
+            "oauthType", oauthType,
+            "role", role
         );
     }
 

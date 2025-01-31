@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 @NoArgsConstructor(access = PROTECTED)
 public class User {
+
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
@@ -40,13 +41,17 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private User(String email, String password, String nickname, Boolean isPublic, OAuthProvider oauthType) {
+    private Boolean isFreshUser;
+
+    private User(
+        String email, String password, String nickname, Boolean isPublic, OAuthProvider oauthType) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.isPublic = isPublic;
         this.oauthType = oauthType;
         this.role = Role.ROLE_USER;
+        this.isFreshUser = true;
     }
 
     public static User of(String email, String password, String nickname) {
