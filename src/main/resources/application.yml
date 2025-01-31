@@ -13,3 +13,6 @@ spring:
       - redis
       - security
       - jwt
+
+springdoc:
+  use-fqn: true

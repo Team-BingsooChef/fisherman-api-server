@@ -14,8 +14,8 @@ import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import my.fisherman.fisherman.quiz.domain.Quiz;
-import my.fisherman.fisherman.user.domain.User;
+import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
+import my.fisherman.fisherman.inventory.domain.Inventory;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,13 +26,13 @@ public class Smelt {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "sender_id", nullable = false)
+    @JoinColumn(name = "inventory_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private User sender;
+    private Inventory inventory;
 
-    @JoinColumn(name = "receiver_id")
+    @JoinColumn(name = "fishing_spot_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private User receiver;
+    private FishingSpot fishingSpot;
 
     @Column(name = "smelt_status", nullable = false)
     @Enumerated(EnumType.STRING)
