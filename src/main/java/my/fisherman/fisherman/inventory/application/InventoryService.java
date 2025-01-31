@@ -2,7 +2,6 @@ package my.fisherman.fisherman.inventory.application;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import my.fisherman.fisherman.inventory.application.command.InventoryCommand;
 import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.inventory.repository.InventoryRepository;
@@ -27,9 +26,9 @@ public class InventoryService {
 
 
     @Transactional
-    public InventoryInfo.SmeltInfo drawSmelt(InventoryCommand.DrawSmelt command) {
-        User user = userRepository.getReferenceById(command.userId());
-        Inventory inventory = inventoryRepository.getReferenceById(command.inventoryId());
+    public InventoryInfo.SmeltInfo drawSmelt(Long userId, Long inventoryId) {
+        User user = userRepository.getReferenceById(userId);
+        Inventory inventory = inventoryRepository.getReferenceById(inventoryId);
 
         if (!inventory.isReadableBy(user)) {
             // TODO: 예외 처리
