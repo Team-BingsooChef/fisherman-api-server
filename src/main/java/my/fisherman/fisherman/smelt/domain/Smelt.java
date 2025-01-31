@@ -58,4 +58,8 @@ public class Smelt {
         this.letter = null;
         this.quiz = null;
     }
+
+    public static Smelt of(Inventory inventory, SmeltType type) {
+        return new Smelt(inventory, type);
+    }
 }
