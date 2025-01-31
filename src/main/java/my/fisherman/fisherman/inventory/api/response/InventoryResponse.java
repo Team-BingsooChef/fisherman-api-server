@@ -1,5 +1,7 @@
 package my.fisherman.fisherman.inventory.api.response;
 
+import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,7 +9,18 @@ public class InventoryResponse {
 
     public record DrewSmelt(
             SmeltSimple smelt
-    ) {}
+    ) {
+        public static DrewSmelt from(InventoryInfo.SmeltInfo info) {
+            return new DrewSmelt(
+                    new SmeltSimple(
+                            info.id(),
+                            info.inventoryId(),
+                            info.smeltTypeId(),
+                            info.status().name()
+                    )
+            );
+        }
+    }
 
     public record SentSmeltPage(
             String nickname,
