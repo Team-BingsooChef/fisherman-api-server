@@ -8,6 +8,9 @@ spring:
     include:
       - datasource
       - security
+      - mail
       - redis
+      - security
+      - jwt
 springdoc:
   use-fqn: true

@@ -4,5 +4,9 @@ public enum OAuthProvider {
     GOOGLE,
     NAVER,
     KAKAO,
-    SELF
+    SELF;
+
+    public static OAuthProvider of(String provider) {
+        return OAuthProvider.valueOf(provider.toUpperCase());
+    }
 }
