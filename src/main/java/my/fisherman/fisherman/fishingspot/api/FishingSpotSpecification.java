@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 public interface FishingSpotSpecification {
     @Operation(
             summary = "낚시터에 빙어 보내기 API",
-            description = "주어진 빙어를 지정한 낚시터에 보냅니다.<br>" + "권한: 사용자가 뽑은 빙어",
+            description = "주어진 빙어를 지정한 낚시터에 보냅니다.<br>" + "Access token이 필요합니다.<br>" + "권한: 사용자가 뽑은 빙어",
             responses = {
                     @ApiResponse(
                             responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.ReceivedSmelt.class), mediaType = "application/json")

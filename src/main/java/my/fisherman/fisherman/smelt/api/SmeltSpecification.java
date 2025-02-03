@@ -18,7 +18,7 @@ public interface SmeltSpecification {
 
     @Operation(
         summary = "빙어 상세 조회 API",
-        description = "지정한 빙어의 자세한 정보를 조회합니다. <br>" + "권한: 사용자가 뽑은 빙어거나, 사용자의 낚시터에 받은 빙어고 퀴즈가 있다면 풀었음",
+        description = "지정한 빙어의 자세한 정보를 조회합니다. <br>" + "Access token이 필요합니다.<br>" + "권한: 사용자가 뽑은 빙어거나, 사용자의 낚시터에 받은 빙어고 퀴즈가 있다면 풀었음",
         responses = {
             @ApiResponse(
                 responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltResponse.Detail.class), mediaType = "application/json")
@@ -32,7 +32,7 @@ public interface SmeltSpecification {
 
     @Operation(
             summary = "빙어의 퀴즈 조회 API",
-            description = "지정한 빙어의 퀴즈를 조회합니다.<br>Question의 isAnswer은 푼 경우에만 값이 존재하고, 풀기 전인 경우 null이 반환됩니다.<br>" + "권한: 사용자가 뽑거나 사용자의 낚시터에 받은 빙어",
+            description = "지정한 빙어의 퀴즈를 조회합니다.<br>Question의 isAnswer은 푼 경우에만 값이 존재하고, 풀기 전인 경우 null이 반환됩니다.<br>" + "Access token이 필요합니다.<br>" + "권한: 사용자가 뽑거나 사용자의 낚시터에 받은 빙어",
             responses = {
                     @ApiResponse(
                             responseCode = "200", content = @Content(schema = @Schema(implementation = QuizResponse.Info.class), mediaType = "application/json")
@@ -45,7 +45,7 @@ public interface SmeltSpecification {
 
     @Operation(
             summary = "빙어의 퀴즈 풀기 API",
-            description = "지정한 빙어의 퀴즈의 답을 제출합니다. <br>" + "권한: 사용자의 낚시터에 받은 빙어",
+            description = "지정한 빙어의 퀴즈의 답을 제출합니다. <br>" + "Access token이 필요합니다.<br>" + "권한: 사용자의 낚시터에 받은 빙어",
             responses = {
                     @ApiResponse(
                             responseCode = "200", content = @Content(schema = @Schema(implementation = QuizResponse.SolveResult.class), mediaType = "application/json")
@@ -59,7 +59,7 @@ public interface SmeltSpecification {
 
     @Operation(
             summary = "빙어에 코멘트 작성 API",
-            description = "지정한 빙어에 코멘트를 작성합니다. <br>" + "권한: 사용자의 낚시터에 받은 빙어고 퀴즈가 있다면 풀었음",
+            description = "지정한 빙어에 코멘트를 작성합니다. <br>" + "Access token이 필요합니다.<br>" + "권한: 사용자의 낚시터에 받은 빙어고 퀴즈가 있다면 풀었음",
             responses = {
                     @ApiResponse(
                             responseCode = "200", content = @Content(schema = @Schema(implementation = SmeltResponse.Detail.class), mediaType = "application/json")
