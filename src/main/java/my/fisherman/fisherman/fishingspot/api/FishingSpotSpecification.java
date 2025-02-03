@@ -24,7 +24,7 @@ public interface FishingSpotSpecification {
                     @ApiResponse(responseCode = "404", description = "F402 - 존재하지 않는 빙어입니다.", content = @Content())
             }
     )
-    ResponseEntity<FishingSpotResponse.ReceivedSmelt> sendSmelt(Long fishingSpotId, @RequestBody FishingSpotRequest.Send request);
+    ResponseEntity<FishingSpotResponse.ReceivedSmelt> sendSmelt(Long fishingSpotId, @RequestBody(description = "퀴즈가 없는 빙어인 경우 quiz는 null") FishingSpotRequest.Send request);
 
 
     @Operation(
