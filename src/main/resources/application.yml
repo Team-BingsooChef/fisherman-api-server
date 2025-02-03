@@ -9,3 +9,5 @@ spring:
       - datasource
       - security
       - redis
+springdoc:
+  use-fqn: true

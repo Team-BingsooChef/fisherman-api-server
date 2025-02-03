@@ -53,6 +53,7 @@ jobs:
             
             docker stop $(docker ps -a -q) 
             docker rm $(docker ps -a -q) 
+            docker image prune -af
             
             docker pull wgwjh05169/bingsoochef
             docker run -d -p 8080:8080 \

@@ -2,6 +2,8 @@ package my.fisherman.fisherman.smelt.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,18 +14,22 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class SmeltType {
+public class Quiz {
 
-    @Column(name = "smelt_type_id")
+    @Column(name = "quiz_id")
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "smelt_type_name", nullable = false)
-    private String name;
+    @Column(name = "quiz_title", nullable = false)
+    private String title;
 
-    @Column(name = "smelt_image", nullable = false)
-    private String image;
+    @Column(name = "quiz_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private QuizType type;
 
-    @Column(name = "smelt_ice_image", nullable = false)
-    private String iceImage;
+    @Column(nullable = false)
+    private Short wrongCount;
+
+    @Column(nullable = false)
+    private Boolean isSolved;
 }
