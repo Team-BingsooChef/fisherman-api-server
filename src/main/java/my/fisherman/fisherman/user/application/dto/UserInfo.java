@@ -7,11 +7,17 @@ public class UserInfo {
     public record Simple(
         String email,
         String nickname,
-        Boolean isPublic
+        Boolean isPublic,
+        Long coin
     ) {
 
         public static Simple from(User user) {
-            return new Simple(user.getEmail(), user.getNickname(), user.getIsPublic());
+            return new Simple(
+                user.getEmail(),
+                user.getNickname(),
+                user.getIsPublic(),
+                user.getCoin()
+            );
         }
     }
 
