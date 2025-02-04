@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.auth.repository.AuthenticationRepository;
 import my.fisherman.fisherman.security.util.SecurityUtil;
 import my.fisherman.fisherman.user.application.command.UserCommand;
-import my.fisherman.fisherman.user.application.command.UserCommand.UpdateNickname;
 import my.fisherman.fisherman.user.application.dto.UserInfo;
 import my.fisherman.fisherman.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,16 +54,29 @@ public class UserService {
     }
 
     @Transactional
-    public void updateNickname(Long userId, UpdateNickname command) {
+    public void updateNickname(Long userId, UserCommand.UpdateNickname command) {
         var currentUserId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
         if (currentUserId.equals(userId)) {
             var user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
             user.updateNickname(command.nickname());
-        } else {
-            throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
         }
+
+        throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
+    }
+
+    @Transactional
+    public void updatePublic(Long userId, UserCommand.UpdatePublic command) {
+        var currentUserId = SecurityUtil.getCurrentUserId()
+            .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
+        if (currentUserId.equals(userId)) {
+            var user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+            user.updatePublic(command.isPublic());
+        }
+
+        throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
     }
 
 }

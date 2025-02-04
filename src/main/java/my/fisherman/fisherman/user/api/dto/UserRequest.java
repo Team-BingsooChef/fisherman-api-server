@@ -25,4 +25,13 @@ public class UserRequest {
             return new UserCommand.UpdateNickname(nickname);
         }
     }
+
+    public record UpdatePublic(
+        boolean isPublic
+    ) {
+
+        public UserCommand.UpdatePublic toCommand() {
+            return new UserCommand.UpdatePublic(isPublic);
+        }
+    }
 }
