@@ -15,4 +15,13 @@ public class UserResponse {
         }
     }
 
+    public record Coin(
+        Long coin
+    ) {
+
+        public static UserResponse.Coin from(UserInfo.Simple user) {
+            return new UserResponse.Coin(user.coin());
+        }
+    }
+
 }
