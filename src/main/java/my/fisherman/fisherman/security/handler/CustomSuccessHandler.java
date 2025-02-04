@@ -36,7 +36,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         var accessToken = jwtService.createAccessToken(info);
         var refreshToken = jwtService.createRefreshToken(info);
 
-        //TODO: 토큰 반환 설정
         response.setStatus(HttpServletResponse.SC_OK);
         response.sendRedirect(
             frontUrl +
