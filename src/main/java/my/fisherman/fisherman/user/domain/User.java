@@ -70,4 +70,8 @@ public class User {
     public Long getCoin() {
         return coin.getCoin();
     }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
