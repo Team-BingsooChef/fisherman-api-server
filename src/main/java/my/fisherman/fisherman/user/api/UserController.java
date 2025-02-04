@@ -73,5 +73,15 @@ public class UserController implements UserSpecification {
         return ResponseEntity.ok().build();
     }
 
+    @Override
+    @PatchMapping("/{user-id}/password")
+    public ResponseEntity<Void> updatePassword(
+        @PathVariable(value = "user-id") Long userId,
+        @Valid @RequestBody UserRequest.UpdatePassword request
+    ) {
+        var command = request.toCommand();
+        userService.updatePassword(userId, command);
 
+        return ResponseEntity.ok().build();
+    }
 }

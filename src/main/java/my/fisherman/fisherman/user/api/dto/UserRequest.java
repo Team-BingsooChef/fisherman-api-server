@@ -34,4 +34,14 @@ public class UserRequest {
             return new UserCommand.UpdatePublic(isPublic);
         }
     }
+
+    public record UpdatePassword(
+        @Length(min = 10, max = 15) String originPassword,
+        @Length(min = 10, max = 15) String newPassword
+    ) {
+
+        public UserCommand.UpdatePassword toCommand() {
+            return new UserCommand.UpdatePassword(originPassword, newPassword);
+        }
+    }
 }

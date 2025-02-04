@@ -69,4 +69,14 @@ public interface UserSpecification {
         }
     )
     ResponseEntity<Void> updatePublic(Long userId, UserRequest.UpdatePublic request);
+
+    @Operation(
+        summary = "비밀번호 수정",
+        description = "비밀 번호를 수정합니다",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "비밀번호 수정 성공"),
+            @ApiResponse(responseCode = "404", description = "비밀번호 수정 실패")
+        }
+    )
+    ResponseEntity<Void> updatePassword(Long userId, UserRequest.UpdatePassword request);
 }

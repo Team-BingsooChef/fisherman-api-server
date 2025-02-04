@@ -26,4 +26,11 @@ public class UserCommand {
     ) {
 
     }
+
+    public record UpdatePassword(
+        String originPassword,
+        String newPassword
+    ) {
+
+    }
 }
