@@ -26,4 +26,12 @@ public class Inventory {
     @JoinColumn(name = "user_id", nullable = false)
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public boolean isReadableBy(User user) {
+        return this.user.getId() == user.getId();
+    }
+
+    public boolean isReadableBy(Long userId) {
+        return this.user.getId() == userId;
+    }
 }
