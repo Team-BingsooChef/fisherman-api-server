@@ -49,4 +49,17 @@ public class Smelt {
     @JoinColumn(name = "letter_id")
     @OneToOne(fetch = FetchType.LAZY)
     private Letter letter;
+
+    public Smelt(Inventory inventory, FishingSpot fishingSpot, SmeltStatus status, SmeltType type, Quiz quiz, Letter letter) {
+        this.inventory = inventory;
+        this.fishingSpot = fishingSpot;
+        this.status = status;
+        this.type = type;
+        this.quiz = quiz;
+        this.letter = letter;
+    }
+
+    public static Smelt of(Inventory inventory, SmeltType type) {
+        return new Smelt(inventory, null, SmeltStatus.DREW, type, null, null);
+    }
 }
