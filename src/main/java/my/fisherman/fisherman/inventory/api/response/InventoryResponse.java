@@ -3,11 +3,18 @@ package my.fisherman.fisherman.inventory.api.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
+import my.fisherman.fisherman.inventory.application.dto.InventoryInfo.SmeltInfo;
+
 public class InventoryResponse {
 
     public record DrewSmelt(
             SmeltSimple smelt
-    ) {}
+    ) {
+        public static DrewSmelt from(InventoryInfo.SmeltInfo smeltInfo) {
+                return new DrewSmelt(SmeltSimple.from(smeltInfo));
+        }
+    }
 
     public record SentSmeltPage(
             String nickname,
@@ -31,7 +38,11 @@ public class InventoryResponse {
             Long inventoryId,
             Long smeltTypeId,
             String status
-    ) {}
+    ) {
+        static SmeltSimple from(SmeltInfo info) {
+                return new SmeltSimple(info.id(), info.inventoryId(), info.smeltTypeId(), info.status());
+        }
+    }
 
     record SmeltDetail(
             Long id,
