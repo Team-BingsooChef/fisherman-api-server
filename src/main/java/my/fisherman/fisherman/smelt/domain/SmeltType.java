@@ -26,4 +26,7 @@ public class SmeltType {
 
     @Column(name = "smelt_ice_image", nullable = false)
     private String iceImage;
+
+    @Column(nullable = false)
+    private Integer cumulativeProbability;
 }
