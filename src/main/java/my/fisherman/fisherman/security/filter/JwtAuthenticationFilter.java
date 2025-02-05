@@ -41,10 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         setAuthentication(accessToken);
-        log.info("인증 완료: {}", SecurityContextHolder.getContext().getAuthentication().getName());
         filterChain.doFilter(request, response);
-
-        log.info("인증 완료: {}", SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     private boolean hasNoTokenHeader(HttpServletRequest request) {
