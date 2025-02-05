@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import my.fisherman.fisherman.user.api.dto.UserRequest;
+import my.fisherman.fisherman.user.api.dto.UserRequest.UpdateNickname;
 import my.fisherman.fisherman.user.api.dto.UserResponse;
 import org.springframework.http.ResponseEntity;
 
@@ -47,4 +48,35 @@ public interface UserSpecification {
         }
     )
     ResponseEntity<UserResponse.Coin> getMyCoin(Long userId);
+
+
+    @Operation(
+        summary = "닉네임 수정",
+        description = "회원의 닉네임을 수정합니다.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "닉네임 수정 성공"),
+            @ApiResponse(responseCode = "404", description = "닉네임 수정 실패")
+        }
+    )
+    ResponseEntity<Void> updateNickname(Long userId, UpdateNickname request);
+
+    @Operation(
+        summary = "공개 여부 수정",
+        description = "회원의 공개 여부를 수정합니다.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "공개 여부 수정 성공"),
+            @ApiResponse(responseCode = "404", description = "공개 여부 수정 실패")
+        }
+    )
+    ResponseEntity<Void> updatePublic(Long userId, UserRequest.UpdatePublic request);
+
+    @Operation(
+        summary = "비밀번호 수정",
+        description = "비밀 번호를 수정합니다",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "비밀번호 수정 성공"),
+            @ApiResponse(responseCode = "404", description = "비밀번호 수정 실패")
+        }
+    )
+    ResponseEntity<Void> updatePassword(Long userId, UserRequest.UpdatePassword request);
 }

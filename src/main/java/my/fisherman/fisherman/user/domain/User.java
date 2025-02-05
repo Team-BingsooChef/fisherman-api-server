@@ -70,4 +70,22 @@ public class User {
     public Long getCoin() {
         return coin.getCoin();
     }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updatePublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public void updatePassword(String originPassword, String newPassword) {
+        if (!this.password.equals(originPassword)) {
+            throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
+        }
+        if (this.password.equals(newPassword)) {
+            throw new IllegalArgumentException("기존 비밀번호와 새 비밀번호가 동일합니다.");
+        }
+        this.password = newPassword;
+    }
 }
