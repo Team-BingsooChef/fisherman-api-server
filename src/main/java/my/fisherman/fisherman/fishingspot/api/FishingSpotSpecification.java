@@ -6,25 +6,31 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import my.fisherman.fisherman.fishingspot.api.request.FishingSpotRequest;
 import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse;
+import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse.FishingSpot;
 import org.springframework.http.ResponseEntity;
 
 @Tag(name = "낚시터")
 public interface FishingSpotSpecification {
+
     @Operation(
-            summary = "낚시터에 빙어 보내기 API",
-            description = "주어진 빙어를 지정한 낚시터에 보냅니다.<br>" + "Access token이 필요합니다.<br>" + "권한: 사용자가 뽑은 빙어",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.ReceivedSmelt.class), mediaType = "application/json")
-                    ),
-                    @ApiResponse(responseCode = "403", description = "F301 - 빙어에 권한이 없습니다.", content = @Content()),
-                    @ApiResponse(responseCode = "404", description = "F401 - 존재하지 않는 낚시터입니다.", content = @Content()),
-                    @ApiResponse(responseCode = "404", description = "F402 - 존재하지 않는 빙어입니다.", content = @Content())
-            }
+        summary = "낚시터에 빙어 보내기 API",
+        description = "주어진 빙어를 지정한 낚시터에 보냅니다.<br>" + "Access token이 필요합니다.<br>" + "권한: 사용자가 뽑은 빙어",
+        responses = {
+            @ApiResponse(
+                responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.ReceivedSmelt.class), mediaType = "application/json")
+            ),
+            @ApiResponse(responseCode = "403", description = "F301 - 빙어에 권한이 없습니다.", content = @Content()),
+            @ApiResponse(responseCode = "404", description = "F401 - 존재하지 않는 낚시터입니다.", content = @Content()),
+            @ApiResponse(responseCode = "404", description = "F402 - 존재하지 않는 빙어입니다.", content = @Content())
+        }
     )
-    ResponseEntity<FishingSpotResponse.ReceivedSmelt> sendSmelt(Long fishingSpotId, @RequestBody(description = "퀴즈가 없는 빙어인 경우 quiz는 null") FishingSpotRequest.Send request);
+    ResponseEntity<FishingSpotResponse.ReceivedSmelt> sendSmelt(
+        Long fishingSpotId,
+        @RequestBody(description = "퀴즈가 없는 빙어인 경우 quiz는 null") FishingSpotRequest.Send request
+    );
 
 
     @Operation(
@@ -39,4 +45,14 @@ public interface FishingSpotSpecification {
     )
     ResponseEntity<FishingSpotResponse.Page> getSmeltsOf(Long fishingSpotId);
 
+    @Operation(
+        summary = "낚시터 검색 API",
+        description = "지정한 닉네임을 포함하는 낚시터들을 검색합니다.<br>",
+        responses = {
+            @ApiResponse(
+                responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.FishingSpot.class), mediaType = "application/json")
+            )
+        }
+    )
+    ResponseEntity<List<FishingSpot>> searchFishingSpot(String keyword);
 }
