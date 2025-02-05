@@ -37,4 +37,14 @@ public interface UserSpecification {
         }
     )
     ResponseEntity<UserResponse.Info> getMyInfo(Long userId);
+
+    @Operation(
+        summary = "내 코인 조회",
+        description = "회원의 코인 정보를 조회합니다.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "회원 코인 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "회원 코인 조회 실패")
+        }
+    )
+    ResponseEntity<UserResponse.Coin> getMyCoin(Long userId);
 }
