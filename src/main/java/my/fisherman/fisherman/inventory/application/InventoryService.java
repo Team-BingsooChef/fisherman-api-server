@@ -1,6 +1,5 @@
 package my.fisherman.fisherman.inventory.application;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
 import my.fisherman.fisherman.inventory.domain.Inventory;
@@ -12,6 +11,7 @@ import my.fisherman.fisherman.smelt.repository.SmeltTypeRepository;
 import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -41,6 +41,21 @@ public class InventoryService {
         Smelt savedSmelt = smeltRepository.save(smelt);
 
         return InventoryInfo.SmeltInfo.from(savedSmelt);
+    }
+
+    @Transactional(readOnly = true)
+    public List<InventoryInfo.DetailSmeltInfo> searchSentSmelt(Long userId, Long inventoryId) {
+        // TODO: Not found 예외 처리
+        User user = userRepository.getReferenceById(userId);
+        Inventory inventory = inventoryRepository.getReferenceById(inventoryId);
+
+        if (!inventory.isReadableBy(user)) {
+            // TODO: 예외 처리
+        }
+
+        List<Smelt> sentSmelts = smeltRepository.findAllByInventoryIs(inventory);
+
+        return sentSmelts.stream().map(InventoryInfo.DetailSmeltInfo::from).toList();
     }
 
     private SmeltType drawSmeltType() {
