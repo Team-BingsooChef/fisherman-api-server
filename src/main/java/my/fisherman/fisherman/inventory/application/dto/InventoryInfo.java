@@ -4,8 +4,10 @@ import my.fisherman.fisherman.smelt.domain.Comment;
 import my.fisherman.fisherman.smelt.domain.Letter;
 import my.fisherman.fisherman.smelt.domain.Smelt;
 import my.fisherman.fisherman.smelt.domain.SmeltStatus;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class InventoryInfo {
     public record SmeltInfo(
@@ -26,37 +28,56 @@ public class InventoryInfo {
         }
     }
 
-    public record DetailSmeltInfo(
-            SmeltInfo smeltInfo,
-            LetterInfo letterInfo,
-            CommentInfo commentInfo
+    public record SentSmeltPage(
+            Integer currPage,
+            Integer totalPage,
+            Integer totalElement,
+            List<DetailSmelt> smelts
     ) {
-        public static DetailSmeltInfo from(Smelt smelt) {
-            return new DetailSmeltInfo(
+        public static SentSmeltPage of(Page<Smelt> page) {
+            return new SentSmeltPage(
+                    page.getNumber(),
+                    page.getTotalPages(),
+                    (int) page.getTotalElements(),
+                    page.getContent().stream().map(DetailSmelt::from).toList());
+        }
+    }
+
+    public record DetailSmelt(
+            String nickName,
+            SmeltInfo smeltInfo,
+            LetterInfo letterInfo
+    ) {
+        public static DetailSmelt from(Smelt smelt) {
+            return new DetailSmelt(
+                    smelt.getFishingSpot().getFisherman().getNickname(),
                     SmeltInfo.from(smelt),
-                    LetterInfo.from(smelt.getLetter()),
-                    CommentInfo.from(smelt.getLetter().getComment())
+                    LetterInfo.from(smelt.getLetter())
             );
         }
     }
 
-    record LetterInfo(
+    public record LetterInfo(
             Long id,
             String senderName,
             String title,
-            LocalDateTime createdTime
+            String content,
+            LocalDateTime createdTime,
+            CommentInfo commentInfo
     ) {
         public static LetterInfo from(Letter letter) {
             return new LetterInfo(
                     letter.getId(),
                     letter.getSenderName(),
                     letter.getTitle(),
-                    letter.getCreatedTime()
+                    letter.getContent(),
+                    letter.getCreatedTime(),
+                    CommentInfo.from(letter.getComment())
             );
         }
     }
 
-    record CommentInfo(
+    public record CommentInfo(
             Long id,
             String content,
             LocalDateTime createdTime

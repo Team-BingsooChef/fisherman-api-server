@@ -10,6 +10,8 @@ import my.fisherman.fisherman.smelt.repository.SmeltRepository;
 import my.fisherman.fisherman.smelt.repository.SmeltTypeRepository;
 import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +46,7 @@ public class InventoryService {
     }
 
     @Transactional(readOnly = true)
-    public List<InventoryInfo.DetailSmeltInfo> searchSentSmelt(Long userId, Long inventoryId) {
+    public InventoryInfo.SentSmeltPage searchSentSmelt(Long userId, Long inventoryId, Pageable pageable) {
         // TODO: Not found 예외 처리
         User user = userRepository.getReferenceById(userId);
         Inventory inventory = inventoryRepository.getReferenceById(inventoryId);
@@ -53,9 +55,9 @@ public class InventoryService {
             // TODO: 예외 처리
         }
 
-        List<Smelt> sentSmelts = smeltRepository.findAllByInventoryIs(inventory);
+        Page<Smelt> smeltPage = smeltRepository.findAllByInventoryIs(inventory, pageable);
 
-        return sentSmelts.stream().map(InventoryInfo.DetailSmeltInfo::from).toList();
+        return InventoryInfo.SentSmeltPage.of(smeltPage);
     }
 
     private SmeltType drawSmeltType() {

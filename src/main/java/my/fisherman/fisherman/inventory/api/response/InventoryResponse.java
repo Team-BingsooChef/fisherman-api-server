@@ -2,7 +2,6 @@ package my.fisherman.fisherman.inventory.api.response;
 
 import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class InventoryResponse {
@@ -23,12 +22,20 @@ public class InventoryResponse {
     }
 
     public record SentSmeltPage(
-            String nickname,
             int currPage,
             int totalPages,
             int totalElements,
             List<SmeltDetail> smelts
-    ) {}
+    ) {
+        public static SentSmeltPage from(InventoryInfo.SentSmeltPage info) {
+            return new SentSmeltPage(
+                    info.currPage(),
+                    info.totalPage(),
+                    info.totalElement(),
+                    info.smelts().stream().map(SmeltDetail::from).toList()
+            );
+        }
+    }
 
     public record Statistic(
             List<Count> counts
@@ -50,10 +57,23 @@ public class InventoryResponse {
             Long id,
             Long inventoryId,
             Long fishingSpotId,
+            String fishermanNickname,
             Long smeltTypeId,
             String status,
             Letter letter
-    ) {}
+    ) {
+        public static SmeltDetail from(InventoryInfo.DetailSmelt info) {
+            return new SmeltDetail(
+                    info.smeltInfo().id(),
+                    info.smeltInfo().inventoryId(),
+                    info.smeltInfo().fishingSpotId(),
+                    info.nickName(),
+                    info.smeltInfo().smeltTypeId(),
+                    info.smeltInfo().status().name(),
+                    Letter.from(info.letterInfo())
+            );
+        }
+    }
 
     record Letter(
             Long id,
@@ -62,11 +82,30 @@ public class InventoryResponse {
             String content,
             String createdTime,
             Comment comment
-    ) {}
+    ) {
+        public static Letter from(InventoryInfo.LetterInfo info) {
+            return new Letter(
+                    info.id(),
+                    info.senderName(),
+                    info.title(),
+                    info.content(),
+                    info.createdTime().toString(),
+                    Comment.from(info.commentInfo())
+            );
+        }
+    }
 
     record Comment (
             Long id,
             String content,
-            LocalDateTime createdTime
-    ) {}
+            String createdTime
+    ) {
+        public static Comment from(InventoryInfo.CommentInfo info) {
+            return new Comment(
+                    info.id(),
+                    info.content(),
+                    info.createdTime().toString()
+            );
+        }
+    }
 }

@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.inventory.api.response.InventoryResponse;
 import my.fisherman.fisherman.inventory.application.InventoryService;
 import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,10 @@ public class InventoryController implements InventorySpecification {
     @GetMapping("/sent")
     public ResponseEntity<InventoryResponse.SentSmeltPage> getSentSmelt(@PathVariable(name = "inventory-id") Long inventoryId) {
         // TODO
+    public ResponseEntity<InventoryResponse.SentSmeltPage> getSentSmelt(
+            @PathVariable(name = "inventory-id") Long inventoryId,
+            @PageableDefault(page = 0, size = 8) Pageable pageable
+    ) {
         return null;
     }
 

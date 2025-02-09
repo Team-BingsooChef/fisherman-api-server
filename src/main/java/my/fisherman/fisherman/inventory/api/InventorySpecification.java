@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import my.fisherman.fisherman.inventory.api.response.InventoryResponse;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 @Tag(name = "인벤토리 (뽑은 빙어)")
@@ -36,7 +37,7 @@ public interface InventorySpecification {
                     @ApiResponse(responseCode = "404", description = "I401 - 존재하지 않는 인벤토리입니다.", content = @Content())
             }
     )
-    ResponseEntity<InventoryResponse.SentSmeltPage> getSentSmelt(Long inventoryId);
+    ResponseEntity<InventoryResponse.SentSmeltPage> getSentSmelt(Long inventoryId, Pageable pageable);
 
     @Operation(
             summary = "뽑은 빙어 통계 조회 API",
