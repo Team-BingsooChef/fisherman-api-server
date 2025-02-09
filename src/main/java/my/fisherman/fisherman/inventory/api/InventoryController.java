@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.inventory.api.response.InventoryResponse;
 import my.fisherman.fisherman.inventory.application.InventoryService;
 import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
+import my.fisherman.fisherman.security.util.SecurityUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,9 @@ public class InventoryController implements InventorySpecification {
     @Override
     @PostMapping
     public ResponseEntity<InventoryResponse.DrewSmelt> drawSmelt(@PathVariable(name = "inventory-id") Long inventoryId) {
-        // TODO: 사용자 ID를 인증 정보에서 가져오도록 수정
-        Long userId = 1L;
+        // TODO: 인증되지 않은 사용자 예외 처리
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow();
 
         InventoryInfo.SmeltInfo info = inventoryService.drawSmelt(userId, inventoryId);
 
@@ -35,8 +37,9 @@ public class InventoryController implements InventorySpecification {
             @PathVariable(name = "inventory-id") Long inventoryId,
             @PageableDefault(page = 0, size = 8) Pageable pageable
     ) {
-        // TODO: 사용자 ID를 인증 정보에서 가져오도록 수정
-        Long userId = 1L;
+        // TODO: 인증되지 않은 사용자 예외 처리
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow();
 
         InventoryInfo.SentSmeltPage info = inventoryService.searchSentSmelt(userId, inventoryId, pageable);
 
