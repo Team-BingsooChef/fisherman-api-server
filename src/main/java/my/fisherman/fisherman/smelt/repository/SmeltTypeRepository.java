@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface SmeltTypeRepository extends JpaRepository<SmeltType, Long> {
-    List<SmeltType> findAllOrderByCumulativeProbability();
+    List<SmeltType> findAllByOrderByCumulativeProbabilityAsc();
 }

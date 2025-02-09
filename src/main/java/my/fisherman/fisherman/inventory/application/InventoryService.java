@@ -63,7 +63,7 @@ public class InventoryService {
     private SmeltType drawSmeltType() {
         int randomNumber = ThreadLocalRandom.current().nextInt(101);
 
-        List<SmeltType> smeltTypes = smeltTypeRepository.findAllOrderByCumulativeProbability();
+        List<SmeltType> smeltTypes = smeltTypeRepository.findAllByOrderByCumulativeProbabilityAsc();
         for (SmeltType type : smeltTypes) {
             if (type.getCumulativeProbability() >= randomNumber) {
                 return type;
