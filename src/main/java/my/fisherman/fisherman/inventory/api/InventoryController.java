@@ -31,13 +31,16 @@ public class InventoryController implements InventorySpecification {
 
     @Override
     @GetMapping("/sent")
-    public ResponseEntity<InventoryResponse.SentSmeltPage> getSentSmelt(@PathVariable(name = "inventory-id") Long inventoryId) {
-        // TODO
     public ResponseEntity<InventoryResponse.SentSmeltPage> getSentSmelt(
             @PathVariable(name = "inventory-id") Long inventoryId,
             @PageableDefault(page = 0, size = 8) Pageable pageable
     ) {
-        return null;
+        // TODO: 사용자 ID를 인증 정보에서 가져오도록 수정
+        Long userId = 1L;
+
+        InventoryInfo.SentSmeltPage info = inventoryService.searchSentSmelt(userId, inventoryId, pageable);
+
+        return ResponseEntity.status(HttpStatus.OK).body(InventoryResponse.SentSmeltPage.from(info));
     }
 
     @Override
