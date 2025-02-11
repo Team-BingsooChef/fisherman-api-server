@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SmeltRepository extends JpaRepository<Smelt, Long> {
-    Page<Smelt> findAllByInventoryIs(Inventory inventory, Pageable pageable);
+    Page<Smelt> findAllByAndInventoryIsAndFishingSpotIsNotNull(Inventory inventory, Pageable pageable);
 }
