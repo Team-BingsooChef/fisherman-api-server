@@ -30,8 +30,9 @@ public class InventoryService {
 
     @Transactional
     public InventoryInfo.SmeltInfo drawSmelt(Long userId, Long inventoryId) {
-        User user = userRepository.getReferenceById(userId);
-        Inventory inventory = inventoryRepository.getReferenceById(inventoryId);
+        // TODO: Not found 예외 처리
+        User user = userRepository.findById(userId).orElseThrow();
+        Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
 
         if (!inventory.isReadableBy(user)) {
             // TODO: 예외 처리
@@ -49,8 +50,8 @@ public class InventoryService {
     @Transactional(readOnly = true)
     public InventoryInfo.SentSmeltPage searchSentSmelt(Long userId, Long inventoryId, Pageable pageable) {
         // TODO: Not found 예외 처리
-        User user = userRepository.getReferenceById(userId);
-        Inventory inventory = inventoryRepository.getReferenceById(inventoryId);
+        User user = userRepository.findById(userId).orElseThrow();
+        Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
 
         if (!inventory.isReadableBy(user)) {
             // TODO: 예외 처리
@@ -63,8 +64,8 @@ public class InventoryService {
 
     public List<InventoryInfo.Statistic> getStatistics(Long userId, Long inventoryId) {
         // TODO: Not found 예외 처리
-        User user = userRepository.getReferenceById(userId);
-        Inventory inventory = inventoryRepository.getReferenceById(inventoryId);
+        User user = userRepository.findById(userId).orElseThrow();
+        Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
 
         if (!inventory.isReadableBy(user)) {
             // TODO: 예외 처리
