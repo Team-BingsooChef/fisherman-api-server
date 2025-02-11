@@ -4,6 +4,7 @@ import my.fisherman.fisherman.smelt.domain.Comment;
 import my.fisherman.fisherman.smelt.domain.Letter;
 import my.fisherman.fisherman.smelt.domain.Smelt;
 import my.fisherman.fisherman.smelt.domain.SmeltStatus;
+import my.fisherman.fisherman.smelt.repository.dto.SmeltTypeCount;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
@@ -88,6 +89,15 @@ public class InventoryInfo {
                     comment.getContent(),
                     comment.getCreatedTime()
             );
+        }
+    }
+
+    public record Statistic(
+            Long smeltTypeId,
+            Long count
+    ) {
+        public static Statistic from(SmeltTypeCount count) {
+            return new Statistic(count.typeId(), count.count());
         }
     }
 }
