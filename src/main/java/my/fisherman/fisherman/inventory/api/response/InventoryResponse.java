@@ -39,12 +39,20 @@ public class InventoryResponse {
 
     public record Statistic(
             List<Count> counts
-    ) {}
+    ) {
+        public static Statistic from(List<InventoryInfo.Statistic> infos) {
+            return new Statistic(infos.stream().map(Count::from).toList());
+        }
+    }
 
     record Count(
-            Integer count,
-            Long smeltTypeId
-    ) {}
+            Long smeltTypeId,
+            Long count
+    ) {
+        public static Count from(InventoryInfo.Statistic info) {
+            return new Count(info.smeltTypeId(), info.count());
+        }
+    }
 
     record SmeltSimple(
             Long id,

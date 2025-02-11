@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RequestMapping("/inventories/{inventory-id}/smelts")
 @RestController
@@ -49,7 +51,12 @@ public class InventoryController implements InventorySpecification {
     @Override
     @GetMapping("/statistics")
     public ResponseEntity<InventoryResponse.Statistic> getSmeltStatistic(@PathVariable(name = "inventory-id") Long inventoryId) {
-        // TODO
-        return null;
+        // TODO: 인증되지 않은 사용자 예외 처리
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow();
+
+        List<InventoryInfo.Statistic> info = inventoryService.getStatistics(userId, inventoryId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(InventoryResponse.Statistic.from(info));
     }
 }
