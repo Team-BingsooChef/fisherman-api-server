@@ -21,7 +21,7 @@ public class InventoryInfo {
             return new SmeltInfo(
                     smelt.getId(),
                     smelt.getInventory().getId(),
-                    smelt.getFishingSpot().getId(),
+                    smelt.getFishingSpot() != null ? smelt.getFishingSpot().getId() : null,
                     smelt.getStatus(),
                     smelt.getType().getId()
             );
@@ -50,9 +50,9 @@ public class InventoryInfo {
     ) {
         public static DetailSmelt from(Smelt smelt) {
             return new DetailSmelt(
-                    smelt.getFishingSpot().getFisherman().getNickname(),
+                    smelt.getFishingSpot() != null ? smelt.getFishingSpot().getFisherman().getNickname() : null,
                     SmeltInfo.from(smelt),
-                    LetterInfo.from(smelt.getLetter())
+                    smelt.getLetter() != null ? LetterInfo.from(smelt.getLetter()) : null
             );
         }
     }
@@ -72,7 +72,7 @@ public class InventoryInfo {
                     letter.getTitle(),
                     letter.getContent(),
                     letter.getCreatedTime(),
-                    CommentInfo.from(letter.getComment())
+                    letter.getComment() != null ? CommentInfo.from(letter.getComment()) : null
             );
         }
     }

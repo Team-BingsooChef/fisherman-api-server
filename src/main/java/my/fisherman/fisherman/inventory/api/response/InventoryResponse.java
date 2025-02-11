@@ -70,7 +70,7 @@ public class InventoryResponse {
                     info.nickName(),
                     info.smeltInfo().smeltTypeId(),
                     info.smeltInfo().status().name(),
-                    Letter.from(info.letterInfo())
+                    info.letterInfo() != null ? Letter.from(info.letterInfo()) : null
             );
         }
     }
@@ -90,7 +90,7 @@ public class InventoryResponse {
                     info.title(),
                     info.content(),
                     info.createdTime().toString(),
-                    Comment.from(info.commentInfo())
+                    info.commentInfo() != null ? Comment.from(info.commentInfo()) : null
             );
         }
     }
