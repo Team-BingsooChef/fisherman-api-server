@@ -8,6 +8,7 @@ import my.fisherman.fisherman.smelt.domain.Smelt;
 import my.fisherman.fisherman.smelt.domain.SmeltType;
 import my.fisherman.fisherman.smelt.repository.SmeltRepository;
 import my.fisherman.fisherman.smelt.repository.SmeltTypeRepository;
+import my.fisherman.fisherman.smelt.repository.dto.SmeltTypeCount;
 import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -55,10 +56,23 @@ public class InventoryService {
             // TODO: 예외 처리
         }
 
-        Page<Smelt> smeltPage = smeltRepository.findAllByInventoryIs(inventory, pageable);
         Page<Smelt> smeltPage = smeltRepository.findAllByAndInventoryIsAndFishingSpotIsNotNull(inventory, pageable);
 
         return InventoryInfo.SentSmeltPage.of(smeltPage);
+    }
+
+    public List<InventoryInfo.Statistic> getStatistics(Long userId, Long inventoryId) {
+        // TODO: Not found 예외 처리
+        User user = userRepository.getReferenceById(userId);
+        Inventory inventory = inventoryRepository.getReferenceById(inventoryId);
+
+        if (!inventory.isReadableBy(user)) {
+            // TODO: 예외 처리
+        }
+
+        List<SmeltTypeCount> counts = smeltRepository.countAllByInventoryIsGroupByType(inventory);
+
+        return counts.stream().map(InventoryInfo.Statistic::from).toList();
     }
 
     private SmeltType drawSmeltType() {
