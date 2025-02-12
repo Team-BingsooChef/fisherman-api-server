@@ -49,7 +49,7 @@ public class InventoryResponse {
             Long smeltTypeId,
             Long count
     ) {
-        public static Count from(InventoryInfo.Statistic info) {
+        static Count from(InventoryInfo.Statistic info) {
             return new Count(info.smeltTypeId(), info.count());
         }
     }
@@ -70,7 +70,7 @@ public class InventoryResponse {
             String status,
             Letter letter
     ) {
-        public static SmeltDetail from(InventoryInfo.DetailSmelt info) {
+        static SmeltDetail from(InventoryInfo.DetailSmelt info) {
             return new SmeltDetail(
                     info.smeltInfo().id(),
                     info.smeltInfo().inventoryId(),
@@ -91,7 +91,7 @@ public class InventoryResponse {
             String createdTime,
             Comment comment
     ) {
-        public static Letter from(InventoryInfo.LetterInfo info) {
+        static Letter from(InventoryInfo.LetterInfo info) {
             return new Letter(
                     info.id(),
                     info.senderName(),
