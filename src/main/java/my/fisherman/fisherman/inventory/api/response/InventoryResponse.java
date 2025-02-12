@@ -75,7 +75,7 @@ public class InventoryResponse {
                     info.smeltInfo().id(),
                     info.smeltInfo().inventoryId(),
                     info.smeltInfo().fishingSpotId(),
-                    info.nickName(),
+                    info.nickname(),
                     info.smeltInfo().smeltTypeId(),
                     info.smeltInfo().status().name(),
                     info.letterInfo() != null ? Letter.from(info.letterInfo()) : null

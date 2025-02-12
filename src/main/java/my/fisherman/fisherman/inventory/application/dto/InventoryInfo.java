@@ -45,7 +45,7 @@ public class InventoryInfo {
     }
 
     public record DetailSmelt(
-            String nickName,
+            String nickname,
             SmeltInfo smeltInfo,
             LetterInfo letterInfo
     ) {
