@@ -39,9 +39,7 @@ public class InventoryService {
         User user = userRepository.findById(userId).orElseThrow();
         Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
 
-        if (!inventory.isReadableBy(user)) {
-            // TODO: 예외 처리
-        }
+        inventory.checkReadable(user);
 
         SmeltType smeltType = drawSmeltType();
 
@@ -62,9 +60,7 @@ public class InventoryService {
         User user = userRepository.findById(userId).orElseThrow();
         Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
 
-        if (!inventory.isReadableBy(user)) {
-            // TODO: 예외 처리
-        }
+        inventory.checkReadable(user);
 
         Page<Smelt> smeltPage = smeltRepository.findAllByAndInventoryIsAndFishingSpotIsNotNull(inventory, pageable);
 
@@ -80,9 +76,7 @@ public class InventoryService {
         User user = userRepository.findById(userId).orElseThrow();
         Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
 
-        if (!inventory.isReadableBy(user)) {
-            // TODO: 예외 처리
-        }
+        inventory.checkReadable(user);
 
         List<SmeltTypeCount> counts = smeltRepository.countAllByInventoryIsGroupByType(inventory);
 
