@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.inventory.repository.InventoryRepository;
+import my.fisherman.fisherman.security.util.SecurityUtil;
 import my.fisherman.fisherman.smelt.domain.Smelt;
 import my.fisherman.fisherman.smelt.domain.SmeltType;
 import my.fisherman.fisherman.smelt.repository.SmeltRepository;
@@ -29,7 +30,11 @@ public class InventoryService {
 
 
     @Transactional
-    public InventoryInfo.SmeltInfo drawSmelt(Long userId, Long inventoryId) {
+    public InventoryInfo.SmeltInfo drawSmelt(Long inventoryId) {
+        // TODO: 사용자 ID를 가져올 수 없는 예외 처리
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow();
+
         // TODO: Not found 예외 처리
         User user = userRepository.findById(userId).orElseThrow();
         Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
@@ -48,7 +53,11 @@ public class InventoryService {
     }
 
     @Transactional(readOnly = true)
-    public InventoryInfo.SentSmeltPage searchSentSmelt(Long userId, Long inventoryId, Pageable pageable) {
+    public InventoryInfo.SentSmeltPage searchSentSmelt(Long inventoryId, Pageable pageable) {
+        // TODO: 사용자 ID를 가져올 수 없는 예외 처리
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow();
+
         // TODO: Not found 예외 처리
         User user = userRepository.findById(userId).orElseThrow();
         Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
@@ -62,7 +71,11 @@ public class InventoryService {
         return InventoryInfo.SentSmeltPage.of(smeltPage);
     }
 
-    public List<InventoryInfo.Statistic> getStatistics(Long userId, Long inventoryId) {
+    public List<InventoryInfo.Statistic> getStatistics(Long inventoryId) {
+        // TODO: 사용자 ID를 가져올 수 없는 예외 처리
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow();
+
         // TODO: Not found 예외 처리
         User user = userRepository.findById(userId).orElseThrow();
         Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();

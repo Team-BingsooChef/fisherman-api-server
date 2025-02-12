@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.inventory.api.response.InventoryResponse;
 import my.fisherman.fisherman.inventory.application.InventoryService;
 import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
-import my.fisherman.fisherman.security.util.SecurityUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -22,11 +21,7 @@ public class InventoryController implements InventorySpecification {
     @Override
     @PostMapping
     public ResponseEntity<InventoryResponse.DrewSmelt> drawSmelt(@PathVariable(name = "inventory-id") Long inventoryId) {
-        // TODO: 인증되지 않은 사용자 예외 처리
-        Long userId = SecurityUtil.getCurrentUserId()
-                .orElseThrow();
-
-        InventoryInfo.SmeltInfo info = inventoryService.drawSmelt(userId, inventoryId);
+        InventoryInfo.SmeltInfo info = inventoryService.drawSmelt(inventoryId);
 
         InventoryResponse.DrewSmelt response = InventoryResponse.DrewSmelt.from(info);
 
@@ -39,11 +34,7 @@ public class InventoryController implements InventorySpecification {
             @PathVariable(name = "inventory-id") Long inventoryId,
             @PageableDefault(page = 0, size = 8) Pageable pageable
     ) {
-        // TODO: 인증되지 않은 사용자 예외 처리
-        Long userId = SecurityUtil.getCurrentUserId()
-                .orElseThrow();
-
-        InventoryInfo.SentSmeltPage info = inventoryService.searchSentSmelt(userId, inventoryId, pageable);
+        InventoryInfo.SentSmeltPage info = inventoryService.searchSentSmelt(inventoryId, pageable);
 
         return ResponseEntity.status(HttpStatus.OK).body(InventoryResponse.SentSmeltPage.from(info));
     }
@@ -51,11 +42,7 @@ public class InventoryController implements InventorySpecification {
     @Override
     @GetMapping("/statistics")
     public ResponseEntity<InventoryResponse.Statistic> getSmeltStatistic(@PathVariable(name = "inventory-id") Long inventoryId) {
-        // TODO: 인증되지 않은 사용자 예외 처리
-        Long userId = SecurityUtil.getCurrentUserId()
-                .orElseThrow();
-
-        List<InventoryInfo.Statistic> info = inventoryService.getStatistics(userId, inventoryId);
+        List<InventoryInfo.Statistic> info = inventoryService.getStatistics(inventoryId);
 
         return ResponseEntity.status(HttpStatus.OK).body(InventoryResponse.Statistic.from(info));
     }
