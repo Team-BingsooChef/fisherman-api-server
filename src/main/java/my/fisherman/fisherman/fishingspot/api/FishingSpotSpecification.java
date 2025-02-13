@@ -10,6 +10,8 @@ import java.util.List;
 import my.fisherman.fisherman.fishingspot.api.request.FishingSpotRequest;
 import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse;
 import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse.FishingSpot;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 @Tag(name = "낚시터")
@@ -43,7 +45,7 @@ public interface FishingSpotSpecification {
             @ApiResponse(responseCode = "404", description = "F401 - 존재하지 않는 낚시터입니다.", content = @Content())
         }
     )
-    ResponseEntity<FishingSpotResponse.Page> getSmeltsOf(Long fishingSpotId);
+    ResponseEntity<FishingSpotResponse.Page> getSmeltsOf(Long fishingSpotId, Pageable pageable);
 
     @Operation(
         summary = "낚시터 검색 API",
