@@ -41,8 +41,9 @@ public class FishingSpotController implements FishingSpotSpecification {
         @PathVariable(name = "fishing-spot-id") Long fishingSpotId,
         @PageableDefault(page = 0, size = 8) Pageable pageable
     ) {
-        // TODO
-        return null;
+        FishingSpotInfo.SmeltPage info = fishingSpotService.getSmelts(fishingSpotId, pageable);
+
+        return ResponseEntity.ok().body(FishingSpotResponse.Page.from(info));
     }
 
     @Override
