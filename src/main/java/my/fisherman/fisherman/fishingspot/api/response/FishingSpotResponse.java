@@ -19,7 +19,9 @@ public class FishingSpotResponse {
         int totalElements,
         List<SimpleSmelt> smelts
     ) {
-
+        public static Page from(FishingSpotInfo.SmeltPage info) {
+            return new Page(info.nickname(), info.currentPage(), info.totalPages(), info.totalElements(), info.smelts().stream().map(SimpleSmelt::from).toList());
+        }
     }
 
     record SimpleSmelt(
@@ -27,7 +29,9 @@ public class FishingSpotResponse {
         Long smeltTypeId,
         String status
     ) {
-
+        static SimpleSmelt from(FishingSpotInfo.SimpleSmelt info) {
+            return new SimpleSmelt(info.id(), info.typeId(), info.status());
+        }
     }
 
     record DetailSmelt(
