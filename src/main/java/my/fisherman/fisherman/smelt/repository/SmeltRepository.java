@@ -16,7 +16,7 @@ import java.util.List;
 public interface SmeltRepository extends JpaRepository<Smelt, Long> {
     Page<Smelt> findAllByAndInventoryIsAndFishingSpotIsNotNull(Inventory inventory, Pageable pageable);
 
-    Page<Smelt> findAllByFishingSpot(FishingSpot fishingSpot);
+    Page<Smelt> findAllByFishingSpot(FishingSpot fishingSpot, Pageable pageable);
 
     @Query("select new my.fisherman.fisherman.smelt.repository.dto.SmeltTypeCount(s.type.id, count(*)) from Smelt s where s.inventory =:inventory group by s.type")
     List<SmeltTypeCount> countAllByInventoryIsGroupByType(Inventory inventory);
