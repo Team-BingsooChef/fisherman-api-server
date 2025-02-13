@@ -70,6 +70,11 @@ public class Smelt {
             return;
         }
 
+        if (fishingSpot.getFisherman() == inventory.getUser()) {
+            // TODO: 본인의 낚시터에 보내는 예외 던지기
+            return;
+        }
+
         this.fishingSpot = fishingSpot;
 
         // TODO: 질문 등록
