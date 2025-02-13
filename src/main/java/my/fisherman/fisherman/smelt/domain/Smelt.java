@@ -62,4 +62,16 @@ public class Smelt {
     public static Smelt of(Inventory inventory, SmeltType type) {
         return new Smelt(inventory, type);
     }
+
+    public void send(Inventory inventory, FishingSpot fishingSpot) {
+        // TODO: ID 비교로 수정
+        if (inventory != this.inventory) {
+            // TODO: 권한이 없는 경우 예외 던지기
+            return;
+        }
+
+        this.fishingSpot = fishingSpot;
+
+        // TODO: 질문 등록
+    }
 }
