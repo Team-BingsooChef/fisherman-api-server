@@ -38,4 +38,17 @@ public class Letter {
     @JoinColumn(name = "comment_id")
     @OneToOne(fetch = FetchType.LAZY)
     private Comment comment;
+
+    private Letter(String title, String content, String senderName) {
+        this.id = null;
+        this.title = title;
+        this.content = content;
+        this.senderName = senderName;
+        this.createdTime = LocalDateTime.now();
+        this.comment = null;
+    }
+
+    public static Letter of(String title, String content, String senderName) {
+        return new Letter(title, content, senderName);
+    }
 }
