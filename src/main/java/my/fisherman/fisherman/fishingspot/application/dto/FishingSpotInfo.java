@@ -1,10 +1,12 @@
 package my.fisherman.fisherman.fishingspot.application.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 
 import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
+import my.fisherman.fisherman.smelt.domain.Letter;
 import my.fisherman.fisherman.smelt.domain.Question;
 import my.fisherman.fisherman.smelt.domain.Quiz;
 import my.fisherman.fisherman.smelt.domain.Smelt;
@@ -55,17 +57,21 @@ public class FishingSpotInfo {
 
     public record DetailSmelt(
         Long id,
-        String senderName,
-        String title,
-        String content,
+        Long inventoryId,
+        Long fishingSpotId,
+        Long typeId,
+        String status,
+        LetterInfo letter,
         QuizInfo quiz
     ) {
         public static DetailSmelt of(Smelt smelt, List<Question> questions) {
             return new DetailSmelt(
                 smelt.getId(), 
-                smelt.getLetter().getSenderName(),
-                smelt.getLetter().getTitle(),
-                smelt.getLetter().getContent(),
+                smelt.getInventory().getId(),
+                smelt.getFishingSpot().getId(),
+                smelt.getType().getId(),
+                smelt.getStatus().toString(),
+                LetterInfo.from(smelt.getLetter()),
                 QuizInfo.of(smelt.getQuiz(), questions));
         }
     }
@@ -97,6 +103,18 @@ public class FishingSpotInfo {
     ) {
         public static QuestionInfo from(Question question) {
             return new QuestionInfo(question.getId(), question.getContent(), question.getIsAnswer());
+        }
+    }
+
+    public record LetterInfo(
+        Long id,
+        String senderName,
+        String title,
+        String content,
+        LocalDateTime createdTime
+    ) {
+        public static LetterInfo from(Letter letter) {
+            return new LetterInfo(letter.getId(), letter.getSenderName(), letter.getTitle(), letter.getContent(), letter.getCreatedTime());
         }
     }
 }
