@@ -6,6 +6,7 @@ import my.fisherman.fisherman.fishingspot.api.request.FishingSpotRequest;
 import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse;
 import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse.FishingSpot;
 import my.fisherman.fisherman.fishingspot.application.FishingSpotService;
+import my.fisherman.fisherman.fishingspot.application.command.SendSmeltCommand;
 import my.fisherman.fisherman.fishingspot.application.dto.FishingSpotInfo;
 
 import org.springframework.data.domain.Pageable;
@@ -32,7 +33,10 @@ public class FishingSpotController implements FishingSpotSpecification {
         @PathVariable(name = "fishing-spot-id") Long fishingSpotId,
         @RequestBody FishingSpotRequest.Send request
     ) {
-        return null;
+        SendSmeltCommand command = request.toCommand(fishingSpotId);
+        FishingSpotInfo.DetailSmelt info = fishingSpotService.sendSmeltTo(command);
+        
+        return ResponseEntity.ok().body(FishingSpotResponse.ReceivedSmelt.from(info));
     }
 
     @Override

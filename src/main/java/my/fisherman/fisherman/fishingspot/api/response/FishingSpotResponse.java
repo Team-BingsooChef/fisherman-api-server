@@ -9,7 +9,11 @@ public class FishingSpotResponse {
         DetailSmelt smelt,
         Letter letter
     ) {
-
+        public static ReceivedSmelt from(FishingSpotInfo.DetailSmelt info) {
+            return new ReceivedSmelt(
+                new DetailSmelt(info.id(), info.inventoryId(), info.fishingSpotId(), info.typeId(), info.status()),
+                Letter.from(info.letter()));
+        }
     }
 
     public record Page(
@@ -51,7 +55,9 @@ public class FishingSpotResponse {
         String content,
         String createdTime
     ) {
-
+        static Letter from(FishingSpotInfo.LetterInfo info) {
+            return new Letter(info.id(), info.senderName(), info.title(), info.content(), info.createdTime().toString());
+        }
     }
 
     public record FishingSpot(
