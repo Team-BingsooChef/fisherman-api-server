@@ -3,10 +3,21 @@ package my.fisherman.fisherman.smelt.application.dto;
 import java.time.LocalDateTime;
 
 import my.fisherman.fisherman.smelt.domain.Smelt;
+import my.fisherman.fisherman.smelt.domain.SmeltType;
 import my.fisherman.fisherman.smelt.domain.Letter;
 import my.fisherman.fisherman.smelt.domain.Comment;
 
 public class SmeltInfo {
+    public record Type(
+        Long id,
+        String name,
+        String imageUrl,
+        String iceImageUrl
+    ) {
+        public static Type from(SmeltType smeltType) {
+            return new Type(smeltType.getId(), smeltType.getName(), smeltType.getImage(), smeltType.getIceImage());
+        }
+    }
 
     public record Detail(
         Long smeltId,
