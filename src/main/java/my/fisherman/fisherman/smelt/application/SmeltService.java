@@ -71,8 +71,11 @@ public class SmeltService {
         User user = userRepository.findById(userId).orElseThrow();
         Smelt smelt = smeltRepository.findById(smeltId).orElseThrow();
         Question question = questionRepository.findById(questionId).orElseThrow();
+        if (smelt.getQuiz() == null) {
+            // TODO: Quiz not found 예외 처리
+        }
 
-        Boolean result = smelt.solve(user, question);
+        smelt.trySolve(user, question);
 
         return QuizInfo.TryResult.of(result);
     }

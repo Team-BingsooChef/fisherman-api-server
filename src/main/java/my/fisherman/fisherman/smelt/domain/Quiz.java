@@ -45,7 +45,16 @@ public class Quiz {
         return new Quiz(title, type);
     }
 
-    protected void solve() {
-        this.isSolved = true;
+    protected void trySolve(Question question) {
+        if (this.isSolved) {
+            // TODO: 이미 푼 퀴즈 예외 처리
+        }
+
+        if (question.getIsAnswer()) {
+            this.isSolved = true;
+            return;
+        }
+
+        this.wrongCount++;
     }
 }

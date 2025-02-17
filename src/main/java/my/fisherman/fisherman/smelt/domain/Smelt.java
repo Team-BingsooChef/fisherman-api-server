@@ -132,16 +132,11 @@ public class Smelt {
         return;
     }
 
-    public boolean solve(User user, Question question) {
+    public void trySolve(User user, Question question) {
         checkSolvable(user);
 
-        if (question.getIsAnswer()) {
-            this.status = SmeltStatus.READ;
-            this.quiz.solve();
-            return true;
-        }
-
-        return false;
+        this.quiz.trySolve(question);
+        this.status = question.getIsAnswer() ? SmeltStatus.READ : this.status;
     }
 
     private void checkSolvable(User user) {
