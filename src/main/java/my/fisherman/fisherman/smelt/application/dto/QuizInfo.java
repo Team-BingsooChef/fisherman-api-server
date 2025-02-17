@@ -36,4 +36,12 @@ public class QuizInfo {
             return new QuestionInfo(question.getId(), question.getContent(), quiz.getIsSolved() ? question.getIsAnswer() : null);
         }
     }
+
+    public record TryResult(
+        Boolean succed
+    ) {
+        public static TryResult of(Boolean result) {
+            return new TryResult(result);
+        }
+    }
 }

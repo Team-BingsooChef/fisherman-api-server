@@ -51,11 +51,30 @@ public class SmeltService {
         // Not found 예외 처리
         User user = userRepository.findById(userId).orElseThrow();
         Smelt smelt = smeltRepository.findById(smeltId).orElseThrow();
-
         Quiz quiz = smeltRepository.findById(smeltId).orElseThrow().getQuiz();
+        if (quiz == null) {
+            // TODO: 퀴즈 Not found 예외 처리
+        }
+
+        smelt.checkReadableQuiz(user);
+
         List<Question> questions = questionRepository.findAllByQuiz(quiz);
 
         return QuizInfo.Detail.of(quiz, questions);
+    }
+
+    public QuizInfo.TryResult solve(Long smeltId, Long questionId) {
+        // TODO: ID를 가져올 수 없는 예외 처리
+        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
+
+        // Not found 예외 처리
+        User user = userRepository.findById(userId).orElseThrow();
+        Smelt smelt = smeltRepository.findById(smeltId).orElseThrow();
+        Question question = questionRepository.findById(questionId).orElseThrow();
+
+        Boolean result = smelt.solve(user, question);
+
+        return QuizInfo.TryResult.of(result);
     }
 
     @Transactional
