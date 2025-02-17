@@ -19,6 +19,9 @@ public class SmeltResponse {
     public record AllOfType(
             List<SmeltType> smeltTypes
     ) {
+        public static AllOfType of(List<SmeltInfo.Type> info) {
+            return new AllOfType(info.stream().map(SmeltType::from).toList());
+        }
     }
 
     record Smelt (
@@ -59,8 +62,11 @@ public class SmeltResponse {
     record SmeltType (
             Long id,
             String name,
-            String image,
-            String iceImage
+            String imageUrl,
+            String iceImageUrl
     ) {
+        static SmeltType from(SmeltInfo.Type info) {
+            return new SmeltType(info.id(), info.name(), info.imageUrl(), info.iceImageUrl());
+        }
     }
 }

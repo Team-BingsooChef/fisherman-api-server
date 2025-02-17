@@ -4,6 +4,8 @@ import my.fisherman.fisherman.smelt.api.request.QuizRequest;
 import my.fisherman.fisherman.smelt.api.request.SmeltRequest;
 import my.fisherman.fisherman.smelt.api.response.QuizResponse;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +55,8 @@ public class SmeltController implements SmeltSpecification {
     @Override
     @GetMapping(value = "/types")
     public ResponseEntity<SmeltResponse.AllOfType> getSmeltTypes() {
-        // TODO
-        return null;
+        List<SmeltInfo.Type> info = smeltService.getSmeltTypes();
+
+        return ResponseEntity.ok().body(SmeltResponse.AllOfType.of(info));
     }
 }
