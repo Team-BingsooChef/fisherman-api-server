@@ -24,8 +24,9 @@ public class SmeltController implements SmeltSpecification {
     @Override
     @GetMapping("/{smelt-id}")
     public ResponseEntity<SmeltResponse.Detail> getSmeltDetail(@PathVariable(name = "smelt-id") Long smeltId) {
-        // TODO
-        return null;
+        SmeltInfo.Detail info = smeltService.getSmeltDetail(smeltId);
+
+        return ResponseEntity.ok().body(SmeltResponse.Detail.from(info));
     }
 
     @Override
@@ -46,7 +47,6 @@ public class SmeltController implements SmeltSpecification {
     public ResponseEntity<SmeltResponse.Detail> registerCommentTo(
             @PathVariable(name = "smelt-id") Long smeltId,
             @RequestBody SmeltRequest.RegisterComment request) {
-                
         SmeltInfo.Detail info = smeltService.registerComment(smeltId, request.content());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(SmeltResponse.Detail.from(info));
