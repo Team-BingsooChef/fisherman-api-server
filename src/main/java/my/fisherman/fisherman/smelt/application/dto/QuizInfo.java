@@ -6,23 +6,29 @@ import my.fisherman.fisherman.smelt.domain.Question;
 import my.fisherman.fisherman.smelt.domain.Quiz;
 
 public class QuizInfo {
-
     public record Detail(
+        Simple quiz,
+        List<QuestionInfo> questions
+    ) {
+        public static Detail of(Quiz quiz, List<Question> questions) {
+            return new Detail(Simple.from(quiz), questions.stream().map(quest -> QuestionInfo.from(quest, quiz)).toList());
+        }
+    }
+
+    public record Simple(
         Long id,
         String title,
         String type,
         Short wrongCount,
-        Boolean isSolved,
-        List<QuestionInfo> questions
+        Boolean isSolved
     ) {
-        public static Detail of(Quiz quiz, List<Question> questions) {
-            return new Detail(
+        public static Simple from(Quiz quiz) {
+            return new Simple(
                 quiz.getId(), 
                 quiz.getTitle(),
                 quiz.getType().toString(),
                 quiz.getWrongCount(),
-                quiz.getIsSolved(),
-                questions.stream().map(q -> QuestionInfo.from(q, quiz)).toList()
+                quiz.getIsSolved()
             );
         }
     }
@@ -34,14 +40,6 @@ public class QuizInfo {
     ) {
         public static QuestionInfo from(Question question, Quiz quiz) {
             return new QuestionInfo(question.getId(), question.getContent(), quiz.getIsSolved() ? question.getIsAnswer() : null);
-        }
-    }
-
-    public record TryResult(
-        Boolean succed
-    ) {
-        public static TryResult of(Boolean result) {
-            return new TryResult(result);
         }
     }
 }

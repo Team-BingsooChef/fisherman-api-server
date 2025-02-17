@@ -63,7 +63,7 @@ public class SmeltService {
         return QuizInfo.Detail.of(quiz, questions);
     }
 
-    public QuizInfo.TryResult solve(Long smeltId, Long questionId) {
+    public QuizInfo.Simple solve(Long smeltId, Long questionId) {
         // TODO: ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
 
@@ -77,7 +77,7 @@ public class SmeltService {
 
         smelt.trySolve(user, question);
 
-        return QuizInfo.TryResult.of(result);
+        return QuizInfo.Simple.from(smelt.getQuiz());
     }
 
     @Transactional
