@@ -3,7 +3,7 @@ package my.fisherman.fisherman.fishingspot.application;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import my.fisherman.fisherman.fishingspot.application.command.SendSmeltCommand;
+import my.fisherman.fisherman.fishingspot.application.command.FishingSpotCommand;
 import my.fisherman.fisherman.fishingspot.application.dto.FishingSpotInfo;
 import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.fishingspot.repository.FishingSpotRepository;
@@ -53,7 +53,7 @@ public class FishingSpotService {
         return FishingSpotInfo.SmeltPage.of(fishingSpot, smeltPage);
     }
     
-    public FishingSpotInfo.DetailSmelt sendSmeltTo(SendSmeltCommand command) {
+    public FishingSpotInfo.DetailSmelt sendSmeltTo(FishingSpotCommand.SendSmelt command) {
         // TODO: 사용자 ID를 가져오지 못하는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
         

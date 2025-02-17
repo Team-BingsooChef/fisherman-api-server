@@ -2,7 +2,7 @@ package my.fisherman.fisherman.fishingspot.api.request;
 
 import java.util.List;
 
-import my.fisherman.fisherman.fishingspot.application.command.SendSmeltCommand;
+import my.fisherman.fisherman.fishingspot.application.command.FishingSpotCommand;
 
 public class FishingSpotRequest {
 
@@ -14,8 +14,8 @@ public class FishingSpotRequest {
             String senderName,
             Quiz quiz
     ) {
-        public SendSmeltCommand toCommand(Long fishingSpotId) {
-            return new SendSmeltCommand(
+        public FishingSpotCommand.SendSmelt toCommand(Long fishingSpotId) {
+            return new FishingSpotCommand.SendSmelt(
                 fishingSpotId,
                 smeltId,
                 senderName,
