@@ -102,12 +102,12 @@ public class Smelt {
             return;
         }
 
-        checkReadable(user);
+        checkReadableLetter(user);
 
         this.status = SmeltStatus.READ;
     }
 
-    private void checkReadable(User user) {
+    private void checkReadableLetter(User user) {
         if (user == this.inventory.getUser()) {
             return;
         }
@@ -117,6 +117,15 @@ public class Smelt {
                 // TODO: 아직 풀지 않은 편지 예외 던지기
                 return;
             }
+        }
+
+        // TODO: 권한 없는 예외 던지기
+        return;
+    }
+
+    public void checkReadableQuiz(User user) {
+        if (user == this.inventory.getUser() || user == this.fishingSpot.getFisherman()) {
+            return;
         }
 
         // TODO: 권한 없는 예외 던지기
