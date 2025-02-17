@@ -23,6 +23,21 @@ public class SmeltService {
     private final SmeltTypeRepository smeltTypeRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
+    public SmeltInfo.Detail getSmeltDetail(Long smeltId) {
+        // TODO: ID를 가져올 수 없는 예외 처리
+        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
+
+        // Not found 예외 처리
+        User user = userRepository.findById(userId).orElseThrow();
+        Smelt smelt = smeltRepository.findById(smeltId).orElseThrow();
+
+        smelt.readLetter(user);
+        smeltRepository.save(smelt);
+
+        return SmeltInfo.Detail.from(smelt);
+    }
+
     @Transactional
     public SmeltInfo.Detail registerComment(Long smeltId, String content) {
         // TODO: ID를 가져올 수 없는 예외 처리
