@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.smelt.api.response.SmeltResponse;
 import my.fisherman.fisherman.smelt.application.SmeltService;
+import my.fisherman.fisherman.smelt.application.dto.QuizInfo;
 import my.fisherman.fisherman.smelt.application.dto.SmeltInfo;
 
 @RequiredArgsConstructor
@@ -31,8 +32,10 @@ public class SmeltController implements SmeltSpecification {
 
     @Override
     @GetMapping("/{smelt-id}/quizzes")
-    public ResponseEntity<QuizResponse.Info> getQuiz(@PathVariable(name = "smelt-id") Long smeltId) {
-        return null;
+    public ResponseEntity<QuizResponse.Detail> getQuiz(@PathVariable(name = "smelt-id") Long smeltId) {
+        QuizInfo.Detail info = smeltService.getQuiz(smeltId);
+        
+        return ResponseEntity.ok().body(QuizResponse.Detail.from(info));
     }
 
     @Override

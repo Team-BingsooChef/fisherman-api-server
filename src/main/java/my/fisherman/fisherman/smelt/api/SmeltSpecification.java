@@ -35,13 +35,13 @@ public interface SmeltSpecification {
             description = "지정한 빙어의 퀴즈를 조회합니다.<br>Question의 isAnswer은 푼 경우에만 값이 존재하고, 풀기 전인 경우 null이 반환됩니다.<br>" + "Access token이 필요합니다.<br>" + "권한: 사용자가 뽑거나 사용자의 낚시터에 받은 빙어",
             responses = {
                     @ApiResponse(
-                            responseCode = "200", content = @Content(schema = @Schema(implementation = QuizResponse.Info.class), mediaType = "application/json")
+                            responseCode = "200", content = @Content(schema = @Schema(implementation = QuizResponse.Detail.class), mediaType = "application/json")
                     ),
                     @ApiResponse(responseCode = "403", description = "S301 - 빙어에 권한이 없습니다.", content = @Content()),
                     @ApiResponse(responseCode = "404", description = "S401 - 존재하지 않는 빙어입니다.", content = @Content())
             }
     )
-    ResponseEntity<QuizResponse.Info> getQuiz(Long smeltId);
+    ResponseEntity<QuizResponse.Detail> getQuiz(Long smeltId);
 
     @Operation(
             summary = "빙어의 퀴즈 풀기 API",
