@@ -3,14 +3,21 @@ package my.fisherman.fisherman.smelt.api;
 import my.fisherman.fisherman.smelt.api.request.QuizRequest;
 import my.fisherman.fisherman.smelt.api.request.SmeltRequest;
 import my.fisherman.fisherman.smelt.api.response.QuizResponse;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.smelt.api.response.SmeltResponse;
+import my.fisherman.fisherman.smelt.application.SmeltService;
+import my.fisherman.fisherman.smelt.application.dto.SmeltInfo;
 
+@RequiredArgsConstructor
 @RequestMapping("/smelts")
 @RestController
 public class SmeltController implements SmeltSpecification {
+    private final SmeltService smeltService;
 
     @Override
     @GetMapping("/{smelt-id}")
@@ -37,8 +44,10 @@ public class SmeltController implements SmeltSpecification {
     public ResponseEntity<SmeltResponse.Detail> registerCommentTo(
             @PathVariable(name = "smelt-id") Long smeltId,
             @RequestBody SmeltRequest.RegisterComment request) {
-        // TODO
-        return null;
+                
+        SmeltInfo.Detail info = smeltService.registerComment(smeltId, request.content());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(SmeltResponse.Detail.from(info));
     }
 
     @Override
