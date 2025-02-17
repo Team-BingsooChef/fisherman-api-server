@@ -1,6 +1,5 @@
 package my.fisherman.fisherman.smelt.domain;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -45,11 +44,11 @@ public class Smelt {
     private SmeltType type;
 
     @JoinColumn(name = "quiz_id")
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY)
     private Quiz quiz;
 
     @JoinColumn(name = "letter_id")
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY)
     private Letter letter;
 
     private Smelt(Inventory inventory, SmeltType type) {

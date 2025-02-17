@@ -13,7 +13,9 @@ import my.fisherman.fisherman.smelt.domain.Question;
 import my.fisherman.fisherman.smelt.domain.Quiz;
 import my.fisherman.fisherman.smelt.domain.QuizType;
 import my.fisherman.fisherman.smelt.domain.Smelt;
+import my.fisherman.fisherman.smelt.repository.LetterRepository;
 import my.fisherman.fisherman.smelt.repository.QuestionRepository;
+import my.fisherman.fisherman.smelt.repository.QuizRepository;
 import my.fisherman.fisherman.smelt.repository.SmeltRepository;
 import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
@@ -30,9 +32,12 @@ public class FishingSpotService {
 
     private final FishingSpotRepository fishingSpotRepository;
     private final SmeltRepository smelRepository;
+    private final LetterRepository letterRepository;
     private final UserRepository userRepository;
+    private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
 
+    @Transactional(readOnly = true)
     public List<FishingSpotInfo.Simple> searchFishingSpot(String keyword) {
 
         var fishingSpots = fishingSpotRepository.searchByKeyword(keyword);
@@ -52,7 +57,8 @@ public class FishingSpotService {
         
         return FishingSpotInfo.SmeltPage.of(fishingSpot, smeltPage);
     }
-    
+
+    @Transactional
     public FishingSpotInfo.DetailSmelt sendSmeltTo(FishingSpotCommand.SendSmelt command) {
         // TODO: 사용자 ID를 가져오지 못하는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
@@ -77,6 +83,8 @@ public class FishingSpotService {
         
         smelt.send(user, fishingSpot, letter, quiz);
 
+        quizRepository.save(quiz);
+        letterRepository.save(letter);
         smelRepository.save(smelt);
         questionRepository.saveAll(questions);
 
