@@ -16,8 +16,8 @@ public class FishingSpotRequest {
     ) {
         public FishingSpotCommand.SendSmelt toCommand(Long fishingSpotId) {
             return new FishingSpotCommand.SendSmelt(
-                fishingSpotId,
                 smeltId,
+                fishingSpotId,
                 senderName,
                 title,
                 content,
