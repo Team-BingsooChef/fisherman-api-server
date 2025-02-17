@@ -81,4 +81,18 @@ public class Smelt {
         this.letter = letter;
         this.quiz = quiz;
     }
+
+    public void registerComment(User user, Comment comment) {
+        if (user != this.fishingSpot.getFisherman()) {
+            // TODO: 권한이 없는 예외
+            return;
+        }
+
+        if (this.status != SmeltStatus.READ) {
+            // TODO: 아직 읽지 않은 예외
+            return;
+        }
+
+        this.letter.registerComment(comment);
+    }
 }
