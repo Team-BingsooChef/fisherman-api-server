@@ -107,6 +107,22 @@ public class Smelt {
         this.status = SmeltStatus.READ;
     }
 
+    public void trySolve(User user, Question question) {
+        checkSolvable(user);
+
+        this.quiz.trySolve(question);
+        this.status = question.getIsAnswer() ? SmeltStatus.READ : this.status;
+    }
+
+    public void checkReadableQuiz(User user) {
+        if (user == this.inventory.getUser() || user == this.fishingSpot.getFisherman()) {
+            return;
+        }
+
+        // TODO: 권한 없는 예외 던지기
+        return;
+    }
+
     private void checkReadableLetter(User user) {
         if (user == this.inventory.getUser()) {
             return;
@@ -121,22 +137,6 @@ public class Smelt {
 
         // TODO: 권한 없는 예외 던지기
         return;
-    }
-
-    public void checkReadableQuiz(User user) {
-        if (user == this.inventory.getUser() || user == this.fishingSpot.getFisherman()) {
-            return;
-        }
-
-        // TODO: 권한 없는 예외 던지기
-        return;
-    }
-
-    public void trySolve(User user, Question question) {
-        checkSolvable(user);
-
-        this.quiz.trySolve(question);
-        this.status = question.getIsAnswer() ? SmeltStatus.READ : this.status;
     }
 
     private void checkSolvable(User user) {
