@@ -131,4 +131,25 @@ public class Smelt {
         // TODO: 권한 없는 예외 던지기
         return;
     }
+
+    public boolean solve(User user, Question question) {
+        checkSolvable(user);
+
+        if (question.getIsAnswer()) {
+            this.status = SmeltStatus.READ;
+            this.quiz.solve();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void checkSolvable(User user) {
+        if (user == this.fishingSpot.getFisherman()) {
+            return;
+        }
+
+        // TODO: 권한 없는 예외 던지기
+        return;
+    }
 }
