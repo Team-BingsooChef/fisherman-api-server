@@ -21,12 +21,12 @@ public class FishingSpotRequest {
                 senderName,
                 title,
                 content,
-                true,
-                quiz.title,
-                quiz.content,
-                quiz.type,
-                quiz.questions,
-                quiz.answerIndex);
+                quiz != null,
+                quiz != null ? quiz.title : null,
+                quiz != null ? quiz.content : null,
+                quiz != null ? quiz.type : null,
+                quiz != null ? quiz.questions : null,
+                quiz != null ? quiz.answerIndex : null);
         }
     }
 
