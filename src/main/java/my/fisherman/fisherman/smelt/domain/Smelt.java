@@ -95,4 +95,31 @@ public class Smelt {
 
         this.letter.registerComment(comment);
     }
+
+    public void readLetter(User user) {
+        if (this.letter == null) {
+            // TODO: 편지 없는 예외
+            return;
+        }
+
+        checkReadable(user);
+
+        this.status = SmeltStatus.READ;
+    }
+
+    private void checkReadable(User user) {
+        if (user == this.inventory.getUser()) {
+            return;
+        }
+
+        if (user == this.fishingSpot.getFisherman()) {
+            if (this.quiz != null && this.quiz.getIsSolved() == false) {
+                // TODO: 아직 풀지 않은 편지 예외 던지기
+                return;
+            }
+        }
+
+        // TODO: 권한 없는 예외 던지기
+        return;
+    }
 }
