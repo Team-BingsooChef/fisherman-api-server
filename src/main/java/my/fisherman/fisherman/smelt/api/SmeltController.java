@@ -41,8 +41,9 @@ public class SmeltController implements SmeltSpecification {
     @Override
     @PatchMapping("/{smelt-id}/quizzes")
     public ResponseEntity<QuizResponse.SolveResult> solveQuiz(@PathVariable(name = "smelt-id") Long smeltId, @RequestBody QuizRequest.Solve request) {
-        // TODO
-        return null;
+        QuizInfo.Simple info = smeltService.solve(smeltId, request.questionId());
+
+        return ResponseEntity.ok().body(QuizResponse.SolveResult.from(info));
     }
 
     @Override

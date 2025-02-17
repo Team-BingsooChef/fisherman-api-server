@@ -11,7 +11,7 @@ public class QuizResponse {
             List<Question> questions
     ) {
         public static Detail from(QuizInfo.Detail info) {
-                return new Detail(Quiz.from(info), info.questions().stream().map(Question::from).toList());
+                return new Detail(Quiz.from(info.quiz()), info.questions().stream().map(Question::from).toList());
         }
     }
     
@@ -19,6 +19,9 @@ public class QuizResponse {
         Boolean result,
         Short wrongCount
     ) {
+        public static SolveResult from(QuizInfo.Simple info) {
+                return new SolveResult(info.isSolved(), info.wrongCount());
+        }
     }
 
     record Quiz(
@@ -28,7 +31,7 @@ public class QuizResponse {
             Short wrongCount,
             Boolean isSolved
     ) {
-        static Quiz from(QuizInfo.Detail info) {
+        static Quiz from(QuizInfo.Simple info) {
                 return new Quiz(info.id(), info.title(), info.type(), info.wrongCount(), info.isSolved());
         }
     }
