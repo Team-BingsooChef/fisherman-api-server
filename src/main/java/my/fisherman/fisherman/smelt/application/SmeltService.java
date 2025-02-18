@@ -2,6 +2,11 @@ package my.fisherman.fisherman.smelt.application;
 
 import java.util.List;
 
+import my.fisherman.fisherman.smelt.repository.SmeltRepository;
+import my.fisherman.fisherman.smelt.repository.SmeltTypeRepository;
+import my.fisherman.fisherman.smelt.repository.QuestionRepository;
+import my.fisherman.fisherman.smelt.repository.LetterRepository;
+import my.fisherman.fisherman.smelt.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +20,6 @@ import my.fisherman.fisherman.smelt.domain.Question;
 import my.fisherman.fisherman.smelt.domain.Quiz;
 import my.fisherman.fisherman.smelt.domain.SmeltType;
 import my.fisherman.fisherman.user.domain.User;
-import my.fisherman.fisherman.smelt.repository.QuestionRepository;
-import my.fisherman.fisherman.smelt.repository.SmeltRepository;
-import my.fisherman.fisherman.smelt.repository.SmeltTypeRepository;
 import my.fisherman.fisherman.user.repository.UserRepository;
 
 @RequiredArgsConstructor
@@ -27,6 +29,8 @@ public class SmeltService {
     private final SmeltTypeRepository smeltTypeRepository;
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
+    private final LetterRepository letterRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional(readOnly = true)
     public SmeltInfo.Detail getSmeltDetail(Long smeltId) {
@@ -93,6 +97,8 @@ public class SmeltService {
         Comment comment = Comment.of(content);
 
         smelt.registerComment(user, comment);
+
+        commentRepository.save(comment);
         smeltRepository.save(smelt);
 
         return SmeltInfo.Detail.from(smelt);
