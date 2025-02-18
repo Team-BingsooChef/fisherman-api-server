@@ -38,6 +38,18 @@ public class FishingSpotService {
     private final QuestionRepository questionRepository;
 
     @Transactional(readOnly = true)
+    public FishingSpotInfo.Simple getMyFishingSpot() {
+        // TODO: 사용자 ID를 가져오지 못하는 예외 처리
+        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
+
+        // TODO: NotFound 예외 처리
+        User user = userRepository.findById(userId).orElseThrow();
+        FishingSpot fishingSpot = fishingSpotRepository.findByFisherman(user).orElseThrow();
+
+        return FishingSpotInfo.Simple.from(fishingSpot);
+    }
+
+    @Transactional(readOnly = true)
     public List<FishingSpotInfo.Simple> searchFishingSpot(String keyword) {
 
         var fishingSpots = fishingSpotRepository.searchByKeyword(keyword);
