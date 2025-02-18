@@ -28,6 +28,11 @@ public class FishingSpotController implements FishingSpotSpecification {
     private final FishingSpotService fishingSpotService;
 
     @Override
+    public ResponseEntity<FishingSpot> getMyFishingSpot() {
+        return null;
+    }
+
+    @Override
     @PostMapping("/{fishing-spot-id}/smelts")
     public ResponseEntity<FishingSpotResponse.ReceivedSmelt> sendSmelt(
         @PathVariable(name = "fishing-spot-id") Long fishingSpotId,
