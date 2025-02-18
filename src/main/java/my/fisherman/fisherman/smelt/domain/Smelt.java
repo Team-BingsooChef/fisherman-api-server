@@ -115,6 +115,11 @@ public class Smelt {
     public void trySolve(User user, Question question) {
         checkSolvable(user);
 
+        if (this.quiz != question.getQuiz()) {
+            // TODO: 퀴즈의 선지가 아닌 예외
+            return;
+        }
+
         if (this.quiz.getIsSolved()) {
             // 이미 푼 퀴즈 예외 처리
         }
