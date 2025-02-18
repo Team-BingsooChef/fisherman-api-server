@@ -121,13 +121,14 @@ public class Smelt {
         }
 
         if (this.quiz.getIsSolved()) {
-            // 이미 푼 퀴즈 예외 처리
+            // TODO: 이미 푼 퀴즈 예외 처리
+            return;
         }
 
-        Boolean isCorrent = question.getIsAnswer();
+        Boolean isCorrect = question.getIsAnswer();
 
-        this.quiz.trySolve(isCorrent);
-        this.status = isCorrent ? SmeltStatus.READ : this.status;
+        this.quiz.trySolve(isCorrect);
+        this.status = isCorrect ? SmeltStatus.READ : this.status;
     }
 
     public void checkReadableQuiz(User user) {

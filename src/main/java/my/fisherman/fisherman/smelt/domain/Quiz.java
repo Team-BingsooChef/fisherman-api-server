@@ -45,8 +45,8 @@ public class Quiz {
         return new Quiz(title, type);
     }
 
-    protected void trySolve(Boolean isCorrent) {
-        if (isCorrent) {
+    protected void trySolve(Boolean isCorrect) {
+        if (isCorrect) {
             this.isSolved = true;
             return;
         }
