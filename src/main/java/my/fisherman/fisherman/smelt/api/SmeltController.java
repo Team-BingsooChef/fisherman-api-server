@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.smelt.api.response.SmeltResponse;
 import my.fisherman.fisherman.smelt.application.SmeltService;
@@ -50,7 +51,7 @@ public class SmeltController implements SmeltSpecification {
     @PostMapping("/{smelt-id}/comments")
     public ResponseEntity<SmeltResponse.Detail> registerCommentTo(
             @PathVariable(name = "smelt-id") Long smeltId,
-            @RequestBody SmeltRequest.RegisterComment request) {
+            @Valid @RequestBody SmeltRequest.RegisterComment request) {
         SmeltInfo.Detail info = smeltService.registerComment(smeltId, request.content());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(SmeltResponse.Detail.from(info));
