@@ -32,4 +32,16 @@ public class Quiz {
 
     @Column(nullable = false)
     private Boolean isSolved;
+
+    private Quiz(String title, QuizType type) {
+        this.id = null;
+        this.title = title;
+        this.type = type;
+        this.wrongCount = 0;
+        this.isSolved = false;
+    }
+
+    public static Quiz of(String title, QuizType type) {
+        return new Quiz(title, type);
+    }
 }

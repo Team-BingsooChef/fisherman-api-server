@@ -30,4 +30,14 @@ public class Question {
     @JoinColumn(name = "quiz_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Quiz quiz;
+
+    private Question(String content, Boolean isAnswer, Quiz quiz) {
+        this.content = content;
+        this.isAnswer = isAnswer;
+        this.quiz = quiz;
+    }
+
+    public static Question of(String content, Boolean isAnswer, Quiz quiz) {
+        return new Question(content, isAnswer, quiz);
+    }
 }

@@ -9,7 +9,11 @@ public class FishingSpotResponse {
         DetailSmelt smelt,
         Letter letter
     ) {
-
+        public static ReceivedSmelt from(FishingSpotInfo.DetailSmelt info) {
+            return new ReceivedSmelt(
+                DetailSmelt.from(info),
+                Letter.from(info.letter()));
+        }
     }
 
     public record Page(
@@ -19,7 +23,9 @@ public class FishingSpotResponse {
         int totalElements,
         List<SimpleSmelt> smelts
     ) {
-
+        public static Page from(FishingSpotInfo.SmeltPage info) {
+            return new Page(info.nickname(), info.currentPage(), info.totalPages(), info.totalElements(), info.smelts().stream().map(SimpleSmelt::from).toList());
+        }
     }
 
     record SimpleSmelt(
@@ -27,7 +33,9 @@ public class FishingSpotResponse {
         Long smeltTypeId,
         String status
     ) {
-
+        static SimpleSmelt from(FishingSpotInfo.SimpleSmelt info) {
+            return new SimpleSmelt(info.id(), info.typeId(), info.status());
+        }
     }
 
     record DetailSmelt(
@@ -37,7 +45,9 @@ public class FishingSpotResponse {
         Long smeltTypeId,
         String status
     ) {
-
+        static DetailSmelt from(FishingSpotInfo.DetailSmelt info) {
+            return new DetailSmelt(info.id(), info.inventoryId(), info.fishingSpotId(), info.typeId(), info.status());
+        }
     }
 
     record Letter(
@@ -47,7 +57,9 @@ public class FishingSpotResponse {
         String content,
         String createdTime
     ) {
-
+        static Letter from(FishingSpotInfo.LetterInfo info) {
+            return new Letter(info.id(), info.senderName(), info.title(), info.content(), info.createdTime().toString());
+        }
     }
 
     public record FishingSpot(

@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.inventory.domain.Inventory;
+import my.fisherman.fisherman.user.domain.User;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -61,5 +62,23 @@ public class Smelt {
 
     public static Smelt of(Inventory inventory, SmeltType type) {
         return new Smelt(inventory, type);
+    }
+
+    // user가 빙어를 fishingSpot으로 보낸다.
+    public void send(User user, FishingSpot fishingSpot, Letter letter, Quiz quiz) {
+        // TODO: ID 비교로 수정
+        if (user != this.inventory.getUser()) {
+            // TODO: 권한이 없는 경우 예외 던지기
+            return;
+        }
+
+        if (user == fishingSpot.getFisherman()) {
+            // TODO: 본인의 낚시터에 보내는 예외 던지기
+            return;
+        }
+
+        this.fishingSpot = fishingSpot;
+        this.letter = letter;
+        this.quiz = quiz;
     }
 }
