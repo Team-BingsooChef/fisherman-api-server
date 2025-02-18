@@ -9,11 +9,11 @@ public class FishingSpotRequest {
 
     // TODO: 유효성 검증 추가
     public record Send(
-            Long smeltId,
-            String title,
-            String content,
-            String senderName,
-            Optional<Quiz> quiz
+        Long smeltId,
+        String title,
+        String content,
+        String senderName,
+        Optional<Quiz> quiz
     ) {
         public FishingSpotCommand.SendSmelt toCommand(Long fishingSpotId) {
             return new FishingSpotCommand.SendSmelt(
