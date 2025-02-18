@@ -1,5 +1,6 @@
 package my.fisherman.fisherman.inventory.application.dto;
 
+import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.smelt.domain.Comment;
 import my.fisherman.fisherman.smelt.domain.Letter;
 import my.fisherman.fisherman.smelt.domain.Smelt;
@@ -11,6 +12,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class InventoryInfo {
+    public record Simple(
+        Long id,
+        Long coin
+    ) {
+        public static Simple from(Inventory inventory) {
+            return new Simple(inventory.getId(), inventory.getCoin());
+        }
+    }
+
     public record SmeltInfo(
             Long id,
             Long inventoryId,

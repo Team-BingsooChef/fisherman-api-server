@@ -19,6 +19,12 @@ public class InventoryController implements InventorySpecification {
     private final InventoryService inventoryService;
 
     @Override
+    @GetMapping("/mine")
+    public ResponseEntity<InventoryResponse.Inventory> getMine() {
+        return null;
+    }
+
+    @Override
     @PostMapping
     public ResponseEntity<InventoryResponse.DrewSmelt> drawSmelt(@PathVariable(name = "inventory-id") Long inventoryId) {
         InventoryInfo.SmeltInfo info = inventoryService.drawSmelt(inventoryId);
