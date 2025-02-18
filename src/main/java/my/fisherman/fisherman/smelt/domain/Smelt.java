@@ -110,8 +110,14 @@ public class Smelt {
     public void trySolve(User user, Question question) {
         checkSolvable(user);
 
-        this.quiz.trySolve(question);
-        this.status = question.getIsAnswer() ? SmeltStatus.READ : this.status;
+        if (this.quiz.getIsSolved()) {
+            // 이미 푼 퀴즈 예외 처리
+        }
+
+        Boolean isCorrent = question.getIsAnswer();
+
+        this.quiz.trySolve(isCorrent);
+        this.status = isCorrent ? SmeltStatus.READ : this.status;
     }
 
     public void checkReadableQuiz(User user) {

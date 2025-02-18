@@ -45,12 +45,8 @@ public class Quiz {
         return new Quiz(title, type);
     }
 
-    protected void trySolve(Question question) {
-        if (this.isSolved) {
-            // TODO: 이미 푼 퀴즈 예외 처리
-        }
-
-        if (question.getIsAnswer()) {
+    protected void trySolve(Boolean isCorrent) {
+        if (isCorrent) {
             this.isSolved = true;
             return;
         }
