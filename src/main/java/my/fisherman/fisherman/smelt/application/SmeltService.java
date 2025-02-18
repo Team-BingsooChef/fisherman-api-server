@@ -32,7 +32,7 @@ public class SmeltService {
     private final LetterRepository letterRepository;
     private final CommentRepository commentRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public SmeltInfo.Detail getSmeltDetail(Long smeltId) {
         // TODO: ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
