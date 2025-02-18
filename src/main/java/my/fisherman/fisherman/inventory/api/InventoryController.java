@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/inventories/{inventory-id}/smelts")
+@RequestMapping("/inventories")
 @RestController
 public class InventoryController implements InventorySpecification {
     private final InventoryService inventoryService;
@@ -29,7 +29,7 @@ public class InventoryController implements InventorySpecification {
     }
 
     @Override
-    @PostMapping
+    @PostMapping("/{inventory-id}/smelts")
     public ResponseEntity<InventoryResponse.DrewSmelt> drawSmelt(@PathVariable(name = "inventory-id") Long inventoryId) {
         InventoryInfo.SmeltInfo info = inventoryService.drawSmelt(inventoryId);
 
@@ -39,7 +39,7 @@ public class InventoryController implements InventorySpecification {
     }
 
     @Override
-    @GetMapping("/sent")
+    @GetMapping("/{inventory-id}/smelts/sent")
     public ResponseEntity<InventoryResponse.SentSmeltPage> getSentSmelt(
             @PathVariable(name = "inventory-id") Long inventoryId,
             @PageableDefault(page = 0, size = 8) Pageable pageable
@@ -50,7 +50,7 @@ public class InventoryController implements InventorySpecification {
     }
 
     @Override
-    @GetMapping("/statistics")
+    @GetMapping("/{inventory-id}/smelts/statistics")
     public ResponseEntity<InventoryResponse.Statistic> getSmeltStatistic(@PathVariable(name = "inventory-id") Long inventoryId) {
         List<InventoryInfo.Statistic> info = inventoryService.getStatistics(inventoryId);
 
