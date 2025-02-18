@@ -44,4 +44,13 @@ public class Quiz {
     public static Quiz of(String title, QuizType type) {
         return new Quiz(title, type);
     }
+
+    protected void trySolve(Boolean isCorrent) {
+        if (isCorrent) {
+            this.isSolved = true;
+            return;
+        }
+
+        this.wrongCount++;
+    }
 }

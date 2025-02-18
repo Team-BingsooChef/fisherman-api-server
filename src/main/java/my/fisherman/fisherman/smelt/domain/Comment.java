@@ -25,4 +25,14 @@ public class Comment {
 
     @Column(name = "comment_created_time", nullable = false)
     private LocalDateTime createdTime;
+
+    private Comment(String content) {
+        this.id = null;
+        this.content = content;
+        this.createdTime = LocalDateTime.now();
+    }
+
+    public static Comment of(String content) {
+        return new Comment(content);
+    }
 }
