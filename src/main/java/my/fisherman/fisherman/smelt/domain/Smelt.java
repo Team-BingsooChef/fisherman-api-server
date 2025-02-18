@@ -83,6 +83,11 @@ public class Smelt {
     }
 
     public void registerComment(User user, Comment comment) {
+        if (this.fishingSpot == null) {
+            // TODO: 낚시터에 보내지 않은 빙어 예외
+            return;
+        }
+
         if (user != this.fishingSpot.getFisherman()) {
             // TODO: 권한이 없는 예외
             return;
