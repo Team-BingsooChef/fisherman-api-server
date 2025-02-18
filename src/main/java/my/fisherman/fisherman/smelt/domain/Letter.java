@@ -2,6 +2,7 @@ package my.fisherman.fisherman.smelt.domain;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,7 +37,7 @@ public class Letter {
     private LocalDateTime createdTime;
 
     @JoinColumn(name = "comment_id")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Comment comment;
 
     private Letter(String title, String content, String senderName) {
@@ -50,5 +51,14 @@ public class Letter {
 
     public static Letter of(String title, String content, String senderName) {
         return new Letter(title, content, senderName);
+    }
+
+    public void registerComment(Comment comment) {
+        if (this.comment != null) {
+            //TODO: 이미 댓글이 등록되었다는 오류 던지기
+            return;
+        }
+
+        this.comment = comment;
     }
 }

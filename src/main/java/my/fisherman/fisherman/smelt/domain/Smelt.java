@@ -81,4 +81,87 @@ public class Smelt {
         this.letter = letter;
         this.quiz = quiz;
     }
+
+    public void registerComment(User user, Comment comment) {
+        if (this.fishingSpot == null) {
+            // TODO: 낚시터에 보내지 않은 빙어 예외
+            return;
+        }
+
+        if (user != this.fishingSpot.getFisherman()) {
+            // TODO: 권한이 없는 예외
+            return;
+        }
+
+        if (this.status != SmeltStatus.READ) {
+            // TODO: 아직 읽지 않은 예외
+            return;
+        }
+
+        this.letter.registerComment(comment);
+    }
+
+    public void readLetter(User user) {
+        if (this.letter == null) {
+            // TODO: 편지 없는 예외
+            return;
+        }
+
+        checkReadableLetter(user);
+
+        this.status = SmeltStatus.READ;
+    }
+
+    public void trySolve(User user, Question question) {
+        checkSolvable(user);
+
+        if (this.quiz != question.getQuiz()) {
+            // TODO: 퀴즈의 선지가 아닌 예외
+            return;
+        }
+
+        if (this.quiz.getIsSolved()) {
+            // TODO: 이미 푼 퀴즈 예외 처리
+            return;
+        }
+
+        Boolean isCorrect = question.getIsAnswer();
+
+        this.quiz.trySolve(isCorrect);
+        this.status = isCorrect ? SmeltStatus.READ : this.status;
+    }
+
+    public void checkReadableQuiz(User user) {
+        if (user == this.inventory.getUser() || user == this.fishingSpot.getFisherman()) {
+            return;
+        }
+
+        // TODO: 권한 없는 예외 던지기
+        return;
+    }
+
+    private void checkReadableLetter(User user) {
+        if (user == this.inventory.getUser()) {
+            return;
+        }
+
+        if (user == this.fishingSpot.getFisherman()) {
+            if (this.quiz != null && this.quiz.getIsSolved() == false) {
+                // TODO: 아직 풀지 않은 편지 예외 던지기
+                return;
+            }
+        }
+
+        // TODO: 권한 없는 예외 던지기
+        return;
+    }
+
+    private void checkSolvable(User user) {
+        if (user == this.fishingSpot.getFisherman()) {
+            return;
+        }
+
+        // TODO: 권한 없는 예외 던지기
+        return;
+    }
 }
