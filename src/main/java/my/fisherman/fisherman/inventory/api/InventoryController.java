@@ -21,7 +21,11 @@ public class InventoryController implements InventorySpecification {
     @Override
     @GetMapping("/mine")
     public ResponseEntity<InventoryResponse.Inventory> getMine() {
-        return null;
+        InventoryInfo.Simple info = inventoryService.getMyInventory();
+
+        InventoryResponse.Inventory response = InventoryResponse.Inventory.from(info);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override
