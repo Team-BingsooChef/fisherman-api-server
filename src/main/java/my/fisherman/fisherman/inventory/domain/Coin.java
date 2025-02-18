@@ -1,4 +1,4 @@
-package my.fisherman.fisherman.user.domain;
+package my.fisherman.fisherman.inventory.domain;
 
 import jakarta.persistence.Embeddable;
 

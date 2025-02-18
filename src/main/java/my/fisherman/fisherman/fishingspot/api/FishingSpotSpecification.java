@@ -18,6 +18,17 @@ import org.springframework.http.ResponseEntity;
 public interface FishingSpotSpecification {
 
     @Operation(
+            summary = "내 낚시터 조회 API",
+            description = "현재 사용자의 낚시터 정보를 반환합니다.<br>" + "Access token이 필요합니다.<br>",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.FishingSpot.class), mediaType = "application/json")
+                    )
+            }
+    )
+    ResponseEntity<FishingSpotResponse.FishingSpot> getMine();
+
+    @Operation(
         summary = "낚시터에 빙어 보내기 API",
         description = "주어진 빙어를 지정한 낚시터에 보냅니다.<br>" + "Access token이 필요합니다.<br>" + "권한: 사용자가 뽑은 빙어",
         responses = {

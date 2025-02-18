@@ -13,6 +13,17 @@ import org.springframework.http.ResponseEntity;
 public interface InventorySpecification {
 
     @Operation(
+            summary = "내 인벤토리 조회 API",
+            description = "현재 사용자의 인벤토리 정보를 반환합니다.<br>" + "Access token이 필요합니다.<br>",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", content = @Content(schema = @Schema(implementation = InventoryResponse.Inventory.class), mediaType = "application/json")
+                    )
+            }
+    )
+    ResponseEntity<InventoryResponse.Inventory> getMine();
+
+    @Operation(
             summary = "빙어 뽑기 API",
             description = "지정한 인벤토리에 지정된 확률로 새로운 빙어를 생성합니다.<br>" + "Access token이 필요합니다.<br>" + "권한: 사용자의 인벤토리",
             responses = {

@@ -6,6 +6,15 @@ import java.util.List;
 
 public class InventoryResponse {
 
+    public record Inventory (
+        Long id,
+        Long coin
+    ) {
+        public static Inventory from(InventoryInfo.Simple info) {
+            return new Inventory(info.id(), info.coin());
+        }
+    }
+
     public record DrewSmelt(
             SmeltSimple smelt
     ) {

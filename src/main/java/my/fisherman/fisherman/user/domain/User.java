@@ -3,7 +3,6 @@ package my.fisherman.fisherman.user.domain;
 import static lombok.AccessLevel.PROTECTED;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,9 +34,6 @@ public class User {
     @Column(nullable = false)
     private Boolean isPublic;
 
-    @Embedded
-    private Coin coin;
-
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OAuthProvider oauthType;
@@ -55,7 +51,6 @@ public class User {
         this.isPublic = isPublic;
         this.oauthType = oauthType;
         this.role = Role.ROLE_USER;
-        this.coin = new Coin();
         this.isFreshUser = true;
     }
 
@@ -65,10 +60,6 @@ public class User {
 
     public static User of(String email, String nickname, OAuthProvider oauthType) {
         return new User(email, "", nickname, true, oauthType);
-    }
-
-    public Long getCoin() {
-        return coin.getCoin();
     }
 
     public void updateNickname(String nickname) {

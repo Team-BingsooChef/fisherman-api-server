@@ -28,6 +28,14 @@ public class FishingSpotController implements FishingSpotSpecification {
     private final FishingSpotService fishingSpotService;
 
     @Override
+    @GetMapping("/mine")
+    public ResponseEntity<FishingSpotResponse.FishingSpot> getMine() {
+        FishingSpotInfo.Simple info = fishingSpotService.getMyFishingSpot();
+
+        return ResponseEntity.ok().body(FishingSpotResponse.FishingSpot.from(info));
+    }
+
+    @Override
     @PostMapping("/{fishing-spot-id}/smelts")
     public ResponseEntity<FishingSpotResponse.ReceivedSmelt> sendSmelt(
         @PathVariable(name = "fishing-spot-id") Long fishingSpotId,
