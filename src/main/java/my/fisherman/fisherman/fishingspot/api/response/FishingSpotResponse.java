@@ -11,7 +11,7 @@ public class FishingSpotResponse {
     ) {
         public static ReceivedSmelt from(FishingSpotInfo.DetailSmelt info) {
             return new ReceivedSmelt(
-                new DetailSmelt(info.id(), info.inventoryId(), info.fishingSpotId(), info.typeId(), info.status()),
+                DetailSmelt.from(info),
                 Letter.from(info.letter()));
         }
     }
@@ -45,7 +45,9 @@ public class FishingSpotResponse {
         Long smeltTypeId,
         String status
     ) {
-
+        static DetailSmelt from(FishingSpotInfo.DetailSmelt info) {
+            return new DetailSmelt(info.id(), info.inventoryId(), info.fishingSpotId(), info.typeId(), info.status());
+        }
     }
 
     record Letter(
