@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import my.fisherman.fisherman.user.api.dto.UserRequest;
 import my.fisherman.fisherman.user.api.dto.UserRequest.UpdatePublic;
-import my.fisherman.fisherman.user.api.dto.UserResponse.Coin;
 import my.fisherman.fisherman.user.api.dto.UserResponse.Info;
 import my.fisherman.fisherman.user.application.UserService;
 import org.springframework.http.ResponseEntity;
@@ -40,14 +39,6 @@ public class UserController implements UserSpecification {
 
         return ResponseEntity.ok(Info.from(userInfo));
 
-    }
-
-    @Override
-    @GetMapping("/{userId}/coin")
-    public ResponseEntity<Coin> getMyCoin(@PathVariable Long userId) {
-        var userInfo = userService.getMyInfo(userId);
-
-        return ResponseEntity.ok(Coin.from(userInfo));
     }
 
     @Override
