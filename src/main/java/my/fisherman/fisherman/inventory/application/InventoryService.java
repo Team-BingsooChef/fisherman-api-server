@@ -28,6 +28,18 @@ public class InventoryService {
     private final SmeltTypeRepository smeltTypeRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
+    public InventoryInfo.Simple getMyInventory() {
+        // TODO: 사용자 ID를 가져올 수 없는 예외 처리
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow();
+
+        // TODO: Not found 예외 처리
+        User user = userRepository.findById(userId).orElseThrow();
+        Inventory inventory = inventoryRepository.findByUser(user).orElseThrow();
+
+        return InventoryInfo.Simple.from(inventory);
+    }
 
     @Transactional
     public InventoryInfo.SmeltInfo drawSmelt(Long inventoryId) {
