@@ -28,8 +28,11 @@ public class FishingSpotController implements FishingSpotSpecification {
     private final FishingSpotService fishingSpotService;
 
     @Override
-    public ResponseEntity<FishingSpot> getMyFishingSpot() {
-        return null;
+    @GetMapping("/mine")
+    public ResponseEntity<FishingSpotResponse.FishingSpot> getMine() {
+        FishingSpotInfo.Simple info = fishingSpotService.getMyFishingSpot();
+
+        return ResponseEntity.ok().body(FishingSpotResponse.FishingSpot.from(info));
     }
 
     @Override

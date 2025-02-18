@@ -26,7 +26,7 @@ public interface FishingSpotSpecification {
                     )
             }
     )
-    ResponseEntity<FishingSpotResponse.FishingSpot> getMyFishingSpot();
+    ResponseEntity<FishingSpotResponse.FishingSpot> getMine();
 
     @Operation(
         summary = "낚시터에 빙어 보내기 API",
