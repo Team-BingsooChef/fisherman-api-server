@@ -63,6 +63,7 @@ public class SmeltService {
         return QuizInfo.Detail.of(quiz, questions);
     }
 
+    @Transactional
     public QuizInfo.Simple solve(Long smeltId, Long questionId) {
         // TODO: ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
