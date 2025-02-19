@@ -42,6 +42,10 @@ public class Inventory {
         return coin.getCoin();
     }
 
+    public void increaseCoin(Long amount) {
+        this.coin.add(amount);
+    }
+
     public void checkReadable(User user) {
         // TODO: ID 비교로 수정
         if (this.user == user) {
