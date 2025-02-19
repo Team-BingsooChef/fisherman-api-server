@@ -28,4 +28,14 @@ public class FishingSpot {
     @JoinColumn(name = "fisherman_id", nullable = false)
     @OneToOne(fetch = FetchType.LAZY)
     private User fisherman;
+
+    private FishingSpot(User fisherman) {
+        this.id = null;
+        this.fisherman = fisherman;
+        this.isPublic = true;
+    }
+
+    public static FishingSpot of(User fisherman) {
+        return new FishingSpot(fisherman);
+    }
 }

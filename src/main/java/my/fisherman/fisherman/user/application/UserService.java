@@ -2,6 +2,10 @@ package my.fisherman.fisherman.user.application;
 
 import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.auth.repository.AuthenticationRepository;
+import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
+import my.fisherman.fisherman.fishingspot.repository.FishingSpotRepository;
+import my.fisherman.fisherman.inventory.domain.Inventory;
+import my.fisherman.fisherman.inventory.repository.InventoryRepository;
 import my.fisherman.fisherman.security.util.SecurityUtil;
 import my.fisherman.fisherman.user.application.command.UserCommand;
 import my.fisherman.fisherman.user.application.command.UserCommand.UpdatePassword;
@@ -18,6 +22,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final AuthenticationRepository authenticationRepository;
+    private final InventoryRepository inventoryRepository;
+    private final FishingSpotRepository fishingSpotRepository;
 
     @Transactional
     public void signUp(UserCommand.SignUp command) {
@@ -38,6 +44,11 @@ public class UserService {
         var encodedPassword = passwordEncoder.encode(command.password());
         var user = command.toEntity(encodedPassword);
         userRepository.save(user);
+
+        var inventory = Inventory.of(user);
+        var fishingSpot = FishingSpot.of(user);
+        inventoryRepository.save(inventory);
+        fishingSpotRepository.save(fishingSpot);
     }
 
     @Transactional(readOnly = true)
