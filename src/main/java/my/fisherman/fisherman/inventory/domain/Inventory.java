@@ -21,9 +21,13 @@ public class Inventory {
     @Embedded
     private Coin coin;
 
-    public Inventory(User user) {
+    private Inventory(User user) {
         this.user = user;
         this.coin = new Coin();
+    }
+
+    public static Inventory of(User user) {
+        return new Inventory(user);
     }
 
     public Long getId() {
