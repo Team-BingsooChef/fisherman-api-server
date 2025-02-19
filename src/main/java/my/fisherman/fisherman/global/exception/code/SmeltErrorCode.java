@@ -37,6 +37,4 @@ public enum SmeltErrorCode implements ErrorCode {
     public String message() {
         return message;
     }
-
-    
 }
