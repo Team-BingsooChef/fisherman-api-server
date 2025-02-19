@@ -11,6 +11,8 @@ public enum SmeltErrorCode implements ErrorCode {
     ALREADY_SOLVED(HttpStatus.BAD_REQUEST, "SM021", "이미 해결된 퀴즈입니다."),
     ALREADY_COMMENT(HttpStatus.BAD_REQUEST, "SM022", "이미 댓글이 있는 편지입니다."),
 
+    NOT_MATCH(HttpStatus.BAD_REQUEST, "SM031", "주어진 문자열을 매치할 수 없습니다."),
+
     FORBIDDEN(HttpStatus.FORBIDDEN, "SM301", "권한이 없습니다."),
     NOT_FOUND(HttpStatus.NOT_FOUND, "SM401", "자원을 찾을 수 없습니다.");
 
