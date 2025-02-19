@@ -91,7 +91,7 @@ public class FishingSpotService {
         Quiz quiz = null;
         List<Question> questions = null;
         if (command.existQuiz()) {
-            QuizType quizType = QuizType.valueOf(command.quiztype());
+            QuizType quizType = QuizType.getQuizType(command.quiztype());
             quiz = Quiz.of(command.quizTitle(), quizType);
 
             questions = new ArrayList<>();
