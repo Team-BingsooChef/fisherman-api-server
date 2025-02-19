@@ -14,6 +14,9 @@ import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
+import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.SmeltErrorCode;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -55,8 +58,7 @@ public class Letter {
 
     public void registerComment(Comment comment) {
         if (this.comment != null) {
-            //TODO: 이미 댓글이 등록되었다는 오류 던지기
-            return;
+            throw new FishermanException(SmeltErrorCode.ALREADY_COMMENT);
         }
 
         this.comment = comment;
