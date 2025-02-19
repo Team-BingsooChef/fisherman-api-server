@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public enum FishingSpotErrorCode implements ErrorCode {
     
-    FORBIDDEN(HttpStatus.FORBIDDEN, "SM301", "권한이 없습니다."),
-    NOT_FOUND(HttpStatus.NOT_FOUND, "SM401", "자원을 찾을 수 없습니다.");
+    FORBIDDEN(HttpStatus.FORBIDDEN, "FS301", "권한이 없습니다."),
+    NOT_FOUND(HttpStatus.NOT_FOUND, "FS401", "자원을 찾을 수 없습니다.");
 
     private HttpStatus httpStatus;
     private String code;
