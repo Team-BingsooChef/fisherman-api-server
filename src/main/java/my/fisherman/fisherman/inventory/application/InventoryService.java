@@ -90,7 +90,6 @@ public class InventoryService {
         Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow();
 
-        // TODO: Not found 예외 처리
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
         Inventory inventory = inventoryRepository.findById(inventoryId)

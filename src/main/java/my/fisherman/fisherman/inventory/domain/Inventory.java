@@ -61,8 +61,7 @@ public class Inventory {
         if (this.user == user) {
             return;
         }
-        
-        // TODO: 커스텀 예외 던지기
+
         throw new FishermanException(InventoryErrorCode.FORBIDDEN, "자신의 인벤토리만 볼 수 있습니다.");
     }
 }
