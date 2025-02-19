@@ -7,6 +7,8 @@ import my.fisherman.fisherman.fishingspot.application.command.FishingSpotCommand
 import my.fisherman.fisherman.fishingspot.application.dto.FishingSpotInfo;
 import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.fishingspot.repository.FishingSpotRepository;
+import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.FishingSpotErrorCode;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.inventory.repository.InventoryRepository;
 import my.fisherman.fisherman.security.util.SecurityUtil;
@@ -45,9 +47,10 @@ public class FishingSpotService {
         // TODO: 사용자 ID를 가져오지 못하는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
 
-        // TODO: NotFound 예외 처리
-        User user = userRepository.findById(userId).orElseThrow();
-        FishingSpot fishingSpot = fishingSpotRepository.findByFisherman(user).orElseThrow();
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        FishingSpot fishingSpot = fishingSpotRepository.findByFisherman(user)
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자의 낚시터를 찾을 수 없습니다."));
 
         return FishingSpotInfo.Simple.from(fishingSpot);
     }
@@ -64,10 +67,9 @@ public class FishingSpotService {
 
     @Transactional(readOnly = true)
     public FishingSpotInfo.SmeltPage getSmelts(Long fishingSpotId, Pageable pageable) {
-        // TODO: NotFound 예외 처리
         FishingSpot fishingSpot = fishingSpotRepository.findById(fishingSpotId)
-                                    .orElseThrow();
-                                    
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(fishingSpotId)));
+
         Page<Smelt> smeltPage = smelRepository.findAllByFishingSpot(fishingSpot, pageable);
         
         return FishingSpotInfo.SmeltPage.of(fishingSpot, smeltPage);
@@ -78,10 +80,12 @@ public class FishingSpotService {
         // TODO: 사용자 ID를 가져오지 못하는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
         
-        //TODO: NotFound 예외 처리
-        User user = userRepository.findById(userId).orElseThrow();
-        Smelt smelt = smelRepository.findById(command.smeltId()).orElseThrow();
-        FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId()).orElseThrow();
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Smelt smelt = smelRepository.findById(command.smeltId())
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "빙어 %d을/를 찾을 수 없습니다.".formatted(command.smeltId())));
+        FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
 
         Letter letter = Letter.of(command.letterTitle(), command.letterContent(), command.senderName());
         Quiz quiz = null;
@@ -106,13 +110,13 @@ public class FishingSpotService {
         // TODO: Not found
         Inventory senderInventory = smelt.getInventory();
         senderInventory.increaseCoin(5L);
-        Inventory recieverInventory = inventoryRepository.findByUser(smelt.getFishingSpot().getFisherman()).orElseThrow();
+        Inventory recieverInventory = inventoryRepository.findByUser(smelt.getFishingSpot().getFisherman())
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시꾼의 인벤토리를 찾을 수 없습니다."));
         recieverInventory.increaseCoin(3L);
 
         inventoryRepository.save(senderInventory);
         inventoryRepository.save(recieverInventory);
 
-        // TODO: 질문 조회
         return FishingSpotInfo.DetailSmelt.of(smelt, questions);
     }
 }
