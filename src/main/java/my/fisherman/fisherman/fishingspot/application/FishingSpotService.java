@@ -7,6 +7,8 @@ import my.fisherman.fisherman.fishingspot.application.command.FishingSpotCommand
 import my.fisherman.fisherman.fishingspot.application.dto.FishingSpotInfo;
 import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.fishingspot.repository.FishingSpotRepository;
+import my.fisherman.fisherman.inventory.domain.Inventory;
+import my.fisherman.fisherman.inventory.repository.InventoryRepository;
 import my.fisherman.fisherman.security.util.SecurityUtil;
 import my.fisherman.fisherman.smelt.domain.Letter;
 import my.fisherman.fisherman.smelt.domain.Question;
@@ -31,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class FishingSpotService {
 
     private final FishingSpotRepository fishingSpotRepository;
+    private final InventoryRepository inventoryRepository;
     private final SmeltRepository smelRepository;
     private final LetterRepository letterRepository;
     private final UserRepository userRepository;
@@ -99,6 +102,15 @@ public class FishingSpotService {
         letterRepository.save(letter);
         smelRepository.save(smelt);
         questionRepository.saveAll(questions);
+
+        // TODO: Not found
+        Inventory senderInventory = smelt.getInventory();
+        senderInventory.increaseCoin(5L);
+        Inventory recieverInventory = inventoryRepository.findByUser(smelt.getFishingSpot().getFisherman()).orElseThrow();
+        recieverInventory.increaseCoin(3L);
+
+        inventoryRepository.save(senderInventory);
+        inventoryRepository.save(recieverInventory);
 
         // TODO: 질문 조회
         return FishingSpotInfo.DetailSmelt.of(smelt, questions);
