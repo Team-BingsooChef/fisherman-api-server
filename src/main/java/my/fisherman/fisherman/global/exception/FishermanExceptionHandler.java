@@ -33,7 +33,7 @@ public class FishermanExceptionHandler {
                     .collect(Collectors.joining(", "));
         }
 
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.resolve(e.getStatusCode().value()));
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle("[GL001] 올바르지 않은 요청입니다.");
         problemDetail.setDetail(detailMessage);
 
