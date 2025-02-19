@@ -36,7 +36,7 @@ public class FishingSpotService {
 
     private final FishingSpotRepository fishingSpotRepository;
     private final InventoryRepository inventoryRepository;
-    private final SmeltRepository smelRepository;
+    private final SmeltRepository smeltRepository;
     private final LetterRepository letterRepository;
     private final UserRepository userRepository;
     private final QuizRepository quizRepository;
@@ -70,7 +70,7 @@ public class FishingSpotService {
         FishingSpot fishingSpot = fishingSpotRepository.findById(fishingSpotId)
             .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(fishingSpotId)));
 
-        Page<Smelt> smeltPage = smelRepository.findAllByFishingSpot(fishingSpot, pageable);
+        Page<Smelt> smeltPage = smeltRepository.findAllByFishingSpot(fishingSpot, pageable);
         
         return FishingSpotInfo.SmeltPage.of(fishingSpot, smeltPage);
     }
@@ -82,7 +82,7 @@ public class FishingSpotService {
         
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
-        Smelt smelt = smelRepository.findById(command.smeltId())
+        Smelt smelt = smeltRepository.findById(command.smeltId())
             .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "빙어 %d을/를 찾을 수 없습니다.".formatted(command.smeltId())));
         FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
             .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
@@ -104,10 +104,9 @@ public class FishingSpotService {
 
         quizRepository.save(quiz);
         letterRepository.save(letter);
-        smelRepository.save(smelt);
+        smeltRepository.save(smelt);
         questionRepository.saveAll(questions);
 
-        // TODO: Not found
         Inventory senderInventory = smelt.getInventory();
         senderInventory.increaseCoin(5L);
         Inventory recieverInventory = inventoryRepository.findByUser(smelt.getFishingSpot().getFisherman())
