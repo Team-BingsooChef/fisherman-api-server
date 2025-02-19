@@ -18,4 +18,8 @@ public class Coin {
     public void add(Long amount) {
         this.coin += amount;
     }
+
+    public void sub(Long amount) {
+        this.coin -= amount;
+    }
 }

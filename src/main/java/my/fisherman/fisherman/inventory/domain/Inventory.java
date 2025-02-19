@@ -46,6 +46,15 @@ public class Inventory {
         this.coin.add(amount);
     }
 
+    public void decreaseCoin(Long amount) {
+        if (this.coin.getCoin() < amount) {
+            // TODO: 코인 부족 에러 던지기
+            return;
+        }
+
+        this.coin.sub(amount);
+    }
+
     public void checkReadable(User user) {
         // TODO: ID 비교로 수정
         if (this.user == user) {
