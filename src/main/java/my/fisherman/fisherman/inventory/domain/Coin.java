@@ -15,4 +15,11 @@ public class Coin {
         return coin;
     }
 
+    public void add(Long amount) {
+        this.coin += amount;
+    }
+
+    public void sub(Long amount) {
+        this.coin -= amount;
+    }
 }

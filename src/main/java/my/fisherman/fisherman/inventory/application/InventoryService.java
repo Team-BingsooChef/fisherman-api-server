@@ -53,10 +53,11 @@ public class InventoryService {
 
         inventory.checkReadable(user);
 
+        inventory.decreaseCoin(5L);
         SmeltType smeltType = drawSmeltType();
-
         Smelt smelt = Smelt.of(inventory, smeltType);
 
+        inventoryRepository.save(inventory);
         Smelt savedSmelt = smeltRepository.save(smelt);
 
         return InventoryInfo.SmeltInfo.from(savedSmelt);
