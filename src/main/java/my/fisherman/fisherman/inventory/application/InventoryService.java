@@ -1,6 +1,8 @@
 package my.fisherman.fisherman.inventory.application;
 
 import lombok.RequiredArgsConstructor;
+import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.InventoryErrorCode;
 import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.inventory.repository.InventoryRepository;
@@ -34,9 +36,10 @@ public class InventoryService {
         Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow();
 
-        // TODO: Not found 예외 처리
-        User user = userRepository.findById(userId).orElseThrow();
-        Inventory inventory = inventoryRepository.findByUser(user).orElseThrow();
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Inventory inventory = inventoryRepository.findByUser(user)
+            .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자의 인벤토리를 찾을 수 없습니다."));
 
         return InventoryInfo.Simple.from(inventory);
     }
@@ -47,9 +50,10 @@ public class InventoryService {
         Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow();
 
-        // TODO: Not found 예외 처리
-        User user = userRepository.findById(userId).orElseThrow();
-        Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Inventory inventory = inventoryRepository.findById(inventoryId)
+            .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "인벤토리 %d을/를 찾을 수 없습니다.".formatted(inventoryId)));
 
         inventory.checkReadable(user);
 
@@ -69,9 +73,10 @@ public class InventoryService {
         Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow();
 
-        // TODO: Not found 예외 처리
-        User user = userRepository.findById(userId).orElseThrow();
-        Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Inventory inventory = inventoryRepository.findById(inventoryId)
+            .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "인벤토리 %d을/를 찾을 수 없습니다.".formatted(inventoryId)));
 
         inventory.checkReadable(user);
 
@@ -86,8 +91,10 @@ public class InventoryService {
                 .orElseThrow();
 
         // TODO: Not found 예외 처리
-        User user = userRepository.findById(userId).orElseThrow();
-        Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Inventory inventory = inventoryRepository.findById(inventoryId)
+            .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "인벤토리 %d을/를 찾을 수 없습니다.".formatted(inventoryId)));
 
         inventory.checkReadable(user);
 

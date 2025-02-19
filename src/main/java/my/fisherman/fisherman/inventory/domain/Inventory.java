@@ -3,6 +3,8 @@ package my.fisherman.fisherman.inventory.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.InventoryErrorCode;
 import my.fisherman.fisherman.user.domain.User;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -48,8 +50,7 @@ public class Inventory {
 
     public void decreaseCoin(Long amount) {
         if (this.coin.getCoin() < amount) {
-            // TODO: 코인 부족 에러 던지기
-            return;
+            throw new FishermanException(InventoryErrorCode.LACK_OF_COIN, "현재 코인 %d개로, %d개의 코인이 부족합니다.".formatted(this.coin.getCoin(), amount - this.coin.getCoin()));
         }
 
         this.coin.sub(amount);
@@ -62,6 +63,6 @@ public class Inventory {
         }
         
         // TODO: 커스텀 예외 던지기
-        // throw new RuntimeException();
+        throw new FishermanException(InventoryErrorCode.FORBIDDEN, "자신의 인벤토리만 볼 수 있습니다.");
     }
 }
