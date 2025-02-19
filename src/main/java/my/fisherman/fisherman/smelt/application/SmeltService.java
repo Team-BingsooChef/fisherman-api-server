@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.SmeltErrorCode;
 import my.fisherman.fisherman.security.util.SecurityUtil;
 import my.fisherman.fisherman.smelt.application.dto.QuizInfo;
 import my.fisherman.fisherman.smelt.application.dto.SmeltInfo;
@@ -29,7 +31,6 @@ public class SmeltService {
     private final SmeltTypeRepository smeltTypeRepository;
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
-    private final LetterRepository letterRepository;
     private final CommentRepository commentRepository;
 
     @Transactional
@@ -37,9 +38,10 @@ public class SmeltService {
         // TODO: ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
 
-        // Not found 예외 처리
-        User user = userRepository.findById(userId).orElseThrow();
-        Smelt smelt = smeltRepository.findById(smeltId).orElseThrow();
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Smelt smelt = smeltRepository.findById(smeltId)
+            .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "빙어 %d을/를 찾을 수 없습니다.".formatted(smeltId)));
 
         smelt.readLetter(user);
         smeltRepository.save(smelt);
@@ -52,12 +54,13 @@ public class SmeltService {
         // TODO: ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
 
-        // Not found 예외 처리
-        User user = userRepository.findById(userId).orElseThrow();
-        Smelt smelt = smeltRepository.findById(smeltId).orElseThrow();
-        Quiz quiz = smeltRepository.findById(smeltId).orElseThrow().getQuiz();
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Smelt smelt = smeltRepository.findById(smeltId)
+            .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "빙어 %d을/를 찾을 수 없습니다.".formatted(smeltId)));
+        Quiz quiz = smelt.getQuiz();
         if (quiz == null) {
-            // TODO: 퀴즈 Not found 예외 처리
+            throw new FishermanException(SmeltErrorCode.NOT_FOUND, "빙어 %d의 퀴즈를 찾을 수 없습니다".formatted(smeltId));
         }
 
         smelt.checkReadableQuiz(user);
@@ -72,12 +75,14 @@ public class SmeltService {
         // TODO: ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
 
-        // Not found 예외 처리
-        User user = userRepository.findById(userId).orElseThrow();
-        Smelt smelt = smeltRepository.findById(smeltId).orElseThrow();
-        Question question = questionRepository.findById(questionId).orElseThrow();
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Smelt smelt = smeltRepository.findById(smeltId)
+            .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "빙어 %d을/를 찾을 수 없습니다.".formatted(smeltId)));
+        Question question = questionRepository.findById(questionId)
+            .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "선지 %d을/를 찾을 수 없습니다.".formatted(questionId)));
         if (smelt.getQuiz() == null) {
-            // TODO: Quiz not found 예외 처리
+            throw new FishermanException(SmeltErrorCode.NOT_FOUND, "빙어 %d의 퀴즈를 찾을 수 없습니다".formatted(smeltId));
         }
 
         smelt.trySolve(user, question);
@@ -90,9 +95,10 @@ public class SmeltService {
         // TODO: ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
 
-        // Not found 예외 처리
-        User user = userRepository.findById(userId).orElseThrow();
-        Smelt smelt = smeltRepository.findById(smeltId).orElseThrow();
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Smelt smelt = smeltRepository.findById(smeltId)
+            .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "빙어 %d을/를 찾을 수 없습니다.".formatted(smeltId)));
 
         Comment comment = Comment.of(content);
 
@@ -106,7 +112,6 @@ public class SmeltService {
 
     @Transactional(readOnly = true)
     public List<SmeltInfo.Type> getSmeltTypes() {
-
         List<SmeltType> smeltTypes = smeltTypeRepository.findAll();
 
         return smeltTypes.stream().map(SmeltInfo.Type::from).toList();

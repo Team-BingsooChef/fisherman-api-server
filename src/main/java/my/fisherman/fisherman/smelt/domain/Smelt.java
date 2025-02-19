@@ -15,6 +15,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
+import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.SmeltErrorCode;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.user.domain.User;
 
@@ -68,13 +70,11 @@ public class Smelt {
     public void send(User user, FishingSpot fishingSpot, Letter letter, Quiz quiz) {
         // TODO: ID 비교로 수정
         if (user != this.inventory.getUser()) {
-            // TODO: 권한이 없는 경우 예외 던지기
-            return;
+            throw new FishermanException(SmeltErrorCode.FORBIDDEN, "자신이 뽑은 빙어만 보낼 수 있습니다.");
         }
 
         if (user == fishingSpot.getFisherman()) {
-            // TODO: 본인의 낚시터에 보내는 예외 던지기
-            return;
+            throw new FishermanException(SmeltErrorCode.NOT_MINE);
         }
 
         this.fishingSpot = fishingSpot;
@@ -83,19 +83,16 @@ public class Smelt {
     }
 
     public void registerComment(User user, Comment comment) {
-        if (this.fishingSpot == null) {
-            // TODO: 낚시터에 보내지 않은 빙어 예외
-            return;
+        if (this.letter == null) {
+            throw new FishermanException(SmeltErrorCode.NOT_FOUND, "빙어에 편지를 찾을 수 없습니다.");
         }
 
         if (user != this.fishingSpot.getFisherman()) {
-            // TODO: 권한이 없는 예외
-            return;
+            throw new FishermanException(SmeltErrorCode.FORBIDDEN, "자신이 받은 빙어에만 댓글을 남길 수 있습니다.");
         }
 
         if (this.status != SmeltStatus.READ) {
-            // TODO: 아직 읽지 않은 예외
-            return;
+            throw new FishermanException(SmeltErrorCode.YET_READ, "빙어를 읽은 후 댓글을 남길 수 있습니다.");
         }
 
         this.letter.registerComment(comment);
@@ -103,8 +100,7 @@ public class Smelt {
 
     public void readLetter(User user) {
         if (this.letter == null) {
-            // TODO: 편지 없는 예외
-            return;
+            throw new FishermanException(SmeltErrorCode.NOT_FOUND, "편지가 없습니다.");
         }
 
         checkReadableLetter(user);
@@ -116,13 +112,11 @@ public class Smelt {
         checkSolvable(user);
 
         if (this.quiz != question.getQuiz()) {
-            // TODO: 퀴즈의 선지가 아닌 예외
-            return;
+            throw new FishermanException(SmeltErrorCode.BAQ_QUESTION);
         }
 
         if (this.quiz.getIsSolved()) {
-            // TODO: 이미 푼 퀴즈 예외 처리
-            return;
+            throw new FishermanException(SmeltErrorCode.ALREADY_SOLVED);
         }
 
         Boolean isCorrect = question.getIsAnswer();
@@ -136,8 +130,7 @@ public class Smelt {
             return;
         }
 
-        // TODO: 권한 없는 예외 던지기
-        return;
+        throw new FishermanException(SmeltErrorCode.FORBIDDEN, "자신이 보냈거나 받은 빙어의 퀴즈만 볼 수 있습니다.");
     }
 
     private void checkReadableLetter(User user) {
@@ -147,13 +140,12 @@ public class Smelt {
 
         if (user == this.fishingSpot.getFisherman()) {
             if (this.quiz != null && this.quiz.getIsSolved() == false) {
-                // TODO: 아직 풀지 않은 편지 예외 던지기
-                return;
+                throw new FishermanException(SmeltErrorCode.YET_SOLVED);
             }
+            return;
         }
 
-        // TODO: 권한 없는 예외 던지기
-        return;
+        throw new FishermanException(SmeltErrorCode.FORBIDDEN, "자신이 보냈거나 받은 빙어의 편지만 볼 수 있습니다.");
     }
 
     private void checkSolvable(User user) {
@@ -161,7 +153,6 @@ public class Smelt {
             return;
         }
 
-        // TODO: 권한 없는 예외 던지기
-        return;
+        throw new FishermanException(SmeltErrorCode.FORBIDDEN, "자신이 받은 빙어의 퀴즈만 풀 수 있습니다.");
     }
 }
