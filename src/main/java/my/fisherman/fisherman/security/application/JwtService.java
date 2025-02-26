@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import my.fisherman.fisherman.global.exception.AuthErrorCode;
+import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.security.application.dto.UserPrinciple;
 import my.fisherman.fisherman.security.config.property.JwtProperties;
 
@@ -65,8 +67,7 @@ public class JwtService {
         } catch (ExpiredJwtException e) {
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            //TODO: 에러 세분화 필요
-            throw new IllegalArgumentException("Invalid token");
+            throw new FishermanException(AuthErrorCode.INVALID_TOKEN);
         }
         return false;
     }

@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.auth.repository.AuthenticationRepository;
 import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.fishingspot.repository.FishingSpotRepository;
+import my.fisherman.fisherman.global.exception.AuthErrorCode;
+import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.UserErrorCode;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.inventory.repository.InventoryRepository;
 import my.fisherman.fisherman.security.util.SecurityUtil;
@@ -29,16 +32,15 @@ public class UserService {
     public void signUp(UserCommand.SignUp command) {
         var email = command.email();
 
-        //TODO: 예외 세분화 필요
         var authResult = authenticationRepository.find(email)
             .orElseThrow();
         if (authResult.notVerified()) {
-            throw new IllegalArgumentException("이메일 인증이 필요합니다.");
+            throw new FishermanException(AuthErrorCode.EMAIL_NOT_VERIFIED);
         }
 
         userRepository.findUserByEmailWithWriteLock(email)
             .ifPresent(user -> {
-                throw new IllegalArgumentException("이미 가입된 이메일입니다.");
+                throw new FishermanException(UserErrorCode.ALREADY_EXISTS);
             });
 
         var encodedPassword = passwordEncoder.encode(command.password());
@@ -54,55 +56,55 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserInfo.Simple getMyInfo(Long userId) {
         var currentUserId = SecurityUtil.getCurrentUserId()
-            .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         if (currentUserId.equals(userId)) {
             var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
             return UserInfo.Simple.from(user);
         }
 
-        throw new IllegalArgumentException("본인의 정보만 조회 가능합니다.");
+        throw new FishermanException(UserErrorCode.FORBIDDEN);
     }
 
     @Transactional
     public void updateNickname(Long userId, UserCommand.UpdateNickname command) {
         var currentUserId = SecurityUtil.getCurrentUserId()
-            .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
         if (currentUserId.equals(userId)) {
             var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
             user.updateNickname(command.nickname());
         }
 
-        throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
+        throw new FishermanException(UserErrorCode.FORBIDDEN);
     }
 
     @Transactional
     public void updatePublic(Long userId, UserCommand.UpdatePublic command) {
         var currentUserId = SecurityUtil.getCurrentUserId()
-            .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
         if (currentUserId.equals(userId)) {
             var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
             user.updatePublic(command.isPublic());
         }
 
-        throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
+        throw new FishermanException(UserErrorCode.FORBIDDEN);
     }
 
     public void updatePassword(Long userId, UpdatePassword command) {
         var currentUserId = SecurityUtil.getCurrentUserId()
-            .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
         if (currentUserId.equals(userId)) {
             var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
             user.updatePassword(
                 passwordEncoder.encode(command.originPassword()),
                 passwordEncoder.encode(command.newPassword())
             );
         }
 
-        throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
+        throw new FishermanException(UserErrorCode.FORBIDDEN);
     }
 }
