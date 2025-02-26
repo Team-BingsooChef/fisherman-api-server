@@ -59,7 +59,7 @@ public class UserController implements UserSpecification {
         @Valid @RequestBody UpdatePublic request
     ) {
         var command = request.toCommand();
-        userService.updatePublic(userId, command);
+//        userService.updatePublic(userId, command);
 
         return ResponseEntity.ok().build();
     }

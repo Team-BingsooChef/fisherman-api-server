@@ -16,7 +16,6 @@ public record UserPrinciple(
     String email,
     String password,
     String nickname,
-    Boolean isPublic,
     OAuthProvider oauthType,
     Role role,
     Boolean isFreshUser
@@ -25,7 +24,7 @@ public record UserPrinciple(
     public static UserPrinciple from(User user) {
         return new UserPrinciple(
             user.getId(), user.getEmail(), user.getPassword(),
-            user.getNickname(), user.getIsPublic(), user.getOauthType(), user.getRole(),
+            user.getNickname(), user.getOauthType(), user.getRole(),
             user.getIsFreshUser());
     }
 
@@ -35,7 +34,6 @@ public record UserPrinciple(
             "id", id,
             "email", email,
             "nickname", nickname,
-            "isPublic", isPublic,
             "oauthType", oauthType,
             "role", role
         );

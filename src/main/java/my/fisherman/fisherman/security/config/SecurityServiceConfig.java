@@ -1,5 +1,7 @@
 package my.fisherman.fisherman.security.config;
 
+import my.fisherman.fisherman.fishingspot.repository.FishingSpotRepository;
+import my.fisherman.fisherman.inventory.repository.InventoryRepository;
 import my.fisherman.fisherman.security.application.CustomOAuth2UserService;
 import my.fisherman.fisherman.security.application.JwtService;
 import my.fisherman.fisherman.security.application.SecurityUserService;
@@ -13,14 +15,18 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 public class SecurityServiceConfig {
 
     @Bean
-    public SecurityUserService securityUserService(UserRepository userRepository) {
-        return new SecurityUserService(userRepository);
+    public SecurityUserService securityUserService(
+        UserRepository userRepository,
+        FishingSpotRepository fishingSpotRepository,
+        InventoryRepository inventoryRepository
+    ) {
+        return new SecurityUserService(userRepository, inventoryRepository, fishingSpotRepository);
     }
 
     @Bean
     public CustomOAuth2UserService customOAuth2UserService(
-            SecurityUserService securityUserService,
-            DefaultOAuth2UserService defaultOAuth2UserService
+        SecurityUserService securityUserService,
+        DefaultOAuth2UserService defaultOAuth2UserService
     ) {
         return new CustomOAuth2UserService(defaultOAuth2UserService, securityUserService);
     }
