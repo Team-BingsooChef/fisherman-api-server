@@ -14,12 +14,13 @@ import lombok.NoArgsConstructor;
 import my.fisherman.fisherman.user.domain.User;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FishingSpot {
 
+    @Id
     @Column(name = "fishing_spot_id")
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
