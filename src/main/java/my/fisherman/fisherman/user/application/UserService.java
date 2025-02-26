@@ -67,6 +67,20 @@ public class UserService {
         throw new FishermanException(UserErrorCode.FORBIDDEN);
     }
 
+    @Transactional(readOnly = true)
+    public UserInfo.Detail getMyDetailInfo(Long userId) {
+        var currentUserId = SecurityUtil.getCurrentUserId()
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
+
+        if (currentUserId.equals(userId)) {
+            var user = userRepository.findById(userId)
+                .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
+            return UserInfo.Detail.from(user);
+        }
+
+        throw new FishermanException(UserErrorCode.FORBIDDEN);
+    }
+
     @Transactional
     public void updateNickname(Long userId, UserCommand.UpdateNickname command) {
         var currentUserId = SecurityUtil.getCurrentUserId()

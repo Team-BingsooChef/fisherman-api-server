@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import my.fisherman.fisherman.user.api.dto.UserRequest;
 import my.fisherman.fisherman.user.api.dto.UserRequest.UpdatePublic;
 import my.fisherman.fisherman.user.api.dto.UserResponse.Info;
+import my.fisherman.fisherman.user.api.dto.UserResponse.healthCheck;
 import my.fisherman.fisherman.user.application.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,5 +75,13 @@ public class UserController implements UserSpecification {
         userService.updatePassword(userId, command);
 
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    @GetMapping("/health_check")
+    public ResponseEntity<healthCheck> healthCheck(Long userId) {
+        var userInfo = userService.getMyDetailInfo(userId);
+
+        return ResponseEntity.ok(healthCheck.from(userInfo));
     }
 }

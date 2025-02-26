@@ -69,4 +69,14 @@ public interface UserSpecification {
         }
     )
     ResponseEntity<Void> updatePassword(Long userId, UserRequest.UpdatePassword request);
+
+    @Operation(
+        summary = "회원 id 조회 / Health Check",
+        description = "회원 id를 조회합니다.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "회원 정보 조회 실패")
+        }
+    )
+    ResponseEntity<UserResponse.healthCheck> healthCheck(Long userId);
 }
