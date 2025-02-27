@@ -11,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import my.fisherman.fisherman.global.exception.AuthErrorCode;
+import my.fisherman.fisherman.global.exception.FishermanException;
 
 @Entity
 @Getter
@@ -72,10 +74,10 @@ public class User {
 
     public void updatePassword(String originPassword, String newPassword) {
         if (!this.password.equals(originPassword)) {
-            throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
+            throw new FishermanException(AuthErrorCode.INVALID_PASSWORD);
         }
         if (this.password.equals(newPassword)) {
-            throw new IllegalArgumentException("기존 비밀번호와 새 비밀번호가 동일합니다.");
+            throw new FishermanException(AuthErrorCode.SAME_PASSWORD);
         }
         this.password = newPassword;
     }

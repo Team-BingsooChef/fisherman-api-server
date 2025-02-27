@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import my.fisherman.fisherman.global.exception.AuthErrorCode;
+import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.security.application.command.SecurityUserCommand;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -14,6 +16,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 @RequiredArgsConstructor
 @Slf4j
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+
     private final DefaultOAuth2UserService defaultOAuth2UserService;
     private final SecurityUserService securityUserService;
 
@@ -21,14 +24,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         var oAuth2User = defaultOAuth2UserService.loadUser(userRequest);
 
-        var attributes = getAttributes(oAuth2User, userRequest.getClientRegistration().getRegistrationId());
+        var attributes = getAttributes(oAuth2User,
+            userRequest.getClientRegistration().getRegistrationId());
 
         var username = attributes.get("email");
         var oauthProvider = userRequest.getClientRegistration().getRegistrationId();
         var userCommand = new SecurityUserCommand.OAuthSignUp(username, "", oauthProvider);
 
         return securityUserService.getUserInfo(username, oauthProvider)
-                .orElseGet(() -> securityUserService.signUp(userCommand));
+            .orElseGet(() -> securityUserService.signUp(userCommand));
     }
 
     private Map<String, String> getAttributes(OAuth2User oAuth2User, String oauthProvider) {
@@ -40,7 +44,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             return getNaverAttributes(oAuth2User);
         }
 
-        throw new IllegalArgumentException("Unsupported OAuth2 provider: " + oauthProvider);
+        throw new FishermanException(AuthErrorCode.INVALID_OAUTH_PROVIDER);
     }
 
     private Map<String, String> getGoogleAttributes(OAuth2User oAuth2User) {
