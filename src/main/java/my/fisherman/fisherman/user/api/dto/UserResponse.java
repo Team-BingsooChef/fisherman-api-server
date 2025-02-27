@@ -15,12 +15,12 @@ public class UserResponse {
         }
     }
 
-    public record healthCheck(
+    public record HealthCheck(
         Long userId
     ) {
 
-        public static UserResponse.healthCheck from(UserInfo.Detail user) {
-            return new UserResponse.healthCheck(user.userId());
+        public static HealthCheck from(UserInfo.Detail user) {
+            return new HealthCheck(user.userId());
         }
     }
 

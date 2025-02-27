@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import my.fisherman.fisherman.user.api.dto.UserRequest;
 import my.fisherman.fisherman.user.api.dto.UserRequest.UpdateNickname;
 import my.fisherman.fisherman.user.api.dto.UserResponse;
+import my.fisherman.fisherman.user.api.dto.UserResponse.HealthCheck;
 import org.springframework.http.ResponseEntity;
 
 @Tag(name = "User", description = "회원 가입, 탈퇴등 회원 관련 정보를 관리합니다.")
@@ -78,5 +79,5 @@ public interface UserSpecification {
             @ApiResponse(responseCode = "404", description = "회원 정보 조회 실패")
         }
     )
-    ResponseEntity<UserResponse.healthCheck> healthCheck();
+    ResponseEntity<HealthCheck> healthCheck();
 }
