@@ -79,8 +79,8 @@ public class UserController implements UserSpecification {
 
     @Override
     @GetMapping("/health_check")
-    public ResponseEntity<healthCheck> healthCheck(Long userId) {
-        var userInfo = userService.getMyDetailInfo(userId);
+    public ResponseEntity<healthCheck> healthCheck() {
+        var userInfo = userService.getMyDetailInfo();
 
         return ResponseEntity.ok(healthCheck.from(userInfo));
     }

@@ -78,5 +78,5 @@ public interface UserSpecification {
             @ApiResponse(responseCode = "404", description = "회원 정보 조회 실패")
         }
     )
-    ResponseEntity<UserResponse.healthCheck> healthCheck(Long userId);
+    ResponseEntity<UserResponse.healthCheck> healthCheck();
 }

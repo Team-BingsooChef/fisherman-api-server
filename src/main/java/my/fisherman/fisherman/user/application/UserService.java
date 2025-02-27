@@ -68,17 +68,17 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserInfo.Detail getMyDetailInfo(Long userId) {
+    public UserInfo.Detail getMyDetailInfo() {
         var currentUserId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
-        if (currentUserId.equals(userId)) {
-            var user = userRepository.findById(userId)
-                .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
-            return UserInfo.Detail.from(user);
+        if (currentUserId == null) {
+            throw new FishermanException(UserErrorCode.FORBIDDEN);
         }
 
-        throw new FishermanException(UserErrorCode.FORBIDDEN);
+        var user = userRepository.findById(currentUserId)
+            .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
+        return UserInfo.Detail.from(user);
     }
 
     @Transactional
