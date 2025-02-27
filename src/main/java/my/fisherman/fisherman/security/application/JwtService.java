@@ -8,8 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import my.fisherman.fisherman.global.exception.AuthErrorCode;
 import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.AuthErrorCode;
 import my.fisherman.fisherman.security.application.dto.UserPrinciple;
 import my.fisherman.fisherman.security.config.property.JwtProperties;
 

@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import my.fisherman.fisherman.global.exception.AuthErrorCode;
 import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.AuthErrorCode;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

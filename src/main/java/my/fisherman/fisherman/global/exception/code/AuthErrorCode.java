@@ -1,7 +1,6 @@
-package my.fisherman.fisherman.global.exception;
+package my.fisherman.fisherman.global.exception.code;
 
 import lombok.AllArgsConstructor;
-import my.fisherman.fisherman.global.exception.code.ErrorCode;
 import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
