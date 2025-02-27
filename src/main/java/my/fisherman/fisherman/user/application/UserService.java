@@ -78,19 +78,6 @@ public class UserService {
         throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
     }
 
-    @Transactional
-    public void updatePublic(Long userId, UserCommand.UpdatePublic command) {
-        var currentUserId = SecurityUtil.getCurrentUserId()
-            .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
-        if (currentUserId.equals(userId)) {
-            var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
-            user.updatePublic(command.isPublic());
-        }
-
-        throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
-    }
-
     public void updatePassword(Long userId, UpdatePassword command) {
         var currentUserId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));

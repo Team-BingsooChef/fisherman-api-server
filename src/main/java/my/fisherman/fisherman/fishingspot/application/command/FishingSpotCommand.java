@@ -2,12 +2,12 @@ package my.fisherman.fisherman.fishingspot.application.command;
 
 import java.util.List;
 
-public class FishingSpotCommand{
-    
+public class FishingSpotCommand {
+
     public record SendSmelt(
         Long smeltId,
         Long fishingSpotId,
-        String senderName,    
+        String senderName,
         String letterTitle,
         String letterContent,
         Boolean existQuiz,
@@ -17,5 +17,13 @@ public class FishingSpotCommand{
         List<String> questions,
         int answerIndex
     ) {
+
+    }
+
+    public record UpdatePublic(
+        Long fishingSpotId,
+        Boolean isPublic
+    ) {
+
     }
 }

@@ -51,16 +51,6 @@ public interface UserSpecification {
     ResponseEntity<Void> updateNickname(Long userId, UpdateNickname request);
 
     @Operation(
-        summary = "공개 여부 수정",
-        description = "회원의 공개 여부를 수정합니다.",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "공개 여부 수정 성공"),
-            @ApiResponse(responseCode = "404", description = "공개 여부 수정 실패")
-        }
-    )
-    ResponseEntity<Void> updatePublic(Long userId, UserRequest.UpdatePublic request);
-
-    @Operation(
         summary = "비밀번호 수정",
         description = "비밀 번호를 수정합니다",
         responses = {

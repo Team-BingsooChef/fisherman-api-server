@@ -10,7 +10,6 @@ import java.util.List;
 import my.fisherman.fisherman.fishingspot.api.request.FishingSpotRequest;
 import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse;
 import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse.FishingSpot;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
@@ -18,13 +17,13 @@ import org.springframework.http.ResponseEntity;
 public interface FishingSpotSpecification {
 
     @Operation(
-            summary = "내 낚시터 조회 API",
-            description = "현재 사용자의 낚시터 정보를 반환합니다.<br>" + "Access token이 필요합니다.<br>",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.FishingSpot.class), mediaType = "application/json")
-                    )
-            }
+        summary = "내 낚시터 조회 API",
+        description = "현재 사용자의 낚시터 정보를 반환합니다.<br>" + "Access token이 필요합니다.<br>",
+        responses = {
+            @ApiResponse(
+                responseCode = "200", content = @Content(schema = @Schema(implementation = FishingSpotResponse.FishingSpot.class), mediaType = "application/json")
+            )
+        }
     )
     ResponseEntity<FishingSpotResponse.FishingSpot> getMine();
 
@@ -68,4 +67,14 @@ public interface FishingSpotSpecification {
         }
     )
     ResponseEntity<List<FishingSpot>> searchFishingSpot(String keyword);
+
+    @Operation(
+        summary = "공개 여부 수정",
+        description = "낚시터의 공개 여부를 수정합니다.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "공개 여부 수정 성공"),
+            @ApiResponse(responseCode = "404", description = "공개 여부 수정 실패")
+        }
+    )
+    ResponseEntity<Void> updatePublic(Long fishingSpotId, FishingSpotRequest.UpdatePublic request);
 }

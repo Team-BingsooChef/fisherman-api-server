@@ -23,7 +23,6 @@ import my.fisherman.fisherman.smelt.repository.QuizRepository;
 import my.fisherman.fisherman.smelt.repository.SmeltRepository;
 import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,9 +47,11 @@ public class FishingSpotService {
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
 
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+            .orElseThrow(
+                () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
         FishingSpot fishingSpot = fishingSpotRepository.findByFisherman(user)
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자의 낚시터를 찾을 수 없습니다."));
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
+                "현재 사용자의 낚시터를 찾을 수 없습니다."));
 
         return FishingSpotInfo.Simple.from(fishingSpot);
     }
@@ -68,10 +69,11 @@ public class FishingSpotService {
     @Transactional(readOnly = true)
     public FishingSpotInfo.SmeltPage getSmelts(Long fishingSpotId, Pageable pageable) {
         FishingSpot fishingSpot = fishingSpotRepository.findById(fishingSpotId)
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(fishingSpotId)));
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
+                "낚시터 %d을/를 찾을 수 없습니다.".formatted(fishingSpotId)));
 
         Page<Smelt> smeltPage = smeltRepository.findAllByFishingSpot(fishingSpot, pageable);
-        
+
         return FishingSpotInfo.SmeltPage.of(fishingSpot, smeltPage);
     }
 
@@ -79,15 +81,19 @@ public class FishingSpotService {
     public FishingSpotInfo.DetailSmelt sendSmeltTo(FishingSpotCommand.SendSmelt command) {
         // TODO: 사용자 ID를 가져오지 못하는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
-        
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
-        Smelt smelt = smeltRepository.findById(command.smeltId())
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "빙어 %d을/를 찾을 수 없습니다.".formatted(command.smeltId())));
-        FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
 
-        Letter letter = Letter.of(command.letterTitle(), command.letterContent(), command.senderName());
+        User user = userRepository.findById(userId)
+            .orElseThrow(
+                () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Smelt smelt = smeltRepository.findById(command.smeltId())
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
+                "빙어 %d을/를 찾을 수 없습니다.".formatted(command.smeltId())));
+        FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
+                "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
+
+        Letter letter = Letter.of(command.letterTitle(), command.letterContent(),
+            command.senderName());
         Quiz quiz = null;
         List<Question> questions = null;
         if (command.existQuiz()) {
@@ -96,10 +102,11 @@ public class FishingSpotService {
 
             questions = new ArrayList<>();
             for (int i = 0; i < command.questions().size(); i++) {
-                questions.add(Question.of(command.questions().get(i), i == command.answerIndex(), quiz));
+                questions.add(
+                    Question.of(command.questions().get(i), i == command.answerIndex(), quiz));
             }
         }
-        
+
         smelt.send(user, fishingSpot, letter, quiz);
 
         quizRepository.save(quiz);
@@ -109,13 +116,24 @@ public class FishingSpotService {
 
         Inventory senderInventory = smelt.getInventory();
         senderInventory.increaseCoin(5L);
-        Inventory recieverInventory = inventoryRepository.findByUser(smelt.getFishingSpot().getFisherman())
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시꾼의 인벤토리를 찾을 수 없습니다."));
+        Inventory recieverInventory = inventoryRepository.findByUser(
+                smelt.getFishingSpot().getFisherman())
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
+                "낚시꾼의 인벤토리를 찾을 수 없습니다."));
         recieverInventory.increaseCoin(3L);
 
         inventoryRepository.save(senderInventory);
         inventoryRepository.save(recieverInventory);
 
         return FishingSpotInfo.DetailSmelt.of(smelt, questions);
+    }
+
+    @Transactional
+    public void updatePublic(FishingSpotCommand.UpdatePublic command) {
+        var fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
+                "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
+        var userId = SecurityUtil.getCurrentUserId().orElseThrow();
+        fishingSpot.updatePublic(userId, command.isPublic());
     }
 }
