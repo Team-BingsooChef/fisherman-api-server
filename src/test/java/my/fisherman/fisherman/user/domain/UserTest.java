@@ -4,6 +4,7 @@ package my.fisherman.fisherman.user.domain;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import my.fisherman.fisherman.global.exception.FishermanException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +21,7 @@ class UserTest {
         String newPassword = "newPassword";
         // then
         assertThatThrownBy(() -> user.updatePassword(originPassword, newPassword))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("기존 비밀번호가 일치하지 않습니다.");
+            .isInstanceOf(FishermanException.class);
     }
 
     @Test
@@ -36,8 +36,8 @@ class UserTest {
         String newPassword = "originPassword";
         // then
         assertThatThrownBy(() -> user.updatePassword(originPassword, newPassword))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("기존 비밀번호와 새 비밀번호가 동일합니다.");
+            .isInstanceOf(FishermanException.class);
+
     }
 
     @Test
