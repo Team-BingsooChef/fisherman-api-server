@@ -19,4 +19,19 @@ public class UserInfo {
         }
     }
 
+    public record Detail(
+        Long userId,
+        String email,
+        String nickname
+    ) {
+
+        public static Detail from(User user) {
+            return new Detail(
+                user.getId(),
+                user.getEmail(),
+                user.getNickname()
+            );
+        }
+    }
+
 }
