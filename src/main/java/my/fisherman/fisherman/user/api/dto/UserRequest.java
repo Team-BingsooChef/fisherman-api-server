@@ -26,15 +26,6 @@ public class UserRequest {
         }
     }
 
-    public record UpdatePublic(
-        boolean isPublic
-    ) {
-
-        public UserCommand.UpdatePublic toCommand() {
-            return new UserCommand.UpdatePublic(isPublic);
-        }
-    }
-
     public record UpdatePassword(
         @Length(min = 10, max = 15) String originPassword,
         @Length(min = 10, max = 15) String newPassword

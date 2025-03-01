@@ -6,12 +6,11 @@ public class UserResponse {
 
     public record Info(
         String email,
-        String nickname,
-        Boolean isPublic
+        String nickname
     ) {
 
         public static UserResponse.Info from(UserInfo.Simple user) {
-            return new UserResponse.Info(user.email(), user.nickname(), user.isPublic());
+            return new UserResponse.Info(user.email(), user.nickname());
         }
     }
 

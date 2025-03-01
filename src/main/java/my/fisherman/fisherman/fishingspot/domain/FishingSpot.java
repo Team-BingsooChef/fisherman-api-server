@@ -18,8 +18,9 @@ import my.fisherman.fisherman.user.domain.User;
 @Entity
 public class FishingSpot {
 
+    @Id
     @Column(name = "fishing_spot_id")
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -37,5 +38,11 @@ public class FishingSpot {
 
     public static FishingSpot of(User fisherman) {
         return new FishingSpot(fisherman);
+    }
+
+    public void updatePublic(Long userId, Boolean isPublic) {
+        if (this.fisherman.getId().equals(userId)) {
+            this.isPublic = isPublic;
+        }
     }
 }

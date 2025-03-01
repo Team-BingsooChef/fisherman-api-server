@@ -1,14 +1,12 @@
 package my.fisherman.fisherman.fishingspot.api.request;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.hibernate.validator.constraints.Length;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import java.util.List;
+import java.util.Optional;
 import my.fisherman.fisherman.fishingspot.application.command.FishingSpotCommand;
+import org.hibernate.validator.constraints.Length;
 
 public class FishingSpotRequest {
 
@@ -27,6 +25,7 @@ public class FishingSpotRequest {
         String senderName,
         Optional<Quiz> quiz
     ) {
+
         public FishingSpotCommand.SendSmelt toCommand(Long fishingSpotId) {
             return new FishingSpotCommand.SendSmelt(
                 smeltId,
@@ -50,5 +49,18 @@ public class FishingSpotRequest {
         String type,
         List<String> questions,
         int answerIndex
-    ) {}
+    ) {
+
+    }
+
+
+    public record UpdatePublic(
+        boolean isPublic
+    ) {
+
+        public FishingSpotCommand.UpdatePublic toCommand(Long fishingSpotId) {
+            return new FishingSpotCommand.UpdatePublic(fishingSpotId, isPublic);
+
+        }
+    }
 }

@@ -34,9 +34,6 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private Boolean isPublic;
-
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OAuthProvider oauthType;
 
@@ -45,31 +42,25 @@ public class User {
 
     private Boolean isFreshUser;
 
-    private User(
-        String email, String password, String nickname, Boolean isPublic, OAuthProvider oauthType) {
+    private User(String email, String password, String nickname, OAuthProvider oauthType) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.isPublic = isPublic;
         this.oauthType = oauthType;
         this.role = Role.ROLE_USER;
         this.isFreshUser = true;
     }
 
     public static User of(String email, String password, String nickname) {
-        return new User(email, password, nickname, true, OAuthProvider.SELF);
+        return new User(email, password, nickname, OAuthProvider.SELF);
     }
 
     public static User of(String email, String nickname, OAuthProvider oauthType) {
-        return new User(email, "", nickname, true, oauthType);
+        return new User(email, "", nickname, oauthType);
     }
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public void updatePublic(boolean isPublic) {
-        this.isPublic = isPublic;
     }
 
     public void updatePassword(String originPassword, String newPassword) {

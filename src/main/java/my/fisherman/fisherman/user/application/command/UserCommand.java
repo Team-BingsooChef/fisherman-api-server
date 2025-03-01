@@ -21,12 +21,6 @@ public class UserCommand {
 
     }
 
-    public record UpdatePublic(
-        boolean isPublic
-    ) {
-
-    }
-
     public record UpdatePassword(
         String originPassword,
         String newPassword

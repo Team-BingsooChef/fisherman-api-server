@@ -8,11 +8,11 @@ import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse.Fishi
 import my.fisherman.fisherman.fishingspot.application.FishingSpotService;
 import my.fisherman.fisherman.fishingspot.application.command.FishingSpotCommand;
 import my.fisherman.fisherman.fishingspot.application.dto.FishingSpotInfo;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +43,7 @@ public class FishingSpotController implements FishingSpotSpecification {
     ) {
         FishingSpotCommand.SendSmelt command = request.toCommand(fishingSpotId);
         FishingSpotInfo.DetailSmelt info = fishingSpotService.sendSmeltTo(command);
-        
+
         return ResponseEntity.ok().body(FishingSpotResponse.ReceivedSmelt.from(info));
     }
 
@@ -70,5 +70,17 @@ public class FishingSpotController implements FishingSpotSpecification {
             .toList();
 
         return ResponseEntity.ok(responses);
+    }
+
+    @Override
+    @PatchMapping("/{fishing-spot-id}/public")
+    public ResponseEntity<Void> updatePublic(
+        @PathVariable("fishing-spot-id") Long fishingSpotId,
+        @RequestBody FishingSpotRequest.UpdatePublic request
+    ) {
+        var command = request.toCommand(fishingSpotId);
+        fishingSpotService.updatePublic(command);
+
+        return ResponseEntity.ok().build();
     }
 }
