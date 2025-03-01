@@ -14,4 +14,13 @@ public class UserResponse {
         }
     }
 
+    public record HealthCheck(
+        Long userId
+    ) {
+
+        public static HealthCheck from(UserInfo.Detail user) {
+            return new HealthCheck(user.userId());
+        }
+    }
+
 }
