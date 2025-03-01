@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 import my.fisherman.fisherman.user.domain.User;
 
 @Getter
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class FishingSpot {
 
     @Id
@@ -38,5 +38,11 @@ public class FishingSpot {
 
     public static FishingSpot of(User fisherman) {
         return new FishingSpot(fisherman);
+    }
+
+    public void updatePublic(Long userId, Boolean isPublic) {
+        if (this.fisherman.getId().equals(userId)) {
+            this.isPublic = isPublic;
+        }
     }
 }
