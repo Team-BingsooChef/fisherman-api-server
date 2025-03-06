@@ -42,25 +42,29 @@ public class User {
 
     private Boolean isFreshUser;
 
-    private User(String email, String password, String nickname, OAuthProvider oauthType) {
+    private User(
+        String email, String password, String nickname, OAuthProvider oauthType,
+        boolean freshUser
+    ) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.oauthType = oauthType;
         this.role = Role.ROLE_USER;
-        this.isFreshUser = true;
+        this.isFreshUser = freshUser;
     }
 
     public static User of(String email, String password, String nickname) {
-        return new User(email, password, nickname, OAuthProvider.SELF);
+        return new User(email, password, nickname, OAuthProvider.SELF, false);
     }
 
     public static User of(String email, String nickname, OAuthProvider oauthType) {
-        return new User(email, "", nickname, oauthType);
+        return new User(email, "", nickname, oauthType, true);
     }
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
+        isFreshUser = false;
     }
 
     public void updatePassword(String originPassword, String newPassword) {

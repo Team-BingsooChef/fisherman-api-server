@@ -32,7 +32,6 @@ public class UserService {
     public void signUp(UserCommand.SignUp command) {
         var email = command.email();
 
-        //TODO: 예외 세분화 필요
         var authResult = authenticationRepository.find(email)
             .orElseThrow();
         if (authResult.notVerified()) {
