@@ -5,7 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "url")
 public record UrlProperties(
     String frontend,
-    String[] allowedOrigins
+    String[] allowedOrigins,
+    String origin
 ) {
 
 }

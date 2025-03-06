@@ -1,6 +1,7 @@
 package my.fisherman.fisherman.security.config;
 
 import lombok.RequiredArgsConstructor;
+import my.fisherman.fisherman.auth.application.util.CookieUtil;
 import my.fisherman.fisherman.security.application.JwtService;
 import my.fisherman.fisherman.security.config.property.UrlProperties;
 import my.fisherman.fisherman.security.handler.CustomFailureHandler;
@@ -21,8 +22,10 @@ public class SecurityHandlerConfig {
 
     @Bean
     public CustomSuccessHandler customSuccessHandler(
-        JwtService jwtService
+        JwtService jwtService,
+        UrlProperties urlProperties,
+        CookieUtil cookieUtil
     ) {
-        return new CustomSuccessHandler(jwtService, urlProperties.frontend());
+        return new CustomSuccessHandler(jwtService, urlProperties.frontend(), cookieUtil);
     }
 }
