@@ -5,8 +5,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import my.fisherman.fisherman.global.exception.AuthErrorCode;
+import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.security.application.JwtService;
 import my.fisherman.fisherman.security.filter.token.JwtAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final String ACCESS_TOKEN_COOKIE = "access_token";
     private final JwtService jwtService;
 
     public JwtAuthenticationFilter(JwtService jwtService) {
@@ -29,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         HttpServletResponse response,
         FilterChain filterChain
     ) throws ServletException, IOException {
-        if (hasNoTokenHeader(request)) {
+        if (hasNoAccessCookie(request)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -44,20 +48,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean hasNoTokenHeader(HttpServletRequest request) {
-        return hasNoAuthorizationHeader(request) || hasNoBearerToken(request);
-    }
-
-    private boolean hasNoAuthorizationHeader(HttpServletRequest request) {
-        return request.getHeader("Authorization") == null;
-    }
-
-    private boolean hasNoBearerToken(HttpServletRequest request) {
-        return !request.getHeader("Authorization").startsWith("Bearer ");
+    private boolean hasNoAccessCookie(HttpServletRequest request) {
+        if (request.getCookies() == null) {
+            return true;
+        }
+        return Arrays.stream(request.getCookies())
+            .noneMatch(cookie -> ACCESS_TOKEN_COOKIE.equals(cookie.getName()));
     }
 
     private String getAccessToken(HttpServletRequest request) {
-        return request.getHeader("Authorization").substring(7);
+        return Arrays.stream(request.getCookies())
+            .filter(cookie -> ACCESS_TOKEN_COOKIE.equals(cookie.getName()))
+            .findFirst()
+            .orElseThrow(() -> new FishermanException(AuthErrorCode.INVALID_TOKEN))
+            .getValue();
     }
 
     private void setAuthentication(String accessToken) {
