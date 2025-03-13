@@ -7,6 +7,8 @@ import my.fisherman.fisherman.user.api.dto.UserRequest;
 import my.fisherman.fisherman.user.api.dto.UserResponse.HealthCheck;
 import my.fisherman.fisherman.user.api.dto.UserResponse.Info;
 import my.fisherman.fisherman.user.application.UserService;
+import my.fisherman.fisherman.user.application.command.UserCommand;
+import my.fisherman.fisherman.user.application.dto.UserInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,7 +29,7 @@ public class UserController implements UserSpecification {
     @Override
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(@Valid @RequestBody UserRequest.Create request) {
-        var command = request.toCommand();
+        UserCommand.SignUp command = request.toCommand();
         userService.signUp(command);
         return ResponseEntity.ok().build();
     }
@@ -35,7 +37,7 @@ public class UserController implements UserSpecification {
     @Override
     @GetMapping("/{userId}")
     public ResponseEntity<Info> getMyInfo(@PathVariable Long userId) {
-        var userInfo = userService.getMyInfo(userId);
+        UserInfo.Simple userInfo = userService.getMyInfo(userId);
 
         return ResponseEntity.ok(Info.from(userInfo));
 
@@ -47,7 +49,7 @@ public class UserController implements UserSpecification {
         @PathVariable(value = "user-id") Long userId,
         @Valid @RequestBody UserRequest.UpdateNickname request
     ) {
-        var command = request.toCommand();
+        UserCommand.UpdateNickname command = request.toCommand();
         userService.updateNickname(userId, command);
         return ResponseEntity.ok().build();
     }
@@ -58,7 +60,7 @@ public class UserController implements UserSpecification {
         @PathVariable(value = "user-id") Long userId,
         @Valid @RequestBody UserRequest.UpdatePassword request
     ) {
-        var command = request.toCommand();
+        UserCommand.UpdatePassword command = request.toCommand();
         userService.updatePassword(userId, command);
 
         return ResponseEntity.ok().build();
@@ -67,7 +69,7 @@ public class UserController implements UserSpecification {
     @Override
     @GetMapping("/health_check")
     public ResponseEntity<HealthCheck> healthCheck() {
-        var userInfo = userService.getMyDetailInfo();
+        UserInfo.Detail userInfo = userService.getMyDetailInfo();
 
         return ResponseEntity.ok(HealthCheck.from(userInfo));
     }

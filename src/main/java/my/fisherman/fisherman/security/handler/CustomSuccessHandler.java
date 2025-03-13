@@ -36,10 +36,10 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         HttpServletResponse response,
         Authentication authentication
     ) throws IOException, ServletException {
-        var info = (UserPrinciple) authentication.getPrincipal();
+        UserPrinciple info = (UserPrinciple) authentication.getPrincipal();
 
-        var accessToken = jwtService.createAccessToken(info);
-        var refreshToken = jwtService.createRefreshToken(info);
+        String accessToken = jwtService.createAccessToken(info);
+        String refreshToken = jwtService.createRefreshToken(info);
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.addHeader(HttpHeaders.SET_COOKIE,

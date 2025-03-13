@@ -1,6 +1,7 @@
 package my.fisherman.fisherman.user.application;
 
 import lombok.RequiredArgsConstructor;
+import my.fisherman.fisherman.auth.domain.Authentication;
 import my.fisherman.fisherman.auth.repository.AuthenticationRepository;
 import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.fishingspot.repository.FishingSpotRepository;
@@ -13,6 +14,7 @@ import my.fisherman.fisherman.security.util.SecurityUtil;
 import my.fisherman.fisherman.user.application.command.UserCommand;
 import my.fisherman.fisherman.user.application.command.UserCommand.UpdatePassword;
 import my.fisherman.fisherman.user.application.dto.UserInfo;
+import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,9 +32,9 @@ public class UserService {
 
     @Transactional
     public void signUp(UserCommand.SignUp command) {
-        var email = command.email();
+        String email = command.email();
 
-        var authResult = authenticationRepository.find(email)
+        Authentication authResult = authenticationRepository.find(email)
             .orElseThrow();
         if (authResult.notVerified()) {
             throw new FishermanException(AuthErrorCode.EMAIL_NOT_VERIFIED);
@@ -43,23 +45,23 @@ public class UserService {
                 throw new FishermanException(UserErrorCode.ALREADY_EXISTS);
             });
 
-        var encodedPassword = passwordEncoder.encode(command.password());
-        var user = command.toEntity(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(command.password());
+        User user = command.toEntity(encodedPassword);
         userRepository.save(user);
 
-        var inventory = Inventory.of(user);
-        var fishingSpot = FishingSpot.of(user);
+        Inventory inventory = Inventory.of(user);
+        FishingSpot fishingSpot = FishingSpot.of(user);
         inventoryRepository.save(inventory);
         fishingSpotRepository.save(fishingSpot);
     }
 
     @Transactional(readOnly = true)
     public UserInfo.Simple getMyInfo(Long userId) {
-        var currentUserId = SecurityUtil.getCurrentUserId()
+        Long currentUserId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         if (currentUserId.equals(userId)) {
-            var user = userRepository.findById(userId)
+            User user = userRepository.findById(userId)
                 .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
             return UserInfo.Simple.from(user);
         }
@@ -69,24 +71,24 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserInfo.Detail getMyDetailInfo() {
-        var currentUserId = SecurityUtil.getCurrentUserId()
+        Long currentUserId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         if (currentUserId == null) {
             throw new FishermanException(UserErrorCode.FORBIDDEN);
         }
 
-        var user = userRepository.findById(currentUserId)
+        User user = userRepository.findById(currentUserId)
             .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
         return UserInfo.Detail.from(user);
     }
 
     @Transactional
     public void updateNickname(Long userId, UserCommand.UpdateNickname command) {
-        var currentUserId = SecurityUtil.getCurrentUserId()
+        Long currentUserId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
         if (currentUserId.equals(userId)) {
-            var user = userRepository.findById(userId)
+            User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
             user.updateNickname(command.nickname());
         }
@@ -95,10 +97,10 @@ public class UserService {
     }
 
     public void updatePassword(Long userId, UpdatePassword command) {
-        var currentUserId = SecurityUtil.getCurrentUserId()
+        Long currentUserId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
         if (currentUserId.equals(userId)) {
-            var user = userRepository.findById(userId)
+            User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
             user.updatePassword(
                 passwordEncoder.encode(command.originPassword()),

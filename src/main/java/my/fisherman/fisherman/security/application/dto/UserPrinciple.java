@@ -41,7 +41,7 @@ public record UserPrinciple(
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        var authorize = new SimpleGrantedAuthority(role.name());
+        SimpleGrantedAuthority authorize = new SimpleGrantedAuthority(role.name());
         return List.of(authorize);
     }
 

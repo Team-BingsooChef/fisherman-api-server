@@ -63,9 +63,9 @@ public class FishingSpotController implements FishingSpotSpecification {
     public ResponseEntity<List<FishingSpot>> searchFishingSpot(
         @RequestParam(value = "keyword") String nickname
     ) {
-        var fishingSpots = fishingSpotService.searchFishingSpot(nickname);
+        List<FishingSpotInfo.Simple> fishingSpots = fishingSpotService.searchFishingSpot(nickname);
 
-        var responses = fishingSpots.stream()
+        List<FishingSpot> responses = fishingSpots.stream()
             .map(FishingSpot::from)
             .toList();
 
@@ -78,7 +78,7 @@ public class FishingSpotController implements FishingSpotSpecification {
         @PathVariable("fishing-spot-id") Long fishingSpotId,
         @RequestBody FishingSpotRequest.UpdatePublic request
     ) {
-        var command = request.toCommand(fishingSpotId);
+        FishingSpotCommand.UpdatePublic command = request.toCommand(fishingSpotId);
         fishingSpotService.updatePublic(command);
 
         return ResponseEntity.ok().build();
