@@ -62,7 +62,7 @@ public class FishingSpotService {
     @Transactional(readOnly = true)
     public List<FishingSpotInfo.Simple> searchFishingSpot(String keyword) {
 
-        var fishingSpots = fishingSpotRepository.searchByKeyword(keyword);
+        List<FishingSpot> fishingSpots = fishingSpotRepository.searchByKeyword(keyword);
 
         return fishingSpots.stream()
             .map(FishingSpotInfo.Simple::from)
@@ -133,9 +133,10 @@ public class FishingSpotService {
 
     @Transactional
     public void updatePublic(FishingSpotCommand.UpdatePublic command) {
-        var fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
-        var userId = SecurityUtil.getCurrentUserId().orElseThrow();
+        FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
+                "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
+        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
         fishingSpot.updatePublic(userId, command.isPublic());
     }
 }

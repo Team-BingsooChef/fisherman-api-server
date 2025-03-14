@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class AuthenticationRepository implements RedisRepository<Authentication> {
+
     private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
 
@@ -22,13 +23,13 @@ public class AuthenticationRepository implements RedisRepository<Authentication>
     @Override
     public void save(String key, Authentication value) {
         redisTemplate.opsForValue()
-                .set(KEY_PREFIX + key, value, EXPIRE_SECONDS, EXPIRE_UNIT);
+            .set(KEY_PREFIX + key, value, EXPIRE_SECONDS, EXPIRE_UNIT);
     }
 
     @Override
     public Optional<Authentication> find(String key) {
-        var value = redisTemplate.opsForValue()
-                .get(KEY_PREFIX + key);
+        Object value = redisTemplate.opsForValue()
+            .get(KEY_PREFIX + key);
         return Optional.ofNullable(objectMapper.convertValue(value, Authentication.class));
 
     }

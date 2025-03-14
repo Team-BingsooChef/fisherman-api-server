@@ -5,8 +5,9 @@ import jakarta.validation.constraints.Email;
 public class AuthRequest {
 
     public record Mail(
-            @Email
-            String email
+        @Email(message = "이메일 형식이 올바르지 않습니다.")
+        String email
     ) {
+
     }
 }

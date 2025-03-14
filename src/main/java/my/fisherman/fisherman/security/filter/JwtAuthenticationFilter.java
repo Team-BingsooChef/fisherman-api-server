@@ -12,6 +12,7 @@ import my.fisherman.fisherman.global.exception.AuthErrorCode;
 import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.security.application.JwtService;
 import my.fisherman.fisherman.security.filter.token.JwtAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,11 +66,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthentication(String accessToken) {
-        var id = jwtService.getIdFromAccessToken(accessToken);
+        Long id = jwtService.getIdFromAccessToken(accessToken);
         List<GrantedAuthority> role = List.of(
             new SimpleGrantedAuthority(jwtService.getRoleFromAccessToken(accessToken))
         );
-        var authentication = new JwtAuthenticationToken(id, role);
+        Authentication authentication = new JwtAuthenticationToken(id, role);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

@@ -7,9 +7,9 @@ import org.hibernate.validator.constraints.Length;
 public class UserRequest {
 
     public record Create(
-        @Email String email,
-        @Length(min = 10, max = 15) String password,
-        @Length(max = 8) String nickname
+        @Email(message = "이메일 형식이 올바르지 않습니다.") String email,
+        @Length(min = 10, max = 15, message = "비밀번호의 길이는 10 ~ 15자 사이입니다.") String password,
+        @Length(max = 8, message = "닉네임의 길이는 8자 이하여야 합니다.") String nickname
     ) {
 
         public UserCommand.SignUp toCommand() {
@@ -18,7 +18,7 @@ public class UserRequest {
     }
 
     public record UpdateNickname(
-        @Length(max = 8) String nickname
+        @Length(max = 8, message = "닉네임의 길이는 8자 이하여야 합니다.") String nickname
     ) {
 
         public UserCommand.UpdateNickname toCommand() {
@@ -27,8 +27,10 @@ public class UserRequest {
     }
 
     public record UpdatePassword(
-        @Length(min = 10, max = 15) String originPassword,
-        @Length(min = 10, max = 15) String newPassword
+        @Length(min = 10, max = 15, message = "비밀번호의 길이는 10 ~ 15자 사이입니다.")
+        String originPassword,
+        @Length(min = 10, max = 15, message = "비밀번호의 길이는 10 ~ 15자 사이입니다.")
+        String newPassword
     ) {
 
         public UserCommand.UpdatePassword toCommand() {

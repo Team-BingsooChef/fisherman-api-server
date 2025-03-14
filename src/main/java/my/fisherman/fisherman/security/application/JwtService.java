@@ -32,7 +32,7 @@ public class JwtService {
     }
 
     public String createAccessToken(UserPrinciple userPrinciple) {
-        var time = System.currentTimeMillis();
+        long time = System.currentTimeMillis();
         return Jwts.builder()
             .claim("id", userPrinciple.id())
             .claim("role", userPrinciple.role())
@@ -43,7 +43,7 @@ public class JwtService {
     }
 
     public String createRefreshToken(UserPrinciple userPrinciple) {
-        var time = System.currentTimeMillis();
+        long time = System.currentTimeMillis();
         return Jwts.builder()
             .claim("id", userPrinciple.id())
             .issuedAt(new Date(time))

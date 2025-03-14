@@ -22,14 +22,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        var oAuth2User = defaultOAuth2UserService.loadUser(userRequest);
+        OAuth2User oAuth2User = defaultOAuth2UserService.loadUser(userRequest);
 
-        var attributes = getAttributes(oAuth2User,
+        Map<String, String> attributes = getAttributes(oAuth2User,
             userRequest.getClientRegistration().getRegistrationId());
 
-        var username = attributes.get("email");
-        var oauthProvider = userRequest.getClientRegistration().getRegistrationId();
-        var userCommand = new SecurityUserCommand.OAuthSignUp(username, "", oauthProvider);
+        String username = attributes.get("email");
+        String oauthProvider = userRequest.getClientRegistration().getRegistrationId();
+        SecurityUserCommand.OAuthSignUp userCommand = new SecurityUserCommand.OAuthSignUp(username,
+            "", oauthProvider);
 
         return securityUserService.getUserInfo(username, oauthProvider)
             .orElseGet(() -> securityUserService.signUp(userCommand));

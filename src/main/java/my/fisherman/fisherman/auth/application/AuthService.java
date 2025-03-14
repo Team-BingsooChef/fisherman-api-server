@@ -1,5 +1,6 @@
 package my.fisherman.fisherman.auth.application;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.auth.application.util.CodeGenerator;
 import my.fisherman.fisherman.auth.domain.Authentication;
@@ -23,17 +24,17 @@ public class AuthService {
     private final AuthenticationRepository authenticationRepository;
 
     public void sendAuthCode(String email) {
-        var authCode = CodeGenerator.generateCode(AUTH_CODE_LENGTH);
-        var mailContext = thymeleafUtil.createAuthCodeContext(authCode);
+        List<Integer> authCode = CodeGenerator.generateCode(AUTH_CODE_LENGTH);
+        String mailContext = thymeleafUtil.createAuthCodeContext(authCode);
 
         mailUtil.sendMail(email, mailContext, AUTH_CODE_SUBJECT);
 
-        var authentication = new Authentication(email, authCode);
+        Authentication authentication = new Authentication(email, authCode);
         authenticationRepository.save(email, authentication);
     }
 
     public void verifyAuthCode(String email, String authCode) {
-        var authentication = authenticationRepository.find(email)
+        Authentication authentication = authenticationRepository.find(email)
             .orElseThrow(() -> new FishermanException(AuthErrorCode.INVALID_AUTH_REQUEST));
 
         authentication.verify(authCode);

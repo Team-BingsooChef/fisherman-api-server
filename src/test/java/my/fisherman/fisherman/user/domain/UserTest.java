@@ -14,7 +14,7 @@ class UserTest {
     @DisplayName("비밀번호 변경 테스트_원래 비밀번호와 다를경우")
     void updatePasswordTest_differentOriginPassword() {
         // given
-        var user = User.of("test", "originPassword", "nickname");
+        User user = User.of("test", "originPassword", "nickname");
 
         // when
         String originPassword = "differentOriginPassword";
@@ -28,7 +28,7 @@ class UserTest {
     @DisplayName("비밀번호 변경 테스트_원래 비밀번호와 새로운 비밀번호와 같을경우")
     void updatePasswordTest_sameOriginPasswordAndNewPassword() {
         // given
-        var user = User.of("test", "originPassword", "nickname");
+        User user = User.of("test", "originPassword", "nickname");
 
         // when
 
@@ -44,7 +44,7 @@ class UserTest {
     @DisplayName("비밀번호 변경 테스트_정상적인 비밀번호 변경")
     void updatePasswordTest() {
         // given
-        var user = User.of("test", "originPassword", "nickname");
+        User user = User.of("test", "originPassword", "nickname");
 
         // when
         String originPassword = "originPassword";

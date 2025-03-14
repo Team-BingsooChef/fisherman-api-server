@@ -9,6 +9,7 @@ import my.fisherman.fisherman.inventory.repository.InventoryRepository;
 import my.fisherman.fisherman.security.application.command.SecurityUserCommand;
 import my.fisherman.fisherman.security.application.dto.UserPrinciple;
 import my.fisherman.fisherman.user.domain.OAuthProvider;
+import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SecurityUserService implements UserDetailsService {
 
-    public final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final InventoryRepository inventoryRepository;
     private final FishingSpotRepository fishingSpotRepository;
 
@@ -31,20 +32,20 @@ public class SecurityUserService implements UserDetailsService {
                     "이미 가입된 이메일입니다.[%s]".formatted(user.getOauthType()));
             });
 
-        var user = command.toEntity();
+        User user = command.toEntity();
         userRepository.save(user);
 
-        var inventory = Inventory.of(user);
-        var fishingSpot = FishingSpot.of(user);
+        Inventory inventory = Inventory.of(user);
+        FishingSpot fishingSpot = FishingSpot.of(user);
         inventoryRepository.save(inventory);
         fishingSpotRepository.save(fishingSpot);
-        
+
         return UserPrinciple.from(user);
     }
 
     @Transactional(readOnly = true)
     public Optional<UserPrinciple> getUserInfo(String email, String oauthProvider) {
-        var oauthType = OAuthProvider.of(oauthProvider);
+        OAuthProvider oauthType = OAuthProvider.of(oauthProvider);
         return userRepository.findUserByEmailAndOauthType(email, oauthType)
             .map(UserPrinciple::from);
     }
