@@ -5,7 +5,7 @@ import java.util.List;
 public class FishingSpotCommand {
 
     public record SendSmelt(
-        Long smeltId,
+        Long smeltTypeId,
         Long fishingSpotId,
         String senderName,
         String letterTitle,

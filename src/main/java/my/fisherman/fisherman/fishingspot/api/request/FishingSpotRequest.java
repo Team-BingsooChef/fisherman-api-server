@@ -11,9 +11,9 @@ import org.hibernate.validator.constraints.Length;
 public class FishingSpotRequest {
 
     public record Send(
-        @NotNull(message = "빙어 ID는 필수입니다.")
-        @Positive(message = "빙어 ID는 양수여야 합니다.")
-        Long smeltId,
+        @NotNull(message = "빙어 종류 ID는 필수입니다.")
+        @Positive(message = "빙어 종류 ID는 양수여야 합니다.")
+        Long smeltTypeId,
         @NotBlank(message = "편지 제목은 필수입니다.")
         @Length(max = 15, message = "편지의 제목은 15자 이하여야 합니다.")
         String title,
@@ -28,7 +28,7 @@ public class FishingSpotRequest {
 
         public FishingSpotCommand.SendSmelt toCommand(Long fishingSpotId) {
             return new FishingSpotCommand.SendSmelt(
-                smeltId,
+                smeltTypeId,
                 fishingSpotId,
                 senderName,
                 title,

@@ -4,12 +4,13 @@ import org.springframework.http.HttpStatus;
 
 public enum SmeltErrorCode implements ErrorCode {
     NOT_MINE(HttpStatus.BAD_REQUEST, "SM003", "본인의 낚시터에는 빙어를 보낼 수 없습니다"),
-    BAQ_QUESTION(HttpStatus.BAD_REQUEST, "SM004", "빙어의 선지가 아닙니다."),
+    BAD_QUESTION(HttpStatus.BAD_REQUEST, "SM004", "빙어의 선지가 아닙니다."),
     YET_SOLVED(HttpStatus.BAD_REQUEST, "SM011", "아직 풀지 않은 빙어입니다."),
     YET_READ(HttpStatus.BAD_REQUEST, "SM012", "아직 읽지 않은 빙어입니다."),
     
     ALREADY_SOLVED(HttpStatus.BAD_REQUEST, "SM021", "이미 해결된 퀴즈입니다."),
     ALREADY_COMMENT(HttpStatus.BAD_REQUEST, "SM022", "이미 댓글이 있는 편지입니다."),
+    ALREADY_SENT(HttpStatus.BAD_REQUEST, "SM023", "이미 보낸 빙어입니다."),
 
     NOT_MATCH(HttpStatus.BAD_REQUEST, "SM031", "주어진 문자열을 매치할 수 없습니다."),
 
