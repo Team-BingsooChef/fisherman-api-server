@@ -10,6 +10,7 @@ public enum SmeltErrorCode implements ErrorCode {
     
     ALREADY_SOLVED(HttpStatus.BAD_REQUEST, "SM021", "이미 해결된 퀴즈입니다."),
     ALREADY_COMMENT(HttpStatus.BAD_REQUEST, "SM022", "이미 댓글이 있는 편지입니다."),
+    ALREADY_SENT(HttpStatus.BAD_REQUEST, "SM023", "이미 보낸 빙어입니다."),
 
     NOT_MATCH(HttpStatus.BAD_REQUEST, "SM031", "주어진 문자열을 매치할 수 없습니다."),
 
