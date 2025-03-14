@@ -117,7 +117,7 @@ public class Smelt {
         checkSolvable(user);
 
         if (this.quiz != question.getQuiz()) {
-            throw new FishermanException(SmeltErrorCode.BAQ_QUESTION);
+            throw new FishermanException(SmeltErrorCode.BAD_QUESTION);
         }
 
         if (this.quiz.getIsSolved()) {
