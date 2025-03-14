@@ -86,18 +86,18 @@ public class FishingSpotService {
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
 
         User user = userRepository.findById(userId)
-            .orElseThrow(
-                () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
 
-        Inventory inventory = inventoryRepository.findByUser(user).orElseThrow(
-                () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "사용자 %d의 인벤토리를 찾을 수 없습니다.".formatted(user.getId())));
-        SmeltType smeltType = smeltTypeRepository.findById(command.smeltTypeId()).orElseThrow(
-                () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "빙어 종류 %d을/를 찾을 수 없습니다.".formatted(command.smeltTypeId())));
+        Inventory inventory = inventoryRepository.findByUser(user)
+                .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "사용자 %d의 인벤토리를 찾을 수 없습니다.".formatted(user.getId())));
+        SmeltType smeltType = smeltTypeRepository.findById(command.smeltTypeId()).
+                orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "빙어 종류 %d을/를 찾을 수 없습니다.".formatted(command.smeltTypeId())));
 
-        Smelt smelt = smeltRepository.findByInventoryAndSmeltType(inventory, smeltType).orElseThrow(
-                () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "인벤토리 %d에서 빙어 종류가 %d인 빙어를 찾을 수 없습니다.".formatted(inventory.getId(), smeltType.getId())));
-        FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId()).orElseThrow(
-                () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
+        Smelt smelt = smeltRepository.findByInventoryAndSmeltType(inventory, smeltType)
+                .orElseThrow(
+                        () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "인벤토리 %d에서 빙어 종류가 %d인 빙어를 찾을 수 없습니다.".formatted(inventory.getId(), smeltType.getId())));
+        FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
+                .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
 
         Letter letter = Letter.of(command.letterTitle(), command.letterContent(), command.senderName());
         Quiz quiz = null;
@@ -121,10 +121,8 @@ public class FishingSpotService {
 
         Inventory senderInventory = smelt.getInventory();
         senderInventory.increaseCoin(5L);
-        Inventory recieverInventory = inventoryRepository.findByUser(
-                smelt.getFishingSpot().getFisherman())
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
-                "낚시꾼의 인벤토리를 찾을 수 없습니다."));
+        Inventory recieverInventory = inventoryRepository.findByUser(smelt.getFishingSpot().getFisherman())
+                .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시꾼의 인벤토리를 찾을 수 없습니다."));
         recieverInventory.increaseCoin(3L);
 
         inventoryRepository.save(senderInventory);
@@ -136,8 +134,7 @@ public class FishingSpotService {
     @Transactional
     public void updatePublic(FishingSpotCommand.UpdatePublic command) {
         var fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
-                "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
         var userId = SecurityUtil.getCurrentUserId().orElseThrow();
         fishingSpot.updatePublic(userId, command.isPublic());
     }
