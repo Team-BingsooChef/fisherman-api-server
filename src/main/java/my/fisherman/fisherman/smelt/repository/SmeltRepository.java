@@ -23,5 +23,5 @@ public interface SmeltRepository extends JpaRepository<Smelt, Long> {
     @Query("select new my.fisherman.fisherman.smelt.repository.dto.SmeltTypeCount(s.type.id, count(*)) from Smelt s where s.inventory =:inventory group by s.type")
     List<SmeltTypeCount> countAllByInventoryIsGroupByType(Inventory inventory);
 
-    Optional<Smelt> findByInventoryAndSmeltType(Inventory inventory, SmeltType smeltType);
+    Optional<Smelt> findByInventoryAndType(Inventory inventory, SmeltType smeltType);
 }
