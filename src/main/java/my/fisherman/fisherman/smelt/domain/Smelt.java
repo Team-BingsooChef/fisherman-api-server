@@ -77,9 +77,14 @@ public class Smelt {
             throw new FishermanException(SmeltErrorCode.NOT_MINE);
         }
 
+        if (this.status != SmeltStatus.DREW) {
+            throw new FishermanException(SmeltErrorCode.ALREADY_SENT);
+        }
+
         this.fishingSpot = fishingSpot;
         this.letter = letter;
         this.quiz = quiz;
+        this.status = SmeltStatus.UNREAD;
     }
 
     public void registerComment(User user, Comment comment) {
@@ -112,7 +117,7 @@ public class Smelt {
         checkSolvable(user);
 
         if (this.quiz != question.getQuiz()) {
-            throw new FishermanException(SmeltErrorCode.BAQ_QUESTION);
+            throw new FishermanException(SmeltErrorCode.BAD_QUESTION);
         }
 
         if (this.quiz.getIsSolved()) {
