@@ -32,9 +32,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    //Docs
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3'
-
     //Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-oauth2-client'
@@ -47,9 +44,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly("com.h2database:h2")
-    // test
+
+    //Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    //Docs
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3'
 
     //Monitoring
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
