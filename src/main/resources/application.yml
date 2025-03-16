@@ -12,5 +12,6 @@ spring:
       - mail
       - redis
       - jwt
+      - actuator
 springdoc:
   use-fqn: true
