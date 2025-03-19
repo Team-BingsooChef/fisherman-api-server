@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import my.fisherman.fisherman.auth.api.dto.AuthRequest;
 import my.fisherman.fisherman.auth.application.AuthService;
+import my.fisherman.fisherman.auth.application.dto.Token;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -42,7 +43,7 @@ public class AuthController implements AuthSpecification {
     public ResponseEntity<Void> refreshToken(
         @CookieValue("refresh_token") String refreshToken
     ) {
-        var cookie = authService.refreshToken(refreshToken);
+        Token cookie = authService.refreshToken(refreshToken);
 
         return ResponseEntity.ok()
             .header(HttpHeaders.SET_COOKIE, cookie.accessToken().toString())

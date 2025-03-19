@@ -14,7 +14,9 @@ import my.fisherman.fisherman.global.util.MailUtil;
 import my.fisherman.fisherman.global.util.ThymeleafUtil;
 import my.fisherman.fisherman.security.application.JwtService;
 import my.fisherman.fisherman.security.application.dto.UserPrinciple;
+import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -53,19 +55,19 @@ public class AuthService {
     }
 
     public Token refreshToken(String refreshToken) {
-        var userId = refreshTokenRepository.find(refreshToken)
+        Long userId = refreshTokenRepository.find(refreshToken)
             .orElseThrow(() -> new FishermanException(AuthErrorCode.INVALID_REFRESH_TOKEN));
         refreshTokenRepository.delete(refreshToken);
 
-        var user = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(AuthErrorCode.INVALID_REFRESH_TOKEN));
-        var userPrincipal = UserPrinciple.from(user);
+        UserPrinciple userPrincipal = UserPrinciple.from(user);
 
-        var accessToken = jwtService.createAccessToken(userPrincipal);
-        var newRefreshToken = jwtService.createRefreshToken(userPrincipal);
+        String accessToken = jwtService.createAccessToken(userPrincipal);
+        String newRefreshToken = jwtService.createRefreshToken(userPrincipal);
 
-        var accessCookie = cookieUtil.generateCookie("access_token", accessToken);
-        var refreshCookie = cookieUtil.generateCookie("refresh_token", newRefreshToken);
+        ResponseCookie accessCookie = cookieUtil.generateCookie("access_token", accessToken);
+        ResponseCookie refreshCookie = cookieUtil.generateCookie("refresh_token", newRefreshToken);
 
         return new Token(accessCookie, refreshCookie);
     }

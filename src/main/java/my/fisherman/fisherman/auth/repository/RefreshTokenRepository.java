@@ -28,7 +28,7 @@ public class RefreshTokenRepository implements RedisRepository<Long> {
 
     @Override
     public Optional<Long> find(String key) {
-        var value = redisTemplate.opsForValue()
+        Object value = redisTemplate.opsForValue()
             .get(REFRESH_TOKEN_PREFIX + key);
         return Optional.ofNullable(objectMapper.convertValue(value, Long.class));
     }
