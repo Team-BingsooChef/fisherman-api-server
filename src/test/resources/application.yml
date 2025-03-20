@@ -57,3 +57,9 @@ jwt:
   refresh-secret: abcabcabcabcabcabca232bcabcabcabcabcabcabc
   access-token-expiration: 1
   refresh-token-expiration: 1
+
+
+url:
+  frontend: http://localhost:3000
+  allowed-origins: http://localhost:3000
+  origin: localhost
