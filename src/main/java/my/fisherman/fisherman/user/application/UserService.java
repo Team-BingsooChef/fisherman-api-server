@@ -86,27 +86,29 @@ public class UserService {
     @Transactional
     public void updateNickname(Long userId, UserCommand.UpdateNickname command) {
         Long currentUserId = SecurityUtil.getCurrentUserId()
-            .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
+        .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         if (!currentUserId.equals(userId)) {
-            throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
+            throw new FishermanException(UserErrorCode.FORBIDDEN);
         }
-        
+
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+            .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
+
         user.updateNickname(command.nickname());
     }
 
     public void updatePassword(Long userId, UpdatePassword command) {
         Long currentUserId = SecurityUtil.getCurrentUserId()
-            .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
+        .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         if (!currentUserId.equals(userId)) {
-            throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
+            throw new FishermanException(UserErrorCode.FORBIDDEN);
         }
-        
+
         User user = userRepository.findById(userId)
-        .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+            .orElseThrow(() -> new FishermanException(UserErrorCode.NOT_FOUND));
+
         user.updatePassword(
             passwordEncoder.encode(command.originPassword()),
             passwordEncoder.encode(command.newPassword())
