@@ -87,27 +87,29 @@ public class UserService {
     public void updateNickname(Long userId, UserCommand.UpdateNickname command) {
         Long currentUserId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
-        if (currentUserId.equals(userId)) {
-            User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
-            user.updateNickname(command.nickname());
-        }
 
-        throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
+        if (!currentUserId.equals(userId)) {
+            throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
+        }
+        
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+        user.updateNickname(command.nickname());
     }
 
     public void updatePassword(Long userId, UpdatePassword command) {
         Long currentUserId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
-        if (currentUserId.equals(userId)) {
-            User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
-            user.updatePassword(
-                passwordEncoder.encode(command.originPassword()),
-                passwordEncoder.encode(command.newPassword())
-            );
-        }
 
-        throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
+        if (!currentUserId.equals(userId)) {
+            throw new IllegalArgumentException("본인의 정보만 수정 가능합니다.");
+        }
+        
+        User user = userRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+        user.updatePassword(
+            passwordEncoder.encode(command.originPassword()),
+            passwordEncoder.encode(command.newPassword())
+        );
     }
 }
