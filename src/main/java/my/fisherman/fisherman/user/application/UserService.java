@@ -98,6 +98,7 @@ public class UserService {
         user.updateNickname(command.nickname());
     }
 
+    @Transactional
     public void updatePassword(Long userId, UpdatePassword command) {
         Long currentUserId = SecurityUtil.getCurrentUserId()
         .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
