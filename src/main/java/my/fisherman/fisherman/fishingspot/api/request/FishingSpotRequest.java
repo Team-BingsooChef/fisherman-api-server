@@ -1,10 +1,13 @@
 package my.fisherman.fisherman.fishingspot.api.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 import java.util.Optional;
+
+import jakarta.validation.constraints.Size;
 import my.fisherman.fisherman.fishingspot.application.command.FishingSpotCommand;
 import org.hibernate.validator.constraints.Length;
 
@@ -23,6 +26,7 @@ public class FishingSpotRequest {
         @NotBlank(message = "보낸이는 필수입니다.")
         @Length(max = 300, message = "보낸이는 8자 이하여야 합니다.")
         String senderName,
+        @Valid
         Optional<Quiz> quiz
     ) {
 
@@ -44,13 +48,16 @@ public class FishingSpotRequest {
     }
 
     record Quiz(
+        @Length(max=30, message = "퀴즈의 질문은 30자 이하여야 합니다.")
         String title,
+        @Length(max=100, message = "퀴즈의 내용은 100자 이하여야 합니다.")
         String content,
         String type,
+        @Size(min=2, max=4, message = "퀴즈의 선지는 2~4개여야 합니다.")
         List<String> questions,
-        int answerIndex
+        @NotNull(message = "정답 인덱스는 필수입니다.")
+        Integer answerIndex
     ) {
-
     }
 
 

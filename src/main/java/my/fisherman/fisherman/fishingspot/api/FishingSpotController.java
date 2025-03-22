@@ -1,6 +1,8 @@
 package my.fisherman.fisherman.fishingspot.api;
 
 import java.util.List;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.fishingspot.api.request.FishingSpotRequest;
 import my.fisherman.fisherman.fishingspot.api.response.FishingSpotResponse;
@@ -39,7 +41,7 @@ public class FishingSpotController implements FishingSpotSpecification {
     @PostMapping("/{fishing-spot-id}/smelts")
     public ResponseEntity<FishingSpotResponse.ReceivedSmelt> sendSmelt(
         @PathVariable(name = "fishing-spot-id") Long fishingSpotId,
-        @RequestBody FishingSpotRequest.Send request
+        @Valid @RequestBody FishingSpotRequest.Send request
     ) {
         FishingSpotCommand.SendSmelt command = request.toCommand(fishingSpotId);
         FishingSpotInfo.DetailSmelt info = fishingSpotService.sendSmeltTo(command);
@@ -76,7 +78,7 @@ public class FishingSpotController implements FishingSpotSpecification {
     @PatchMapping("/{fishing-spot-id}/public")
     public ResponseEntity<Void> updatePublic(
         @PathVariable("fishing-spot-id") Long fishingSpotId,
-        @RequestBody FishingSpotRequest.UpdatePublic request
+        @Valid @RequestBody FishingSpotRequest.UpdatePublic request
     ) {
         FishingSpotCommand.UpdatePublic command = request.toCommand(fishingSpotId);
         fishingSpotService.updatePublic(command);
