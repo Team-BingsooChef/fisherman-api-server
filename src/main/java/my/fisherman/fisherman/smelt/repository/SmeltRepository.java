@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,6 +24,6 @@ public interface SmeltRepository extends JpaRepository<Smelt, Long> {
     @Query("select new my.fisherman.fisherman.smelt.repository.dto.SmeltTypeCount(s.type.id, count(*)) from Smelt s where s.inventory =:inventory group by s.type")
     List<SmeltTypeCount> countAllByInventoryIsGroupByType(Inventory inventory);
 
-    @Query("select s from Smelt s where s.inventory = :inventory and s.type = :smeltType and s.status = 'DREW'")
-    Optional<Smelt> findDrewSmeltByInventoryAndType(Inventory inventory, SmeltType smeltType);
+    @Query(value = "select s from Smelt s where s.inventory = :inventory and s.type = :smeltType and s.status = 'DREW' limit 1", nativeQuery = true)
+    Optional<Smelt> findDrewSmeltByInventoryAndType(@Param("inventory") Inventory inventory, @Param("smeltType") SmeltType smeltType);
 }

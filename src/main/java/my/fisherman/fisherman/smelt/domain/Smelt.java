@@ -110,6 +110,11 @@ public class Smelt {
 
         checkReadableLetter(user);
 
+        // 자신이 보낸 빙어의 편지는 상태 변경 방지
+        if (user == this.inventory.getUser()) {
+            return;
+        }
+
         this.status = SmeltStatus.READ;
     }
 
