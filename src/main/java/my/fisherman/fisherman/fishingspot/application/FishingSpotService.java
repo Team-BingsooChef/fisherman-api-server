@@ -137,7 +137,7 @@ public class FishingSpotService {
     public void updatePublic(FishingSpotCommand.UpdatePublic command) {
         FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
             .orElseThrow(() -> new FishermanException(
-                FishingSpotErrorCode.NOT_FOUND
+                FishingSpotErrorCode.NOT_FOUND,
                 "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
 
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
