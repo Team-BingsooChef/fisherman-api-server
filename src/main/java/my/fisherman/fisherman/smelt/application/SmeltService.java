@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.global.exception.code.SmeltErrorCode;
+import my.fisherman.fisherman.global.exception.code.UserErrorCode;
 import my.fisherman.fisherman.security.util.SecurityUtil;
 import my.fisherman.fisherman.smelt.application.dto.QuizInfo;
 import my.fisherman.fisherman.smelt.application.dto.SmeltInfo;
@@ -35,8 +36,8 @@ public class SmeltService {
 
     @Transactional
     public SmeltInfo.Detail getSmeltDetail(Long smeltId) {
-        // TODO: ID를 가져올 수 없는 예외 처리
-        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
+        Long userId = SecurityUtil.getCurrentUserId()
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
@@ -51,8 +52,8 @@ public class SmeltService {
 
     @Transactional(readOnly = true)
     public QuizInfo.Detail getQuiz(Long smeltId) {
-        // TODO: ID를 가져올 수 없는 예외 처리
-        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
+        Long userId = SecurityUtil.getCurrentUserId()
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
@@ -72,8 +73,8 @@ public class SmeltService {
 
     @Transactional
     public QuizInfo.Simple solve(Long smeltId, Long questionId) {
-        // TODO: ID를 가져올 수 없는 예외 처리
-        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
+        Long userId = SecurityUtil.getCurrentUserId()
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
@@ -92,8 +93,8 @@ public class SmeltService {
 
     @Transactional
     public SmeltInfo.Detail registerComment(Long smeltId, String content) {
-        // TODO: ID를 가져올 수 없는 예외 처리
-        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
+        Long userId = SecurityUtil.getCurrentUserId()
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(SmeltErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));

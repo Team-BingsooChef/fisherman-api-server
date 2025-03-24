@@ -3,6 +3,7 @@ package my.fisherman.fisherman.inventory.application;
 import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.global.exception.code.InventoryErrorCode;
+import my.fisherman.fisherman.global.exception.code.UserErrorCode;
 import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.inventory.repository.InventoryRepository;
@@ -32,9 +33,8 @@ public class InventoryService {
 
     @Transactional(readOnly = true)
     public InventoryInfo.Simple getMyInventory() {
-        // TODO: 사용자 ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId()
-                .orElseThrow();
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
@@ -46,9 +46,8 @@ public class InventoryService {
 
     @Transactional
     public InventoryInfo.SmeltInfo drawSmelt(Long inventoryId) {
-        // TODO: 사용자 ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId()
-                .orElseThrow();
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
@@ -69,9 +68,8 @@ public class InventoryService {
 
     @Transactional(readOnly = true)
     public InventoryInfo.SentSmeltPage searchSentSmelt(Long inventoryId, Pageable pageable) {
-        // TODO: 사용자 ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId()
-                .orElseThrow();
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
@@ -86,9 +84,8 @@ public class InventoryService {
     }
 
     public List<InventoryInfo.Statistic> getStatistics(Long inventoryId) {
-        // TODO: 사용자 ID를 가져올 수 없는 예외 처리
         Long userId = SecurityUtil.getCurrentUserId()
-                .orElseThrow();
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
