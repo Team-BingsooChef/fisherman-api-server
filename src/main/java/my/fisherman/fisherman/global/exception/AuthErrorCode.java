@@ -15,7 +15,8 @@ public enum AuthErrorCode implements ErrorCode {
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "A405", "유효하지 않은 토큰입니다."),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "A406", "비밀번호가 일치하지 않습니다."),
     SAME_PASSWORD(HttpStatus.BAD_REQUEST, "A407", "이전 비밀번호와 동일합니다."),
-    EMAIL_REQUEST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "A408", "이메일 전송에 실패했습니다.");
+    EMAIL_REQUEST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "A408", "이메일 전송에 실패했습니다."),
+    INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "A409", "유효하지 않은 리프레시 토큰입니다.");
 
     private HttpStatus httpStatus;
     private String code;
