@@ -2,6 +2,12 @@ package my.fisherman.fisherman.fishingspot.application;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.fishingspot.application.command.FishingSpotCommand;
 import my.fisherman.fisherman.fishingspot.application.dto.FishingSpotInfo;
@@ -9,6 +15,7 @@ import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.fishingspot.repository.FishingSpotRepository;
 import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.global.exception.code.FishingSpotErrorCode;
+import my.fisherman.fisherman.global.exception.code.UserErrorCode;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.inventory.repository.InventoryRepository;
 import my.fisherman.fisherman.security.util.SecurityUtil;
@@ -25,10 +32,6 @@ import my.fisherman.fisherman.smelt.repository.SmeltRepository;
 import my.fisherman.fisherman.smelt.repository.SmeltTypeRepository;
 import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -46,8 +49,8 @@ public class FishingSpotService {
 
     @Transactional(readOnly = true)
     public FishingSpotInfo.Simple getMyFishingSpot() {
-        // TODO: 사용자 ID를 가져오지 못하는 예외 처리
-        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         User user = userRepository.findById(userId)
             .orElseThrow(
@@ -61,7 +64,6 @@ public class FishingSpotService {
 
     @Transactional(readOnly = true)
     public List<FishingSpotInfo.Simple> searchFishingSpot(String keyword) {
-
         List<FishingSpot> fishingSpots = fishingSpotRepository.searchByKeyword(keyword);
 
         return fishingSpots.stream()
@@ -72,8 +74,7 @@ public class FishingSpotService {
     @Transactional(readOnly = true)
     public FishingSpotInfo.SmeltPage getSmelts(Long fishingSpotId, Pageable pageable) {
         FishingSpot fishingSpot = fishingSpotRepository.findById(fishingSpotId)
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
-                "낚시터 %d을/를 찾을 수 없습니다.".formatted(fishingSpotId)));
+            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(fishingSpotId)));
 
         Page<Smelt> smeltPage = smeltRepository.findAllByFishingSpot(fishingSpot, pageable);
 
@@ -82,8 +83,8 @@ public class FishingSpotService {
 
     @Transactional
     public FishingSpotInfo.DetailSmelt sendSmeltTo(FishingSpotCommand.SendSmelt command) {
-        // TODO: 사용자 ID를 가져오지 못하는 예외 처리
-        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
+        Long userId = SecurityUtil.getCurrentUserId()
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
@@ -94,8 +95,9 @@ public class FishingSpotService {
                 orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "빙어 종류 %d을/를 찾을 수 없습니다.".formatted(command.smeltTypeId())));
 
         Smelt smelt = smeltRepository.findDrewSmeltByInventoryAndType(inventory, smeltType)
-                .orElseThrow(
-                        () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "인벤토리 %d에서 빙어 종류가 %d인 보내지 않은 빙어를 찾을 수 없습니다.".formatted(inventory.getId(), smeltType.getId())));
+                .orElseThrow(() -> new FishermanException(
+                    FishingSpotErrorCode.NOT_FOUND,
+                    "인벤토리 %d에서 빙어 종류가 %d인 보내지 않은 빙어를 찾을 수 없습니다.".formatted(inventory.getId(), smeltType.getId())));
         FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
                 .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
 
@@ -134,8 +136,10 @@ public class FishingSpotService {
     @Transactional
     public void updatePublic(FishingSpotCommand.UpdatePublic command) {
         FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
+            .orElseThrow(() -> new FishermanException(
+                FishingSpotErrorCode.NOT_FOUND,
                 "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
+
         Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
         fishingSpot.updatePublic(userId, command.isPublic());
     }
