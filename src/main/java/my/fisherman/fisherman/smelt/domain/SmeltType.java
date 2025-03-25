@@ -28,5 +28,5 @@ public class SmeltType {
     private String iceImage;
 
     @Column(nullable = false)
-    private Integer cumulativeProbability;
+    private Integer probability;
 }

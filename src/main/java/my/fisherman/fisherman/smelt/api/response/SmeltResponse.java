@@ -63,10 +63,11 @@ public class SmeltResponse {
             Long id,
             String name,
             String imageUrl,
-            String iceImageUrl
+            String iceImageUrl,
+            Integer probability
     ) {
         static SmeltType from(SmeltInfo.Type info) {
-            return new SmeltType(info.id(), info.name(), info.imageUrl(), info.iceImageUrl());
+            return new SmeltType(info.id(), info.name(), info.imageUrl(), info.iceImageUrl(), info.probability());
         }
     }
 }
