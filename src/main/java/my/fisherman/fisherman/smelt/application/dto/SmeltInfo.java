@@ -12,10 +12,11 @@ public class SmeltInfo {
         Long id,
         String name,
         String imageUrl,
-        String iceImageUrl
+        String iceImageUrl,
+        Integer probability
     ) {
         public static Type from(SmeltType smeltType) {
-            return new Type(smeltType.getId(), smeltType.getName(), smeltType.getImage(), smeltType.getIceImage());
+            return new Type(smeltType.getId(), smeltType.getName(), smeltType.getImage(), smeltType.getIceImage(), smeltType.getProbability());
         }
     }
 
