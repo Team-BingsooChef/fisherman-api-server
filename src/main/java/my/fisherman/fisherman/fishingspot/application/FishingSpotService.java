@@ -94,7 +94,7 @@ public class FishingSpotService {
         SmeltType smeltType = smeltTypeRepository.findById(command.smeltTypeId()).
                 orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "빙어 종류 %d을/를 찾을 수 없습니다.".formatted(command.smeltTypeId())));
 
-        Smelt smelt = smeltRepository.findDrewSmeltByInventoryAndType(inventory, smeltType)
+        Smelt smelt = smeltRepository.findDrewSmeltByInventoryAndType(inventory.getId(), smeltType.getId())
                 .orElseThrow(() -> new FishermanException(
                     FishingSpotErrorCode.NOT_FOUND,
                     "인벤토리 %d에서 빙어 종류가 %d인 보내지 않은 빙어를 찾을 수 없습니다.".formatted(inventory.getId(), smeltType.getId())));
