@@ -52,7 +52,7 @@ public class InventoryController implements InventorySpecification {
     @Override
     @GetMapping("/{inventory-id}/smelts/statistics")
     public ResponseEntity<InventoryResponse.Statistic> getSmeltStatistic(@PathVariable(name = "inventory-id") Long inventoryId) {
-        List<InventoryInfo.Statistic> info = inventoryService.getStatistics(inventoryId);
+        List<InventoryInfo.Statistic> info = inventoryService.getDrewStatistics(inventoryId);
 
         return ResponseEntity.status(HttpStatus.OK).body(InventoryResponse.Statistic.from(info));
     }

@@ -9,6 +9,7 @@ import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.inventory.repository.InventoryRepository;
 import my.fisherman.fisherman.security.util.SecurityUtil;
 import my.fisherman.fisherman.smelt.domain.Smelt;
+import my.fisherman.fisherman.smelt.domain.SmeltStatus;
 import my.fisherman.fisherman.smelt.domain.SmeltType;
 import my.fisherman.fisherman.smelt.repository.SmeltRepository;
 import my.fisherman.fisherman.smelt.repository.SmeltTypeRepository;
@@ -83,7 +84,7 @@ public class InventoryService {
         return InventoryInfo.SentSmeltPage.of(smeltPage);
     }
 
-    public List<InventoryInfo.Statistic> getStatistics(Long inventoryId) {
+    public List<InventoryInfo.Statistic> getDrewStatistics(Long inventoryId) {
         Long userId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
@@ -94,7 +95,7 @@ public class InventoryService {
 
         inventory.checkReadable(user);
 
-        List<SmeltTypeCount> counts = smeltRepository.countAllByInventoryIsGroupByType(inventory);
+        List<SmeltTypeCount> counts = smeltRepository.countAllByInventoryAndStatusGroupByType(inventory, SmeltStatus.DREW);
 
         return counts.stream().map(InventoryInfo.Statistic::from).toList();
     }
