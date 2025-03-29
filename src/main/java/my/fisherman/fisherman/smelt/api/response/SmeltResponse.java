@@ -38,7 +38,6 @@ public class SmeltResponse {
 
     record Letter (
         Long id,
-        String title,
         String content,
         String senderName,
         LocalDateTime createdTime,
@@ -49,7 +48,7 @@ public class SmeltResponse {
                 return null;
             }
 
-            return new Letter(info.id(), info.title(), info.content(), info.senderName(), info.createdTime(), Comment.from(info.comment()));
+            return new Letter(info.id(), info.content(), info.senderName(), info.createdTime(), Comment.from(info.comment()));
         }
     }
 

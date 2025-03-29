@@ -96,7 +96,6 @@ public class InventoryResponse {
             Long id,
             String senderName,
             String title,
-            String content,
             String createdTime,
             Comment comment
     ) {
@@ -105,7 +104,6 @@ public class InventoryResponse {
                     info.id(),
                     info.senderName(),
                     info.title(),
-                    info.content(),
                     info.createdTime().toString(),
                     info.commentInfo() != null ? Comment.from(info.commentInfo()) : null
             );

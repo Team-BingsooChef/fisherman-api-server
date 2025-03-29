@@ -40,7 +40,7 @@ public class Letter {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Comment comment;
 
-    private Letter(String title, String content, String senderName) {
+    private Letter(String content, String senderName) {
         this.id = null;
         this.content = content;
         this.senderName = senderName;
@@ -48,8 +48,8 @@ public class Letter {
         this.comment = null;
     }
 
-    public static Letter of(String title, String content, String senderName) {
-        return new Letter(title, content, senderName);
+    public static Letter of(String content, String senderName) {
+        return new Letter(content, senderName);
     }
 
     public void registerComment(Comment comment) {

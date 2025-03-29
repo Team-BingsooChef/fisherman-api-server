@@ -72,7 +72,6 @@ public class InventoryInfo {
             Long id,
             String senderName,
             String title,
-            String content,
             LocalDateTime createdTime,
             CommentInfo commentInfo
     ) {
@@ -80,7 +79,6 @@ public class InventoryInfo {
             return new LetterInfo(
                     letter.getId(),
                     letter.getSenderName(),
-                    letter.getTitle(),
                     letter.getContent(),
                     letter.getCreatedTime(),
                     letter.getComment() != null ? CommentInfo.from(letter.getComment()) : null
