@@ -110,11 +110,10 @@ public class FishingSpotInfo {
         Long id,
         String senderName,
         String title,
-        String content,
         LocalDateTime createdTime
     ) {
         public static LetterInfo from(Letter letter) {
-            return new LetterInfo(letter.getId(), letter.getSenderName(), letter.getTitle(), letter.getContent(), letter.getCreatedTime());
+            return new LetterInfo(letter.getId(), letter.getSenderName(), letter.getContent(), letter.getCreatedTime());
         }
     }
 }

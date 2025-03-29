@@ -17,9 +17,6 @@ public class FishingSpotRequest {
         @NotNull(message = "빙어 종류 ID는 필수입니다.")
         @Positive(message = "빙어 종류 ID는 양수여야 합니다.")
         Long smeltTypeId,
-        @NotBlank(message = "편지 제목은 필수입니다.")
-        @Length(max = 15, message = "편지의 제목은 15자 이하여야 합니다.")
-        String title,
         @NotBlank(message = "편지 내용은 필수입니다.")
         @Length(max = 300, message = "편지의 내용은 300자 이하여야 합니다.")
         String content,
@@ -35,11 +32,9 @@ public class FishingSpotRequest {
                 smeltTypeId,
                 fishingSpotId,
                 senderName,
-                title,
                 content,
                 quiz.isPresent(),
                 quiz.map(Quiz::title).orElse(null),
-                quiz.map(Quiz::content).orElse(null),
                 quiz.map(Quiz::type).orElse(null),
                 quiz.map(Quiz::questions).orElse(null),
                 quiz.map(Quiz::answerIndex).orElse(null)
@@ -50,8 +45,6 @@ public class FishingSpotRequest {
     record Quiz(
         @Length(max=30, message = "퀴즈의 질문은 30자 이하여야 합니다.")
         String title,
-        @Length(max=100, message = "퀴즈의 내용은 100자 이하여야 합니다.")
-        String content,
         String type,
         @Size(min=2, max=4, message = "퀴즈의 선지는 2~4개여야 합니다.")
         List<String> questions,

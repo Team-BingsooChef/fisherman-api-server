@@ -54,11 +54,10 @@ public class FishingSpotResponse {
         Long id,
         String senderName,
         String title,
-        String content,
         String createdTime
     ) {
         static Letter from(FishingSpotInfo.LetterInfo info) {
-            return new Letter(info.id(), info.senderName(), info.title(), info.content(), info.createdTime().toString());
+            return new Letter(info.id(), info.senderName(), info.title(), info.createdTime().toString());
         }
     }
 
