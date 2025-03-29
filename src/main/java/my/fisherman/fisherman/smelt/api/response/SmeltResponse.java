@@ -45,6 +45,10 @@ public class SmeltResponse {
         Comment comment
     ) {
         static Letter from(SmeltInfo.LetterInfo info) {
+            if (info == null) {
+                return null;
+            }
+
             return new Letter(info.id(), info.title(), info.content(), info.senderName(), info.createdTime(), Comment.from(info.comment()));
         }
     }
@@ -55,6 +59,10 @@ public class SmeltResponse {
         LocalDateTime createdTime
     ) {
         public static Comment from(SmeltInfo.CommentInfo info) {
+            if (info == null) {
+                return null;
+            }
+
             return new Comment(info.id(), info.content(), info.createdTime());
         }
     }
