@@ -42,7 +42,6 @@ public class SmeltInfo {
 
     public record LetterInfo(
         Long id,
-        String title,
         String content,
         String senderName,
         LocalDateTime createdTime,
@@ -55,7 +54,6 @@ public class SmeltInfo {
 
             return new LetterInfo(
                 letter.getId(),
-                letter.getTitle(),
                 letter.getContent(),
                 letter.getSenderName(),
                 letter.getCreatedTime(),

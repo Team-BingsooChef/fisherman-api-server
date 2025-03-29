@@ -101,7 +101,7 @@ public class FishingSpotService {
         FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
                 .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
 
-        Letter letter = Letter.of(command.letterTitle(), command.letterContent(), command.senderName());
+        Letter letter = Letter.of(command.letterContent(), command.senderName());
         Quiz quiz = null;
         List<Question> questions = null;
         if (command.existQuiz()) {
