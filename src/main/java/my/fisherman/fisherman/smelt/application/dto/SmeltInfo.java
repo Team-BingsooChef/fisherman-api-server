@@ -32,7 +32,7 @@ public class SmeltInfo {
             return new Detail(
                 smelt.getId(),
                 smelt.getInventory().getId(),
-                smelt.getFishingSpot().getId(),
+                smelt.getFishingSpot() == null ? null : smelt.getFishingSpot().getId(),
                 smelt.getType().getId(),
                 smelt.getStatus().toString(),
                 LetterInfo.from(smelt.getLetter())
