@@ -27,9 +27,6 @@ public class Letter {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "letter_title", nullable = false)
-    private String title;
-
     @Column(name = "letter_content", nullable = false)
     private String content;
 
@@ -45,7 +42,6 @@ public class Letter {
 
     private Letter(String title, String content, String senderName) {
         this.id = null;
-        this.title = title;
         this.content = content;
         this.senderName = senderName;
         this.createdTime = LocalDateTime.now();
