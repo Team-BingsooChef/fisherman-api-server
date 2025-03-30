@@ -51,5 +51,14 @@ public class AuthController implements AuthSpecification {
             .build();
     }
 
+    @Override
+    @PostMapping("/withdraw")
+    public ResponseEntity<Void> withdraw(
+        @CookieValue("refresh_token") String refreshToken
+    ) {
+        authService.withdraw(refreshToken);
+        return ResponseEntity.ok().build();
+    }
+
 
 }

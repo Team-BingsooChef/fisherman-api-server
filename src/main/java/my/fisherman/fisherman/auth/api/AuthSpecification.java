@@ -72,4 +72,17 @@ public interface AuthSpecification {
     ResponseEntity<Void> refreshToken(
         @CookieValue("refresh_token") String refreshToken
     );
+
+    @Operation(
+        method = "POST",
+        summary = "회원 탈퇴",
+        description = "회원 탈퇴를 요청합니다.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공"),
+            @ApiResponse(responseCode = "400", description = "회원 탈퇴 실패")
+        }
+    )
+    ResponseEntity<Void> withdraw(
+        @CookieValue("refresh_token") String refreshToken
+    );
 }
