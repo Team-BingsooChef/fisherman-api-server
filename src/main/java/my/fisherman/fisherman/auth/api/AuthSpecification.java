@@ -72,4 +72,18 @@ public interface AuthSpecification {
     ResponseEntity<Void> refreshToken(
         @CookieValue("refresh_token") String refreshToken
     );
+
+    @Operation(
+        method = "POST",
+        summary = "로그아웃",
+        description = "로그아웃합니다.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "로그아웃 성공"),
+            @ApiResponse(responseCode = "400", description = "로그아웃 실패")
+        }
+    )
+    ResponseEntity<Void> logout(
+        @CookieValue("access_token") String accessToken,
+        @CookieValue("refresh_token") String refreshToken
+    );
 }
