@@ -83,7 +83,6 @@ public interface AuthSpecification {
         }
     )
     ResponseEntity<Void> logout(
-        @CookieValue("access_token") String accessToken,
         @CookieValue("refresh_token") String refreshToken
     );
 }
