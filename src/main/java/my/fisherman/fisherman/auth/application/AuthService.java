@@ -18,6 +18,7 @@ import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -72,9 +73,21 @@ public class AuthService {
         return new Token(accessCookie, refreshCookie);
     }
 
+    @Transactional
+    public void withdraw(String refreshToken) {
+        Long userId = refreshTokenRepository.find(refreshToken)
+            .orElseThrow(() -> new FishermanException(AuthErrorCode.INVALID_REFRESH_TOKEN));
+        refreshTokenRepository.delete(refreshToken);
+
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new FishermanException(AuthErrorCode.INVALID_REFRESH_TOKEN));
+
+        userRepository.delete(user);
+    }
+
     public Token logout(String refreshToken) {
         refreshTokenRepository.delete(refreshToken);
-        
+
         ResponseCookie accessCookie = cookieUtil.generateCookie("access_token", null);
         ResponseCookie refreshCookie = cookieUtil.generateCookie("refresh_token", null);
         return new Token(accessCookie, refreshCookie);
