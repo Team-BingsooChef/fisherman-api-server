@@ -51,5 +51,17 @@ public class AuthController implements AuthSpecification {
             .build();
     }
 
+    @Override
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+        @CookieValue("refresh_token") String refreshToken
+    ) {
+        Token cookie = authService.logout(refreshToken);
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.SET_COOKIE, cookie.accessToken().toString())
+            .header(HttpHeaders.SET_COOKIE, cookie.refreshToken().toString())
+            .build();
+    }
 
 }
