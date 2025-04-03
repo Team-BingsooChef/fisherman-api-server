@@ -71,7 +71,7 @@ public class InventoryInfo {
     public record LetterInfo(
             Long id,
             String senderName,
-            String title,
+            String content,
             LocalDateTime createdTime,
             CommentInfo commentInfo
     ) {

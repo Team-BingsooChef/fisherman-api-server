@@ -1,8 +1,7 @@
 package my.fisherman.fisherman.inventory.api.response;
 
-import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
-
 import java.util.List;
+import my.fisherman.fisherman.inventory.application.dto.InventoryInfo;
 
 public class InventoryResponse {
 
@@ -95,7 +94,7 @@ public class InventoryResponse {
     record Letter(
             Long id,
             String senderName,
-            String title,
+            String content,
             String createdTime,
             Comment comment
     ) {
@@ -103,7 +102,7 @@ public class InventoryResponse {
             return new Letter(
                     info.id(),
                     info.senderName(),
-                    info.title(),
+                    info.content(),
                     info.createdTime().toString(),
                     info.commentInfo() != null ? Comment.from(info.commentInfo()) : null
             );
