@@ -1,6 +1,7 @@
 package my.fisherman.fisherman.fishingspot.api.response;
 
 import java.util.List;
+
 import my.fisherman.fisherman.fishingspot.application.dto.FishingSpotInfo;
 
 public class FishingSpotResponse {
@@ -53,11 +54,11 @@ public class FishingSpotResponse {
     record Letter(
         Long id,
         String senderName,
-        String title,
+        String content,
         String createdTime
     ) {
         static Letter from(FishingSpotInfo.LetterInfo info) {
-            return new Letter(info.id(), info.senderName(), info.title(), info.createdTime().toString());
+            return new Letter(info.id(), info.senderName(), info.content(), info.createdTime().toString());
         }
     }
 
