@@ -109,7 +109,7 @@ public class FishingSpotInfo {
     public record LetterInfo(
         Long id,
         String senderName,
-        String title,
+        String content,
         LocalDateTime createdTime
     ) {
         public static LetterInfo from(Letter letter) {
