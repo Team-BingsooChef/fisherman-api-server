@@ -76,7 +76,7 @@ public class Smelt {
             throw new FishermanException(SmeltErrorCode.NOT_MINE);
         }
 
-        if (this.status != SmeltStatus.DREW) {
+        if (this.fishingSpot != null) {
             throw new FishermanException(SmeltErrorCode.ALREADY_SENT);
         }
 
