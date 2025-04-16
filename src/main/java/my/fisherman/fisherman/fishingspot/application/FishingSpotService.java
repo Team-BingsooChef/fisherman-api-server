@@ -49,10 +49,7 @@ public class FishingSpotService {
         Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
-        User user = userRepository.findById(userId)
-            .orElseThrow(
-                () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
-        FishingSpot fishingSpot = fishingSpotRepository.findByFisherman(user)
+        FishingSpot fishingSpot = fishingSpotRepository.findByFishermanId(userId)
             .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
                 "현재 사용자의 낚시터를 찾을 수 없습니다."));
 
