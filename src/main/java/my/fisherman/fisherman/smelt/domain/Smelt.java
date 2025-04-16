@@ -66,14 +66,13 @@ public class Smelt {
         return new Smelt(inventory, type);
     }
 
-    // user가 빙어를 fishingSpot으로 보낸다.
-    public void send(User user, FishingSpot fishingSpot, Letter letter, Quiz quiz) {
-        // TODO: ID 비교로 수정
-        if (user != this.inventory.getUser()) {
+    // inventory에서 빙어를 fishingSpot으로 보낸다.
+    public void send(Inventory inventory, FishingSpot fishingSpot, Letter letter, Quiz quiz) {
+        if (inventory != this.inventory) {
             throw new FishermanException(SmeltErrorCode.FORBIDDEN, "자신이 뽑은 빙어만 보낼 수 있습니다.");
         }
 
-        if (user == fishingSpot.getFisherman()) {
+        if (inventory.getUser() == fishingSpot.getFisherman()) {
             throw new FishermanException(SmeltErrorCode.NOT_MINE);
         }
 

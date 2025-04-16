@@ -114,7 +114,7 @@ public class FishingSpotService {
             }
         }
 
-        smelt.send(user, fishingSpot, letter, quiz);
+        smelt.send(inventory, fishingSpot, letter, quiz);
 
         quizRepository.save(quiz);
         letterRepository.save(letter);
