@@ -15,6 +15,8 @@ import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.user.domain.User;
 
+import java.lang.reflect.Field;
+
 
 class SendSmeltTest {
     private static User user;
@@ -71,14 +73,23 @@ class SendSmeltTest {
 
     @Test
     @DisplayName("빙어 보내기_이미 보낸 빙어 보내기")
-    void sendSmeltTest_alreaySSentent() {
+    void sendSmeltTest_alreadySSentent() throws IllegalAccessException, NoSuchFieldException {
         // given
         Inventory inventory = Inventory.of(sender);
         FishingSpot fishingSpot = FishingSpot.of(receiver);
         Smelt smelt = Smelt.of(inventory, smeltType);
 
+        Field fishingSpotField = Smelt.class.getDeclaredField("fishingSpot");
+        fishingSpotField.setAccessible(true);
+        fishingSpotField.set(smelt, fishingSpot);
+        Field letterField = Smelt.class.getDeclaredField("letter");
+        letterField.setAccessible(true);
+        letterField.set(smelt, letter);
+        Field statusField = Smelt.class.getDeclaredField("status");
+        statusField.setAccessible(true);
+        statusField.set(smelt, SmeltStatus.UNREAD);
+
         // when & than
-        smelt.send(inventory, fishingSpot, letter, null);
         assertThatThrownBy(() -> smelt.send(inventory, fishingSpot, letter, null))
             .isInstanceOf(FishermanException.class);
     }
