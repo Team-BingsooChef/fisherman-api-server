@@ -143,11 +143,11 @@ public class Smelt {
     }
 
     private void checkReadableLetter(User user) {
-        if (user == this.inventory.getUser()) {
+        if (user.getId() == this.inventory.getUser().getId()) {
             return;
         }
 
-        if (user == this.fishingSpot.getFisherman()) {
+        if (user.getId() == this.fishingSpot.getFisherman().getId()) {
             if (this.quiz != null && this.quiz.getIsSolved() == false) {
                 throw new FishermanException(SmeltErrorCode.YET_SOLVED);
             }
