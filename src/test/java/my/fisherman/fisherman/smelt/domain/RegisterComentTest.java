@@ -4,6 +4,7 @@ import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.user.domain.User;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,18 +13,23 @@ import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.BeforeEach;
 
 public class RegisterComentTest {
-    private static User sender;
-    private static User receiver;
-    private static User other;
-    private static Inventory senderInventory;
-    private static FishingSpot receiverFishingSpot;
-    private static Smelt smelt;
+    private User sender;
+    private User receiver;
+    private User other;
+    private Inventory senderInventory;
+    private FishingSpot receiverFishingSpot;
+    private Smelt smelt;
 
-    // 정상 요청 상태로 초기화
-    @BeforeAll
-    static void init() throws NoSuchFieldException, IllegalAccessException {
+    /**
+     * 빙어와 테스트에 사용할 인스턴스를 정상 상태로 생성한다.
+     * 1. Inventory와 FishingSpot, Letter 주입
+     * 2. Smelt의 상태는 READ
+     */
+    @BeforeEach
+    void intialize() throws NoSuchFieldException, IllegalAccessException {
         Field idField = User.class.getDeclaredField("id");
         idField.setAccessible(true);
 
@@ -51,7 +57,7 @@ public class RegisterComentTest {
         statusField.set(smelt, SmeltStatus.READ);
     }
 
-    @DisplayName("답변 등록_정상 요청")
+    @DisplayName("답변 등록")
     @Test
     void registerCommentTest() {
         // given
