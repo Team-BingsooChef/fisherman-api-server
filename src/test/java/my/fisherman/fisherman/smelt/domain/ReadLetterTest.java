@@ -40,7 +40,7 @@ public class ReadLetterTest {
         receiverFishingSpot = FishingSpot.of(receiver);
     }
 
-    @DisplayName("편지 읽기_받은이 정상 요청")
+    @DisplayName("편지 읽기_받은 이")
     @Test
     void readLetterTest_readByReceiver() throws NoSuchFieldException, IllegalAccessException {
         //given
@@ -50,7 +50,7 @@ public class ReadLetterTest {
         assertThatNoException().isThrownBy(() -> smelt.readLetter(receiver));
     }
 
-    @DisplayName("편지 읽기_받은이 읽었던 퀴즈")
+    @DisplayName("편지 읽기_받은 이_읽었던 퀴즈")
     @Test
     void readLetterTest_readByReceiver_afterRead() throws NoSuchFieldException, IllegalAccessException {
         //given
@@ -60,7 +60,7 @@ public class ReadLetterTest {
         assertThatNoException().isThrownBy(() -> smelt.readLetter(receiver));
     }
 
-    @DisplayName("편지 읽기_보낸이 정상 요청")
+    @DisplayName("편지 읽기_보낸 이")
     @Test
     void readLetterTest_readBySender() throws NoSuchFieldException, IllegalAccessException {
         //given
@@ -70,7 +70,7 @@ public class ReadLetterTest {
         assertThatNoException().isThrownBy(() -> smelt.readLetter(sender));
     }
 
-    @DisplayName("편지 읽기_제 3자 요청")
+    @DisplayName("편지 읽기_제 3자")
     @Test
     void readLetterTest_readByOther() throws NoSuchFieldException, IllegalAccessException {
         //given
@@ -81,7 +81,7 @@ public class ReadLetterTest {
                 .isInstanceOf(FishermanException.class);
     }
 
-    @DisplayName("편지 읽기_받은이_아직 풀지 않은 퀴즈")
+    @DisplayName("편지 읽기_받은 이_아직 풀지 않은 퀴즈")
     @Test
     void readLetterTest_readByReceiver_beforeSolve() throws NoSuchFieldException, IllegalAccessException {
         // given
@@ -92,7 +92,7 @@ public class ReadLetterTest {
                 .isInstanceOf(FishermanException.class);
     }
 
-    @DisplayName("편지 읽기_보낸이_아직 풀지 않은 퀴즈")
+    @DisplayName("편지 읽기_보낸 이_아직 풀지 않은 퀴즈")
     @Test
     void readLetterTest_readBySender_beforeSolve() throws NoSuchFieldException, IllegalAccessException {
         // given
@@ -131,7 +131,6 @@ public class ReadLetterTest {
      *  - 상태가 UNREAD라면 풀지 않은 퀴즈가 주입된다.
      *  - 상태가 SOLVED나 READ라면 푼 퀴즈가 주입된다.
      */
-    // 
     private Smelt createSmelt(SmeltStatus status) throws NoSuchFieldException, IllegalAccessException {
         Smelt smelt = Smelt.of(senderInventory, new SmeltType());
 
