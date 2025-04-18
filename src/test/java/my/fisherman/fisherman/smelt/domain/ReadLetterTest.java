@@ -43,40 +43,32 @@ public class ReadLetterTest {
     @DisplayName("편지 읽기_받은 이")
     @Test
     void readLetterTest_readByReceiver() throws NoSuchFieldException, IllegalAccessException {
-        //given
         Smelt smelt = createSmelt(SmeltStatus.SOLVED);
 
-        // when & then
         assertThatNoException().isThrownBy(() -> smelt.readLetter(receiver));
     }
 
     @DisplayName("편지 읽기_받은 이_읽었던 퀴즈")
     @Test
     void readLetterTest_readByReceiver_afterRead() throws NoSuchFieldException, IllegalAccessException {
-        //given
         Smelt smelt = createSmelt(SmeltStatus.READ);
 
-        // when & then
         assertThatNoException().isThrownBy(() -> smelt.readLetter(receiver));
     }
 
     @DisplayName("편지 읽기_보낸 이")
     @Test
     void readLetterTest_readBySender() throws NoSuchFieldException, IllegalAccessException {
-        //given
         Smelt smelt = createSmelt(SmeltStatus.SOLVED);
 
-        // when & then
         assertThatNoException().isThrownBy(() -> smelt.readLetter(sender));
     }
 
     @DisplayName("편지 읽기_제 3자")
     @Test
     void readLetterTest_readByOther() throws NoSuchFieldException, IllegalAccessException {
-        //given
         Smelt smelt = createSmelt(SmeltStatus.SOLVED);
 
-        // when & then
         assertThatThrownBy(() -> smelt.readLetter(other))
                 .isInstanceOf(FishermanException.class);
     }
@@ -84,10 +76,8 @@ public class ReadLetterTest {
     @DisplayName("편지 읽기_받은 이_아직 풀지 않은 퀴즈")
     @Test
     void readLetterTest_readByReceiver_beforeSolve() throws NoSuchFieldException, IllegalAccessException {
-        // given
         Smelt smelt = createSmelt(SmeltStatus.UNREAD);
 
-        // when & then
         assertThatThrownBy(() -> smelt.readLetter(receiver))
                 .isInstanceOf(FishermanException.class);
     }
@@ -95,20 +85,16 @@ public class ReadLetterTest {
     @DisplayName("편지 읽기_보낸 이_아직 풀지 않은 퀴즈")
     @Test
     void readLetterTest_readBySender_beforeSolve() throws NoSuchFieldException, IllegalAccessException {
-        // given
         Smelt smelt = createSmelt(SmeltStatus.UNREAD);
 
-        // when & then
         assertThatNoException().isThrownBy(() -> smelt.readLetter(sender));
     }
 
     @DisplayName("편지 읽기_제 3자_아직 풀지 않은 퀴즈")
     @Test
     void readLetterTest_readByOther_beforeSolve() throws NoSuchFieldException, IllegalAccessException {
-        // given
         Smelt smelt = createSmelt(SmeltStatus.UNREAD);
 
-        // when & then
         assertThatThrownBy(() -> smelt.readLetter(other))
                 .isInstanceOf(FishermanException.class);
     }
@@ -116,10 +102,8 @@ public class ReadLetterTest {
     @DisplayName("편지 읽기_편지 없음")
     @Test
     void readLetterTest_readByOther_beforeSent() throws NoSuchFieldException, IllegalAccessException {
-        // given
         Smelt smelt = createSmelt(SmeltStatus.DREW);
 
-        // when & then
         assertThatThrownBy(() -> smelt.readLetter(receiver))
                 .isInstanceOf(FishermanException.class);
     }

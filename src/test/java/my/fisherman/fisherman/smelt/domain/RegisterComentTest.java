@@ -60,20 +60,16 @@ public class RegisterComentTest {
     @DisplayName("답변 등록")
     @Test
     void registerCommentTest() {
-        // given
         Comment comment = Comment.of("test content");
 
-        // when & then
         assertThatNoException().isThrownBy(() -> smelt.registerComment(receiver, comment));
     }
 
     @DisplayName("답변 등록_코멘트 누락")
     @Test
     void registerCommentTest_registerNull() {
-        // given
         Comment comment = null;
 
-        // when & then
         assertThatNoException().isThrownBy(() -> smelt.registerComment(receiver, comment));
     }
 
@@ -100,10 +96,8 @@ public class RegisterComentTest {
     @DisplayName("답변 등록_자기가 받지 않은 빙어")
     @Test
     void registerCommentTest_notMine() {
-        // given
         Comment comment = Comment.of("test content");
 
-        // when & then
         assertThatThrownBy(() -> smelt.registerComment(other, comment))
                 .isInstanceOf(FishermanException.class);
     }
@@ -111,10 +105,8 @@ public class RegisterComentTest {
     @DisplayName("답변 등록_자기가 보낸 빙어")
     @Test
     void registerCommentTest_sentByMe() {
-        // given
         Comment comment = Comment.of("test content");
 
-        // when & then
         assertThatThrownBy(() -> smelt.registerComment(sender, comment))
                 .isInstanceOf(FishermanException.class);
     }
