@@ -4,9 +4,10 @@ import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.user.domain.User;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.lang.reflect.Field;
 
@@ -14,15 +15,15 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ReadLetterTest {
-    private static User sender;
-    private static User receiver;
-    private static User other;
-    private static Inventory senderInventory;
-    private static FishingSpot receiverFishingSpot;
+    private User sender;
+    private User receiver;
+    private User other;
+    private Inventory senderInventory;
+    private FishingSpot receiverFishingSpot;
 
-    // 정상 요청 상태로 초기화
-    @BeforeAll
-    static void init() throws NoSuchFieldException, IllegalAccessException {
+    // Smelt 생성에 필요한 객체 생성
+    @BeforeEach
+    void initDependencies() throws NoSuchFieldException, IllegalAccessException {
         Field idField = User.class.getDeclaredField("id");
         idField.setAccessible(true);
 
@@ -64,6 +65,7 @@ public class ReadLetterTest {
     void readLetterTest_readBySender() throws NoSuchFieldException, IllegalAccessException {
         //given
         Smelt smelt = createSmelt(SmeltStatus.SOLVED);
+
         // when & then
         assertThatNoException().isThrownBy(() -> smelt.readLetter(sender));
     }
@@ -115,24 +117,34 @@ public class ReadLetterTest {
     @Test
     void readLetterTest_readByOther_beforeSent() throws NoSuchFieldException, IllegalAccessException {
         // given
-        Smelt smelt = createSmeltBeforeSent();
+        Smelt smelt = createSmelt(SmeltStatus.DREW);
 
         // when & then
         assertThatThrownBy(() -> smelt.readLetter(receiver))
                 .isInstanceOf(FishermanException.class);
     }
 
+    /**
+     * 주어진 상태에 대해 정상적인 빙어를 생성해 반환한다.
+     * 1. 상태가 DREW라면 Inventory만 주입된다.
+     * 2. 그 외 상태에서는 Inventory와 FishingSpot, Letter가 주입된다.
+     *  - 상태가 UNREAD라면 풀지 않은 퀴즈가 주입된다.
+     *  - 상태가 SOLVED나 READ라면 푼 퀴즈가 주입된다.
+     */
+    // 
     private Smelt createSmelt(SmeltStatus status) throws NoSuchFieldException, IllegalAccessException {
-        Quiz quiz = Quiz.of("test quiz", QuizType.OX);
-        Field isSolvedField = Quiz.class.getDeclaredField("isSolved");
-        isSolvedField.setAccessible(true);
-        if (status == SmeltStatus.SOLVED || status == SmeltStatus.READ) {
-            isSolvedField.set(quiz, true);
-        } else {
-            isSolvedField.set(quiz, false);
+        Smelt smelt = Smelt.of(senderInventory, new SmeltType());
+
+        Field statusField = Smelt.class.getDeclaredField("status");
+        statusField.setAccessible(true);
+        statusField.set(smelt, status);
+
+        // DREW: Inventory와 Status만 주입한 빙어 반환
+        if (status == SmeltStatus.DREW) {
+            return smelt;
         }
 
-        Smelt smelt = Smelt.of(senderInventory, new SmeltType());
+        Quiz quiz = createQuizBy(status);
 
         Field fishingSpotField = Smelt.class.getDeclaredField("fishingSpot");
         fishingSpotField.setAccessible(true);
@@ -142,10 +154,6 @@ public class ReadLetterTest {
         letterField.setAccessible(true);
         letterField.set(smelt, Letter.of("test content", "test senderName"));
 
-        Field statusField = Smelt.class.getDeclaredField("status");
-        statusField.setAccessible(true);
-        statusField.set(smelt, status);
-
         Field quizField = Smelt.class.getDeclaredField("quiz");
         quizField.setAccessible(true);
         quizField.set(smelt, quiz);
@@ -153,13 +161,18 @@ public class ReadLetterTest {
         return smelt;
     }
 
-    private Smelt createSmeltBeforeSent() throws NoSuchFieldException, IllegalAccessException {
-        Smelt smelt = Smelt.of(senderInventory, new SmeltType());
+    // 빙어의 상태에 정상적인 퀴즈를 생성한다.
+    static Quiz createQuizBy(SmeltStatus status) throws NoSuchFieldException, IllegalAccessException {
+        Quiz quiz = Quiz.of("test quiz", QuizType.OX);
 
-        Field statusField = Smelt.class.getDeclaredField("status");
-        statusField.setAccessible(true);
-        statusField.set(smelt, SmeltStatus.DREW);
+        Field isSolvedField = Quiz.class.getDeclaredField("isSolved");
+        isSolvedField.setAccessible(true);
+        if (status == SmeltStatus.UNREAD) {
+            isSolvedField.set(quiz, false);
+        } else {
+            isSolvedField.set(quiz, true);
+        }
 
-        return smelt;
+        return quiz;
     }
 }
