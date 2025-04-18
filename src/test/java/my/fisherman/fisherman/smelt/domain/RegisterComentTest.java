@@ -5,7 +5,7 @@ import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.user.domain.User;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,6 @@ import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import org.junit.jupiter.api.BeforeEach;
 
 public class RegisterComentTest {
     private User sender;
