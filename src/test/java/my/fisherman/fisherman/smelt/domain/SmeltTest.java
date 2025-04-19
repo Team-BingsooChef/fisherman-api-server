@@ -49,8 +49,8 @@ public class SmeltTest {
 
             smelt.send(inventory, fishingSpot, letter, null);
 
-            // when & than
-
+            assertThat(smelt.getStatus()).isEqualByComparingTo(SmeltStatus.UNREAD);
+            assertThat(smelt.getLetter()).isEqualTo(letter);
         }
 
         @Test
@@ -63,7 +63,9 @@ public class SmeltTest {
 
             smelt.send(inventory, fishingSpot, letter, quiz);
 
-            // than
+            assertThat(smelt.getStatus()).isEqualByComparingTo(SmeltStatus.UNREAD);
+            assertThat(smelt.getLetter()).isEqualTo(letter);
+            assertThat(smelt.getQuiz()).isEqualTo(quiz);
         }
 
         @Test
