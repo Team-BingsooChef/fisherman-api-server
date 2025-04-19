@@ -22,10 +22,10 @@ public class SmeltTest {
     private SmeltType smeltType;
 
     @BeforeEach
-    void initializeUser() {
-        sender = createUserMockId(1L, "test@gmail.com", "test password", "test sender");
-        receiver = createUserMockId(2L, "test@gmail.com", "test password", "test sender");
-        other = createUserMockId(3L, "test@gmail.com", "test password", "test sender");
+    void initializeUser() throws NoSuchFieldException, IllegalAccessException {
+        sender = createUserWith(1L, "test@gmail.com", "test password", "test sender");
+        receiver = createUserWith(2L, "test@gmail.com", "test password", "test sender");
+        other = createUserWith(3L, "test@gmail.com", "test password", "test sender");
 
         smeltType = createSmeltTypeMockId();
     }
@@ -450,16 +450,22 @@ public class SmeltTest {
         }
     }
 
-    private User createUserMockId(Long id, String email, String password, String nickname) {
+    private User createUserWith(Long id, String email, String password, String nickname) throws IllegalAccessException, NoSuchFieldException {
         User user = Mockito.spy(User.of(email, password, nickname));
-        Mockito.doReturn(id).when(user).getId();
+
+        Field idField = User.class.getDeclaredField("id");
+        idField.setAccessible(true);
+        idField.set(user, id);
 
         return user;
     }
 
-    private SmeltType createSmeltTypeMockId() {
+    private SmeltType createSmeltTypeMockId() throws NoSuchFieldException, IllegalAccessException {
         SmeltType smeltType = Mockito.spy(new SmeltType());
-        Mockito.doReturn(1L).when(smeltType).getId();
+
+        Field idField = SmeltType.class.getDeclaredField("id");
+        idField.setAccessible(true);
+        idField.set(smeltType, 1L);
 
         return smeltType;
     }
