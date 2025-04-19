@@ -68,11 +68,11 @@ public class Smelt {
 
     // inventory에서 빙어를 fishingSpot으로 보낸다.
     public void send(Inventory inventory, FishingSpot fishingSpot, Letter letter, Quiz quiz) {
-        if (inventory != this.inventory) {
+        if (!this.inventory.equals(inventory)) {
             throw new FishermanException(SmeltErrorCode.FORBIDDEN, "자신이 뽑은 빙어만 보낼 수 있습니다.");
         }
 
-        if (inventory.getUser() == fishingSpot.getFisherman()) {
+        if (inventory.getUser().equals(fishingSpot.getFisherman())) {
             throw new FishermanException(SmeltErrorCode.NOT_MINE);
         }
 
@@ -91,7 +91,7 @@ public class Smelt {
             throw new FishermanException(SmeltErrorCode.NOT_FOUND, "빙어에 편지를 찾을 수 없습니다.");
         }
 
-        if (user != this.fishingSpot.getFisherman()) {
+        if (!this.fishingSpot.getFisherman().equals(user)) {
             throw new FishermanException(SmeltErrorCode.FORBIDDEN, "자신이 받은 빙어에만 댓글을 남길 수 있습니다.");
         }
 
@@ -110,7 +110,7 @@ public class Smelt {
         checkReadableLetter(user);
 
         // 자신이 보낸 빙어의 편지는 상태 변경 방지
-        if (user == this.inventory.getUser()) {
+        if (this.inventory.getUser().equals(user)) {
             return;
         }
 
@@ -120,7 +120,7 @@ public class Smelt {
     public void trySolve(User user, Question question) {
         checkSolvable(user);
 
-        if (this.quiz != question.getQuiz()) {
+        if (question.getQuiz().equals(this.quiz)) {
             throw new FishermanException(SmeltErrorCode.BAD_QUESTION);
         }
 
@@ -135,7 +135,7 @@ public class Smelt {
     }
 
     public void checkReadableQuiz(User user) {
-        if (user == this.inventory.getUser() || user == this.fishingSpot.getFisherman()) {
+        if (this.inventory.getUser().equals(user) || this.fishingSpot.getFisherman().equals(user)) {
             return;
         }
 
@@ -143,11 +143,11 @@ public class Smelt {
     }
 
     private void checkReadableLetter(User user) {
-        if (user.getId() == this.inventory.getUser().getId()) {
+        if (this.inventory.getUser().equals(user)) {
             return;
         }
 
-        if (user.getId() == this.fishingSpot.getFisherman().getId()) {
+        if (this.fishingSpot.getFisherman().equals(user)) {
             if (this.quiz != null && this.quiz.getIsSolved() == false) {
                 throw new FishermanException(SmeltErrorCode.YET_SOLVED);
             }
@@ -158,7 +158,7 @@ public class Smelt {
     }
 
     private void checkSolvable(User user) {
-        if (user == this.fishingSpot.getFisherman()) {
+        if (this.fishingSpot.getFisherman().equals(user)) {
             return;
         }
 

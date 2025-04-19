@@ -2,6 +2,7 @@ package my.fisherman.fisherman.inventory.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.global.exception.code.InventoryErrorCode;
@@ -57,11 +58,24 @@ public class Inventory {
     }
 
     public void checkReadable(User user) {
-        // TODO: ID 비교로 수정
-        if (this.user == user) {
+        if (this.user.equals(user)) {
             return;
         }
 
         throw new FishermanException(InventoryErrorCode.FORBIDDEN, "자신의 인벤토리만 볼 수 있습니다.");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Inventory)) return false;
+
+        Inventory other = (Inventory) o;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
