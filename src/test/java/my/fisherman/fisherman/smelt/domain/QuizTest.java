@@ -22,7 +22,7 @@ public class QuizTest {
 
         @BeforeEach
         void initialize() throws NoSuchFieldException, IllegalAccessException {
-            quiz =  createQuizWith(false);
+            quiz =  createQuizWith(1L, false);
         }
 
         @Test
@@ -54,7 +54,7 @@ public class QuizTest {
         void fail_tryWithOtherQuestion() throws NoSuchFieldException, IllegalAccessException {
             short prevWrongCount = quiz.getWrongCount();
             boolean prevIsSolved = quiz.getIsSolved();
-            Quiz otherQuiz = createQuizWith(true);
+            Quiz otherQuiz = createQuizWith(quiz.getId() + 1, true);
             Question otherQuestion = Question.of("content", false, otherQuiz);
 
             // when & then: 풀이 실패
@@ -76,7 +76,7 @@ public class QuizTest {
 
         @BeforeEach
         void initialize() throws NoSuchFieldException, IllegalAccessException {
-            quiz =  createQuizWith(true);
+            quiz =  createQuizWith(1L, true);
         }
 
         @Test
@@ -120,7 +120,7 @@ public class QuizTest {
         void fail_tryWithOtherQuestion() throws NoSuchFieldException, IllegalAccessException {
             short prevWrongCount = quiz.getWrongCount();
             boolean prevIsSolved = quiz.getIsSolved();
-            Quiz otherQuiz = createQuizWith(true);
+            Quiz otherQuiz = createQuizWith(quiz.getId() + 1L, true);
             Question otherQuestion = Question.of("content", false, otherQuiz);
 
             // when & then: 풀이 실패
@@ -135,8 +135,12 @@ public class QuizTest {
         }
     }
 
-    private Quiz createQuizWith(boolean isSolved) throws NoSuchFieldException, IllegalAccessException {
+    private Quiz createQuizWith(Long id, boolean isSolved) throws NoSuchFieldException, IllegalAccessException {
         Quiz quiz = Quiz.of("quiz title", QuizType.OX);
+
+        Field idField = Quiz.class.getDeclaredField("id");
+        idField.setAccessible(true);
+        idField.set(quiz, id);
 
         Field isSolvedField = Quiz.class.getDeclaredField("isSolved");
         isSolvedField.setAccessible(true);
