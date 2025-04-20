@@ -2,6 +2,7 @@ package my.fisherman.fisherman.smelt.domain;
 
 import my.fisherman.fisherman.fishingspot.domain.FishingSpot;
 import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.SmeltErrorCode;
 import my.fisherman.fisherman.inventory.domain.Inventory;
 import my.fisherman.fisherman.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,9 @@ import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("빙어 도메인 테스트")
 public class SmeltTest {
@@ -76,19 +79,23 @@ public class SmeltTest {
             Smelt smelt = createSmeltWith(inventory, smeltType);
 
             assertThatThrownBy(() -> smelt.send(inventory, fishingSpot, letter, null))
-                    .isInstanceOf(FishermanException.class);
+                    .isInstanceOf(FishermanException.class)
+                    .extracting("errorCode")
+                    .isEqualTo(SmeltErrorCode.NOT_MINE);
         }
 
         @Test
         @DisplayName("타인의 빙어를 보낼 수 없다")
         void fail_smeltOfOther() throws NoSuchFieldException, IllegalAccessException {
             Inventory otherInventory = Inventory.of(other);
-            Inventory senderInventory = Inventory.of(sender);
             FishingSpot fishingSpot = FishingSpot.of(receiver);
             Smelt smelt = createSmeltWith(otherInventory, smeltType);
+            Inventory senderInventory = Inventory.of(sender);
 
             assertThatThrownBy(() -> smelt.send(senderInventory, fishingSpot, letter, null))
-                    .isInstanceOf(FishermanException.class);
+                    .isInstanceOf(FishermanException.class)
+                    .extracting("errorCode")
+                    .isEqualTo(SmeltErrorCode.FORBIDDEN);
         }
 
         @Test
@@ -100,7 +107,9 @@ public class SmeltTest {
             Smelt smelt = createSmeltWith(inventory, smeltType, fishingSpot, prevLetter, SmeltStatus.UNREAD);
 
             assertThatThrownBy(() -> smelt.send(inventory, fishingSpot, letter, null))
-                    .isInstanceOf(FishermanException.class);
+                    .isInstanceOf(FishermanException.class)
+                    .extracting("errorCode")
+                    .isEqualTo(SmeltErrorCode.ALREADY_SENT);
         }
     }
 
@@ -149,7 +158,9 @@ public class SmeltTest {
             @Test
             void fail_readByOther() {
                 assertThatThrownBy(() -> smelt.readLetter(other))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
             }
         }
 
@@ -187,7 +198,9 @@ public class SmeltTest {
             @Test
             void fail_readByOther() {
                 assertThatThrownBy(() -> smelt.readLetter(other))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
             }
         }
 
@@ -220,7 +233,9 @@ public class SmeltTest {
             @Test
             void fail_readByOther(){
                 assertThatThrownBy(() -> smelt.readLetter(other))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
             }
         }
 
@@ -242,7 +257,9 @@ public class SmeltTest {
             @Test
             void fail_readByReceiver() {
                 assertThatThrownBy(() -> smelt.readLetter(receiver))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.YET_SOLVED);
             }
 
             @DisplayName("보낸 사람이 읽으면 상태가 바뀌지 않는다")
@@ -257,7 +274,9 @@ public class SmeltTest {
             @Test
             void fail_readBySender() {
                 assertThatThrownBy(() -> smelt.readLetter(other))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
             }
         }
 
@@ -275,14 +294,18 @@ public class SmeltTest {
             @Test
             void fail_readByOwner() {
                 assertThatThrownBy(() -> smelt.readLetter(sender))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.NOT_FOUND);
             }
 
             @DisplayName("제 3자가 읽을 수 없다")
             @Test
             void fail_readByOther() {
                 assertThatThrownBy(() -> smelt.readLetter(other))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.NOT_FOUND);
             }
         }
     }
@@ -324,7 +347,9 @@ public class SmeltTest {
                 Comment comment = Comment.of("test content");
 
                 assertThatThrownBy(() -> smelt.registerComment(sender, comment))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
             }
 
             @DisplayName("제 3자는 답변을 작성할 수 없다")
@@ -333,7 +358,9 @@ public class SmeltTest {
                 Comment comment = Comment.of("test content");
 
                 assertThatThrownBy(() -> smelt.registerComment(other, comment))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
             }
         }
 
@@ -355,7 +382,9 @@ public class SmeltTest {
                 Comment comment = Comment.of("test content");
 
                 assertThatThrownBy(() -> smelt.registerComment(receiver, comment))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.ALREADY_COMMENT);
             }
 
             @DisplayName("보낸 사람이 답변을 등록할 수 없다")
@@ -364,7 +393,9 @@ public class SmeltTest {
                 Comment comment = Comment.of("test content");
 
                 assertThatThrownBy(() -> smelt.registerComment(sender, comment))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
             }
 
             @DisplayName("제 3자가 답변을 등록할 수 없다")
@@ -373,7 +404,9 @@ public class SmeltTest {
                 Comment comment = Comment.of("test content");
 
                 assertThatThrownBy(() -> smelt.registerComment(other, comment))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
             }
         }
 
@@ -394,7 +427,9 @@ public class SmeltTest {
                 Comment comment = Comment.of("test content");
 
                 assertThatThrownBy(() -> smelt.registerComment(receiver, comment))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.YET_READ);
             }
 
             @DisplayName("보낸 사람이 답변을 등록할 수 없다")
@@ -403,7 +438,9 @@ public class SmeltTest {
                 Comment comment = Comment.of("test content");
 
                 assertThatThrownBy(() -> smelt.registerComment(sender, comment))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
             }
 
             @DisplayName("제 3자가 답변을 등록할 수 없다")
@@ -412,7 +449,9 @@ public class SmeltTest {
                 Comment comment = Comment.of("test content");
 
                 assertThatThrownBy(() -> smelt.registerComment(other, comment))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
             }
         }
 
@@ -432,7 +471,9 @@ public class SmeltTest {
                 Comment comment = Comment.of("test content");
 
                 assertThatThrownBy(() -> smelt.registerComment(sender, comment))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.NOT_FOUND);
             }
 
             @DisplayName("제 3자가 답변을 등록할 수 없다.")
@@ -441,7 +482,9 @@ public class SmeltTest {
                 Comment comment = Comment.of("test content");
 
                 assertThatThrownBy(() -> smelt.registerComment(other, comment))
-                        .isInstanceOf(FishermanException.class);
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.NOT_FOUND);
             }
         }
     }
