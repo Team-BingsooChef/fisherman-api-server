@@ -94,14 +94,11 @@ public class SmeltTest {
         @Test
         @DisplayName("이미 보냈던 빙어는 다시 보낼 수 없다")
         void fail_alreadySentSmelt() throws IllegalAccessException, NoSuchFieldException {
-            // given
             Inventory inventory = Inventory.of(sender);
             FishingSpot fishingSpot = FishingSpot.of(receiver);
             Letter prevLetter = createLetterWith(2L, "Test letter");
             Smelt smelt = createSmeltWith(inventory, smeltType, fishingSpot, prevLetter, SmeltStatus.UNREAD);
 
-
-            // when & than
             assertThatThrownBy(() -> smelt.send(inventory, fishingSpot, letter, null))
                     .isInstanceOf(FishermanException.class);
         }
@@ -110,8 +107,8 @@ public class SmeltTest {
     @DisplayName("편지 읽기 테스트")
     @Nested
     class ReadLetterTest {
-        Inventory senderInventory;
-        FishingSpot receiverFishingSpot;
+        private Inventory senderInventory;
+        private FishingSpot receiverFishingSpot;
 
         @BeforeEach
         void initialize() {
@@ -122,8 +119,8 @@ public class SmeltTest {
         @DisplayName("아직 받은 사람이 읽지 않은 퀴즈 없는 편지일 때")
         @Nested
         class FirstReadLetter {
-            Smelt smelt;
-            SmeltStatus prevStatus;
+            private Smelt smelt;
+            private SmeltStatus prevStatus;
 
             @BeforeEach
             void initializeSmelt() throws NoSuchFieldException, IllegalAccessException {
@@ -159,8 +156,8 @@ public class SmeltTest {
         @DisplayName("아직 받은 사람이 읽지 않은 퀴즈를 푼 편지일 때")
         @Nested
         class FirstReadLetterWithQuiz {
-            Smelt smelt;
-            SmeltStatus prevStatus;
+            private Smelt smelt;
+            private SmeltStatus prevStatus;
 
             @BeforeEach
             void initializeSmelt() throws NoSuchFieldException, IllegalAccessException {
@@ -197,8 +194,8 @@ public class SmeltTest {
         @DisplayName("이미 읽었던 편지일 때")
         @Nested
         class AlreadyReadLetter {
-            SmeltStatus prevStatus;
-            Smelt smelt;
+            private SmeltStatus prevStatus;
+            private Smelt smelt;
 
             @BeforeEach
             void initializeSmelt() throws NoSuchFieldException, IllegalAccessException {
@@ -230,8 +227,8 @@ public class SmeltTest {
         @DisplayName("받은 사람이 아직 퀴즈를 풀지 않았을 때")
         @Nested
         class UnsolvedLetter {
-            Smelt smelt;
-            SmeltStatus prevStatus;
+            private SmeltStatus prevStatus;
+            private Smelt smelt;
 
             @BeforeEach
             void initializeSmelt() throws NoSuchFieldException, IllegalAccessException {
@@ -258,7 +255,7 @@ public class SmeltTest {
 
             @DisplayName("제 3자가 읽을 수 없다")
             @Test
-            void fail_readBySender(){
+            void fail_readBySender() {
                 assertThatThrownBy(() -> smelt.readLetter(other))
                         .isInstanceOf(FishermanException.class);
             }
@@ -267,7 +264,7 @@ public class SmeltTest {
         @DisplayName("아직 빙어를 보내지 않았을 때")
         @Nested
         class ReadYetSentLetter {
-            Smelt smelt;
+            private Smelt smelt;
 
             @BeforeEach
             void initializeSmelt() throws NoSuchFieldException, IllegalAccessException {
@@ -293,8 +290,8 @@ public class SmeltTest {
     @DisplayName("답변 등록 테스트")
     @Nested
     class RegisterCommentTest {
-        Inventory senderInventory;
-        FishingSpot receiverFishingSpot;
+        private Inventory senderInventory;
+        private FishingSpot receiverFishingSpot;
 
         @BeforeEach
         void initialize() {
@@ -305,12 +302,11 @@ public class SmeltTest {
         @DisplayName("정상적으로 주고 받은 빙어일 때")
         @Nested
         class NormalSmelt {
-            Smelt smelt;
-            Letter letter;
+            private Smelt smelt;
 
             @BeforeEach
             void initialize() throws NoSuchFieldException, IllegalAccessException {
-                letter = createLetterWith(1L, "sender");
+                Letter letter = createLetterWith(1L, "sender");
                 smelt = createSmeltWith(senderInventory, smeltType, receiverFishingSpot, letter, SmeltStatus.READ);
             }
 
@@ -344,7 +340,7 @@ public class SmeltTest {
         @DisplayName("이미 답변이 등록된 빙어일 때")
         @Nested
         class AlreadyRegistered {
-            Smelt smelt;
+            private Smelt smelt;
 
             @BeforeEach
             void initialize() throws NoSuchFieldException, IllegalAccessException {
@@ -384,7 +380,7 @@ public class SmeltTest {
         @DisplayName("아직 읽지 않은 빙어일 때")
         @Nested
         class YetRead {
-            Smelt smelt;
+            private Smelt smelt;
 
             @BeforeEach
             void initialize() throws NoSuchFieldException, IllegalAccessException {
@@ -423,7 +419,7 @@ public class SmeltTest {
         @DisplayName("아직 보내지 않은 빙어일 때")
         @Nested
         class YetSent {
-            Smelt smelt;
+            private Smelt smelt;
 
             @BeforeEach
             void initialize() throws NoSuchFieldException, IllegalAccessException {
