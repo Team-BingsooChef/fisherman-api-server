@@ -48,12 +48,12 @@ public class Quiz {
     }
 
     protected void trySolve(Question question) {
-        if (this.isSolved) {
-            throw new FishermanException(SmeltErrorCode.ALREADY_SOLVED);
-        }
-
         if (!this.equals(question.getQuiz())) {
             throw new FishermanException(SmeltErrorCode.BAD_QUESTION);
+        }
+
+        if (this.isSolved) {
+            throw new FishermanException(SmeltErrorCode.ALREADY_SOLVED);
         }
 
         if (question.getIsAnswer()) {
