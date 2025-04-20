@@ -49,7 +49,7 @@ public class SmeltTest {
 
             smelt.send(inventory, fishingSpot, letter, null);
 
-            assertThat(smelt.getStatus()).isEqualByComparingTo(SmeltStatus.UNREAD);
+            assertThat(smelt.getStatus()).isEqualTo(SmeltStatus.UNREAD);
             assertThat(smelt.getLetter()).isEqualTo(letter);
         }
 
@@ -63,7 +63,7 @@ public class SmeltTest {
 
             smelt.send(inventory, fishingSpot, letter, quiz);
 
-            assertThat(smelt.getStatus()).isEqualByComparingTo(SmeltStatus.UNREAD);
+            assertThat(smelt.getStatus()).isEqualTo(SmeltStatus.UNREAD);
             assertThat(smelt.getLetter()).isEqualTo(letter);
             assertThat(smelt.getQuiz()).isEqualTo(quiz);
         }
@@ -134,7 +134,7 @@ public class SmeltTest {
             void shouldChangeStatus_readByReceiver() {
                 smelt.readLetter(receiver);
 
-                assertThat(smelt.getStatus()).isEqualByComparingTo(SmeltStatus.READ);
+                assertThat(smelt.getStatus()).isEqualTo(SmeltStatus.READ);
             }
 
             @DisplayName("보낸 사람이 읽으면 상태가 바뀌지 않는다")
@@ -142,7 +142,7 @@ public class SmeltTest {
             void shouldNotChangeStatus_readBySender() {
                 smelt.readLetter(sender);
 
-                assertThat(smelt.getStatus()).isEqualByComparingTo(prevStatus);
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
             }
 
             @DisplayName("제 3자가 읽을 수 없다")
@@ -172,7 +172,7 @@ public class SmeltTest {
             void shouldChangeStatus_readByReceiver() {
                 smelt.readLetter(receiver);
 
-                assertThat(smelt.getStatus()).isEqualByComparingTo(SmeltStatus.READ);
+                assertThat(smelt.getStatus()).isEqualTo(SmeltStatus.READ);
             }
 
             @DisplayName("보낸 사람이 읽으면 상태가 바뀌지 않는다")
@@ -180,7 +180,7 @@ public class SmeltTest {
             void shouldNotChangeStatus_readBySender() {
                 smelt.readLetter(sender);
 
-                assertThat(smelt.getStatus()).isEqualByComparingTo(prevStatus);
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
             }
 
             @DisplayName("제 3자가 읽을 수 없다")
@@ -250,7 +250,7 @@ public class SmeltTest {
             void shouldNotChangeStatus_readBySender() {
                 smelt.readLetter(sender);
 
-                assertThat(smelt.getStatus()).isEqualByComparingTo(prevStatus);
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
             }
 
             @DisplayName("제 3자가 읽을 수 없다")
