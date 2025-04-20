@@ -2,7 +2,6 @@ package my.fisherman.fisherman.inventory.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.global.exception.code.InventoryErrorCode;
