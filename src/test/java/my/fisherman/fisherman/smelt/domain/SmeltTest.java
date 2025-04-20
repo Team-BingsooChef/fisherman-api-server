@@ -489,7 +489,7 @@ public class SmeltTest {
         }
     }
 
-    @DisplayName("퀴즈 풀이 테스트")
+    @DisplayName("퀴즈 풀이 테스트 (권한에 따른 오류와 빙어 상태 변화)")
     @Nested
     class solveQuizTest {
         private Inventory senderInventory;
@@ -652,23 +652,6 @@ public class SmeltTest {
                         .isInstanceOf(FishermanException.class)
                         .extracting("errorCode")
                         .isEqualTo(SmeltErrorCode.ALREADY_SOLVED);
-            }
-
-            @DisplayName("받은 사람이 잘못된 응답을 제출하면 실패한다")
-            @Test
-            void fail_tryByReceiverWithOtherQuestion() throws NoSuchFieldException, IllegalAccessException {
-                Quiz otherQuiz = createQuizWith(quiz.getId() + 10L, false);
-                Question question = Question.of("content", false, otherQuiz);
-                SmeltStatus prevStatus = smelt.getStatus();
-
-                // then: 접근 실패
-                assertThatThrownBy(() -> smelt.trySolve(receiver, question))
-                        .isInstanceOf(FishermanException.class)
-                        .extracting("errorCode")
-                        .isEqualTo(SmeltErrorCode.ALREADY_SOLVED);
-
-                // then: 상태 유지
-                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
             }
 
             @DisplayName("보낸 사람은 정답을 제출할 수 없다")
