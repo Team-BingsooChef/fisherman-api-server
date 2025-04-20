@@ -120,17 +120,8 @@ public class Smelt {
     public void trySolve(User user, Question question) {
         checkSolvable(user);
 
-        if (this.quiz.getIsSolved()) {
-            throw new FishermanException(SmeltErrorCode.ALREADY_SOLVED);
-        }
+        this.quiz.trySolve(question);
 
-        if (!question.getQuiz().equals(this.quiz)) {
-            throw new FishermanException(SmeltErrorCode.BAD_QUESTION);
-        }
-
-        Boolean isCorrect = question.getIsAnswer();
-
-        this.quiz.trySolve(isCorrect);
         this.status = this.quiz.getIsSolved() ? SmeltStatus.SOLVED : this.status;
     }
 
