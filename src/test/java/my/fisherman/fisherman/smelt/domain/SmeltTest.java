@@ -720,6 +720,8 @@ public class SmeltTest {
         }
     }
 
+
+    // Helper method
     private User createUserWith(Long id, String email, String password, String nickname) throws IllegalAccessException, NoSuchFieldException {
         User user = Mockito.spy(User.of(email, password, nickname));
 

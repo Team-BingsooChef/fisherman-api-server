@@ -135,6 +135,8 @@ public class QuizTest {
         }
     }
 
+
+    // Helper method
     private Quiz createQuizWith(Long id, boolean isSolved) throws NoSuchFieldException, IllegalAccessException {
         Quiz quiz = Quiz.of("quiz title", QuizType.OX);
 
