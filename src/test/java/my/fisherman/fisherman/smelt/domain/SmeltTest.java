@@ -173,7 +173,7 @@ public class SmeltTest {
             @BeforeEach
             void initializeSmelt() throws NoSuchFieldException, IllegalAccessException {
                 Letter letter = createLetterWith(1L, "sender");
-                Quiz quiz = createQuizBySolvedIs(true);
+                Quiz quiz = createQuizWith(true);
                 prevStatus = SmeltStatus.SOLVED;
                 smelt = createSmeltWith(senderInventory, smeltType, receiverFishingSpot, letter, quiz, prevStatus);
             }
@@ -248,7 +248,7 @@ public class SmeltTest {
             @BeforeEach
             void initializeSmelt() throws NoSuchFieldException, IllegalAccessException {
                 Letter letter = createLetterWith(1L, "sender");
-                Quiz quiz = createQuizBySolvedIs(false);
+                Quiz quiz = createQuizWith(false);
                 prevStatus = SmeltStatus.UNREAD;
                 smelt = createSmeltWith(senderInventory, smeltType, receiverFishingSpot, letter, quiz, prevStatus);
             }
@@ -489,6 +489,254 @@ public class SmeltTest {
         }
     }
 
+    @DisplayName("퀴즈 풀이 테스트")
+    @Nested
+    class solveQuizTest {
+        private Inventory senderInventory;
+        private FishingSpot receiverFishingSpot;
+
+        @DisplayName("아직 퀴즈를 풀지 않았을 때")
+        @Nested
+        class ExistQuiz {
+            private Smelt smelt;
+            private Quiz quiz;
+
+            @BeforeEach
+            void initialize() throws NoSuchFieldException, IllegalAccessException {
+                senderInventory = Inventory.of(sender);
+                receiverFishingSpot = FishingSpot.of(receiver);
+
+                Letter letter = createLetterWith(1L, "sender");
+                quiz = createQuizWith(1L, false);
+
+                smelt = createSmeltWith(senderInventory, smeltType, receiverFishingSpot, letter, quiz, SmeltStatus.UNREAD);
+            }
+
+            @DisplayName("받은 사람이 정답을 제출하면 퀴즈를 맞춘다")
+            @Test
+            void solve_tryByReceiverWithAnswerQuestion() {
+                Question question = Question.of("content", true, quiz);
+
+                smelt.trySolve(receiver, question);
+
+                assertThat(smelt.getStatus()).isEqualTo(SmeltStatus.SOLVED);
+            }
+
+            @DisplayName("받은 사람이 오답을 제출하면 퀴즈를 틀린다")
+            @Test
+            void wrong_tryByReceiverWithWrongQuestion() {
+                Question question = Question.of("content", false, quiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                smelt.trySolve(receiver, question);
+
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+
+            @DisplayName("받은 사람이 잘못된 응답을 제출하면 실패한다")
+            @Test
+            void fail_tryByReceiverWithOtherQuestion() throws NoSuchFieldException, IllegalAccessException {
+                Quiz otherQuiz = createQuizWith(quiz.getId() + 10L, false);
+                Question question = Question.of("content", false, otherQuiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                // then: 접근 실패
+                assertThatThrownBy(() -> smelt.trySolve(receiver, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.BAD_QUESTION);
+
+                // then: 상태 유지
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+
+            @DisplayName("보낸 사람은 정답을 제출할 수 없다")
+            @Test
+            void fail_tryAnswerBySender() {
+                Question question = Question.of("content", true, quiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                // then: 접근 실패
+                assertThatThrownBy(() -> smelt.trySolve(sender, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
+
+                // then: 상태 유지
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+
+            @DisplayName("보낸 사람은 오답을 제출할 수 없다")
+            @Test
+            void fail_tryWrongBySender() {
+                Question question = Question.of("content", false, quiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                // then: 접근 실패
+                assertThatThrownBy(() -> smelt.trySolve(sender, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
+
+                // then: 상태 유지
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+
+            @DisplayName("제 3자는 정답을 제출할 수 없다")
+            @Test
+            void fail_tryAnswerByOther() {
+                Question question = Question.of("content", true, quiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                // then: 접근 실패
+                assertThatThrownBy(() -> smelt.trySolve(other, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
+
+                // then: 상태 유지
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+
+            @DisplayName("제 3자는 오답을 제출할 수 없다")
+            @Test
+            void fail_tryWrongByOther() {
+                Question question = Question.of("content", false, quiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                // then: 접근 실패
+                assertThatThrownBy(() -> smelt.trySolve(other, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
+
+                // then: 상태 유지
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+        }
+
+        @DisplayName("이미 퀴즈를 풀었을 때")
+        @Nested
+        class NotExistQuiz {
+            private Smelt smelt;
+            private Quiz quiz;
+
+            @BeforeEach
+            void initialize() throws NoSuchFieldException, IllegalAccessException {
+                senderInventory = Inventory.of(sender);
+                receiverFishingSpot = FishingSpot.of(receiver);
+
+                Letter letter = createLetterWith(1L, "sender");
+                quiz = createQuizWith(1L, true);
+
+                smelt = createSmeltWith(senderInventory, smeltType, receiverFishingSpot, letter, quiz, SmeltStatus.SOLVED);
+            }
+
+            @DisplayName("받은 사람이 정답을 제출할 수 없다")
+            @Test
+            void fail_tryAnswerByReceiver() {
+                Question question = Question.of("content", true, quiz);
+
+                assertThatThrownBy(() -> smelt.trySolve(receiver, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.ALREADY_SOLVED);
+            }
+
+            @DisplayName("받은 사람이 오답을 제출할 수 없다")
+            @Test
+            void fail_tryWrongByReceiver() {
+                Question question = Question.of("content", false, quiz);
+
+                assertThatThrownBy(() -> smelt.trySolve(receiver, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.ALREADY_SOLVED);
+            }
+
+            @DisplayName("받은 사람이 잘못된 응답을 제출하면 실패한다")
+            @Test
+            void fail_tryByReceiverWithOtherQuestion() throws NoSuchFieldException, IllegalAccessException {
+                Quiz otherQuiz = createQuizWith(quiz.getId() + 10L, false);
+                Question question = Question.of("content", false, otherQuiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                // then: 접근 실패
+                assertThatThrownBy(() -> smelt.trySolve(receiver, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.ALREADY_SOLVED);
+
+                // then: 상태 유지
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+
+            @DisplayName("보낸 사람은 정답을 제출할 수 없다")
+            @Test
+            void fail_tryAnswerBySender() {
+                Question question = Question.of("content", true, quiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                // then: 접근 실패
+                assertThatThrownBy(() -> smelt.trySolve(sender, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
+
+                // then: 상태 유지
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+
+            @DisplayName("보낸 사람은 오답을 제출할 수 없다")
+            @Test
+            void fail_tryWrongBySender() {
+                Question question = Question.of("content", false, quiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                // then: 접근 실패
+                assertThatThrownBy(() -> smelt.trySolve(sender, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
+
+                // then: 상태 유지
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+
+            @DisplayName("제 3자는 정답을 제출할 수 없다")
+            @Test
+            void fail_tryAnswerByOther() {
+                Question question = Question.of("content", true, quiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                // then: 접근 실패
+                assertThatThrownBy(() -> smelt.trySolve(other, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
+
+                // then: 상태 유지
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+
+            @DisplayName("제 3자는 오답을 제출할 수 없다")
+            @Test
+            void fail_tryWrongByOther() {
+                Question question = Question.of("content", false, quiz);
+                SmeltStatus prevStatus = smelt.getStatus();
+
+                // then: 접근 실패
+                assertThatThrownBy(() -> smelt.trySolve(other, question))
+                        .isInstanceOf(FishermanException.class)
+                        .extracting("errorCode")
+                        .isEqualTo(SmeltErrorCode.FORBIDDEN);
+
+                // then: 상태 유지
+                assertThat(smelt.getStatus()).isEqualTo(prevStatus);
+            }
+        }
+    }
+
     private User createUserWith(Long id, String email, String password, String nickname) throws IllegalAccessException, NoSuchFieldException {
         User user = Mockito.spy(User.of(email, password, nickname));
 
@@ -533,12 +781,26 @@ public class SmeltTest {
         return letter;
     }
 
-    private Quiz createQuizBySolvedIs(boolean flag) throws NoSuchFieldException, IllegalAccessException {
+    private Quiz createQuizWith(boolean isSolved) throws NoSuchFieldException, IllegalAccessException {
         Quiz quiz = Quiz.of("quiz title", QuizType.OX);
 
         Field isSolvedField = Quiz.class.getDeclaredField("isSolved");
         isSolvedField.setAccessible(true);
-        isSolvedField.set(quiz, flag);
+        isSolvedField.set(quiz, isSolved);
+
+        return quiz;
+    }
+
+    private Quiz createQuizWith(Long id, boolean isSolved) throws NoSuchFieldException, IllegalAccessException {
+        Quiz quiz = Quiz.of("quiz title", QuizType.OX);
+
+        Field idField = Quiz.class.getDeclaredField("id");
+        idField.setAccessible(true);
+        idField.set(quiz, id);
+
+        Field isSolvedField = Quiz.class.getDeclaredField("isSolved");
+        isSolvedField.setAccessible(true);
+        isSolvedField.set(quiz, isSolved);
 
         return quiz;
     }
