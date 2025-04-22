@@ -2,12 +2,11 @@ package my.fisherman.fisherman.smelt.domain;
 
 import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.global.exception.code.SmeltErrorCode;
+import my.fisherman.fisherman.util.TestFixtureUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -21,15 +20,15 @@ public class QuizTest {
         private Quiz quiz;
 
         @BeforeEach
-        void initialize() throws NoSuchFieldException, IllegalAccessException {
-            quiz =  createQuizWith(1L, false);
+        void initialize() {
+            quiz =  TestFixtureUtil.createQuizWith(1L, false);
         }
 
         @Test
         @DisplayName("정답이 제출되면 상태가 변경된다")
         void solve_tryWithAnswerQuestion() {
-            short prevWrongCount = quiz.getWrongCount();
             Question answerQuestion = Question.of("content", true, quiz);
+            short prevWrongCount = quiz.getWrongCount();
 
             quiz.trySolve(answerQuestion);
 
@@ -40,8 +39,8 @@ public class QuizTest {
         @Test
         @DisplayName("오답이 제출되면 틀린 횟수가 증가한다")
         void increaseWrongCount_tryWithWrongQuestion() {
+            Question wrongQuestion = TestFixtureUtil.createQuestionWith("content", false, quiz);
             short prevWrongCount = quiz.getWrongCount();
-            Question wrongQuestion = Question.of("content", false, quiz);
 
             quiz.trySolve(wrongQuestion);
 
@@ -50,12 +49,12 @@ public class QuizTest {
         }
 
         @Test
-        @DisplayName("다른 퀴즈의 답이 제출되면 실패한다")
-        void fail_tryWithOtherQuestion() throws NoSuchFieldException, IllegalAccessException {
-            short prevWrongCount = quiz.getWrongCount();
+        @DisplayName("다른 퀴즈의 선지가 제출되면 실패한다")
+        void fail_tryWithOtherQuestion() {
+            Quiz otherQuiz = TestFixtureUtil.createQuizWith(quiz.getId() + 1, true);
+            Question otherQuestion = TestFixtureUtil.createQuestionWith("content", true, otherQuiz);
             boolean prevIsSolved = quiz.getIsSolved();
-            Quiz otherQuiz = createQuizWith(quiz.getId() + 1, true);
-            Question otherQuestion = Question.of("content", false, otherQuiz);
+            short prevWrongCount = quiz.getWrongCount();
 
             // when & then: 풀이 실패
             assertThatThrownBy(() -> quiz.trySolve(otherQuestion))
@@ -75,16 +74,16 @@ public class QuizTest {
         private Quiz quiz;
 
         @BeforeEach
-        void initialize() throws NoSuchFieldException, IllegalAccessException {
-            quiz =  createQuizWith(1L, true);
+        void initialize() {
+            quiz =  TestFixtureUtil.createQuizWith(1L, true);
         }
 
         @Test
         @DisplayName("정답이 제출되면 실패한다")
         void fail_tryWithAnswerQuestion() {
-            short prevWrongCount = quiz.getWrongCount();
+            Question answerQuestion =  TestFixtureUtil.createQuestionWith("content", true, quiz);
             boolean prevIsSolved = quiz.getIsSolved();
-            Question answerQuestion = Question.of("content", true, quiz);
+            short prevWrongCount = quiz.getWrongCount();
 
             // when & then: 풀이 실패
             assertThatThrownBy(() -> quiz.trySolve(answerQuestion))
@@ -100,9 +99,9 @@ public class QuizTest {
         @Test
         @DisplayName("오답이 제출되면 실패한다")
         void fail_tryWithWrongQuestion() {
-            short prevWrongCount = quiz.getWrongCount();
+            Question wrongQuestion = TestFixtureUtil.createQuestionWith("content", false, quiz);
             boolean prevIsSolved = quiz.getIsSolved();
-            Question wrongQuestion = Question.of("content", false, quiz);
+            short prevWrongCount = quiz.getWrongCount();
 
             // when & then: 풀이 실패
             assertThatThrownBy(() -> quiz.trySolve(wrongQuestion))
@@ -117,11 +116,11 @@ public class QuizTest {
 
         @Test
         @DisplayName("다른 퀴즈의 답이 제출되면 실패한다")
-        void fail_tryWithOtherQuestion() throws NoSuchFieldException, IllegalAccessException {
-            short prevWrongCount = quiz.getWrongCount();
+        void fail_tryWithOtherQuestion() {
+            Quiz otherQuiz = TestFixtureUtil.createQuizWith(quiz.getId() + 1L, true);
+            Question otherQuestion = TestFixtureUtil.createQuestionWith("content", true, otherQuiz);
             boolean prevIsSolved = quiz.getIsSolved();
-            Quiz otherQuiz = createQuizWith(quiz.getId() + 1L, true);
-            Question otherQuestion = Question.of("content", false, otherQuiz);
+            short prevWrongCount = quiz.getWrongCount();
 
             // when & then: 풀이 실패
             assertThatThrownBy(() -> quiz.trySolve(otherQuestion))
@@ -133,21 +132,5 @@ public class QuizTest {
             assertThat(quiz.getIsSolved()).isEqualTo(prevIsSolved);
             assertThat(quiz.getWrongCount()).isEqualTo(prevWrongCount);
         }
-    }
-
-
-    // Helper method
-    private Quiz createQuizWith(Long id, boolean isSolved) throws NoSuchFieldException, IllegalAccessException {
-        Quiz quiz = Quiz.of("quiz title", QuizType.OX);
-
-        Field idField = Quiz.class.getDeclaredField("id");
-        idField.setAccessible(true);
-        idField.set(quiz, id);
-
-        Field isSolvedField = Quiz.class.getDeclaredField("isSolved");
-        isSolvedField.setAccessible(true);
-        isSolvedField.set(quiz, isSolved);
-
-        return quiz;
     }
 }

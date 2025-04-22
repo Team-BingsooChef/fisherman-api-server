@@ -3,12 +3,11 @@ package my.fisherman.fisherman.inventory.domain;
 import my.fisherman.fisherman.global.exception.FishermanException;
 import my.fisherman.fisherman.global.exception.code.InventoryErrorCode;
 import my.fisherman.fisherman.user.domain.User;
+import my.fisherman.fisherman.util.TestFixtureUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,8 +21,8 @@ public class InventoryTest {
     )
     @ValueSource(longs = {3L, 4L, 5L})
     void increaseCoin(long amount) {
-        User user = User.of("test@email.com", "password", "nickname");
-        Inventory inventory = createInventoryWith(user);
+        User user = TestFixtureUtil.createUserWith("test@email.com", "password", "nickname");
+        Inventory inventory = TestFixtureUtil.createInventoryWith(user);
         Long givenCoin = inventory.getCoin();
         
         inventory.increaseCoin(amount);
@@ -33,9 +32,9 @@ public class InventoryTest {
 
     @DisplayName("코인을 얻을 때 오버플로우를 방지한다")
     @Test
-    void increaseCoin_boundedMaxOfLong() throws NoSuchFieldException, IllegalAccessException {
-        User user = User.of("test@email.com", "password", "nickname");
-        Inventory inventory = createInventoryWith(user, Long.MAX_VALUE - 1);
+    void increaseCoin_boundedMaxOfLong() {
+        User user = TestFixtureUtil.createUserWith("test@email.com", "password", "nickname");
+        Inventory inventory = TestFixtureUtil.createInventoryWith(user, Long.MAX_VALUE - 1);
 
         inventory.increaseCoin(5L);
 
@@ -48,8 +47,8 @@ public class InventoryTest {
     )
     @ValueSource(longs = {5L, 10L})
     void decreaseCoin(long amount) {
-        User user = User.of("test@email.com", "password", "nickname");
-        Inventory inventory = createInventoryWith(user);
+        User user = TestFixtureUtil.createUserWith("test@email.com", "password", "nickname");
+        Inventory inventory = TestFixtureUtil.createInventoryWith(user);
         Long givenCoin = inventory.getCoin();
 
         inventory.decreaseCoin(amount);
@@ -59,9 +58,9 @@ public class InventoryTest {
 
     @DisplayName("코인이 충분하지 않은 차감은 실패한다")
     @Test
-    void fail_decreaseCoinByLackOfCoin() throws NoSuchFieldException, IllegalAccessException {
-        User user = User.of("test@email.com", "password", "nickname");
-        Inventory inventory = createInventoryWith(user, 1L);
+    void fail_decreaseCoinByLackOfCoin() {
+        User user = TestFixtureUtil.createUserWith("test@email.com", "password", "nickname");
+        Inventory inventory = TestFixtureUtil.createInventoryWith(user, 1L);
         Long givenCoin = inventory.getCoin();
 
         // when & then: 코인 차감 실패
@@ -75,24 +74,5 @@ public class InventoryTest {
     }
 
 
-    // Helper method
-    private Inventory createInventoryWith(User user){
-        return Inventory.of(user);
-    }
 
-    private Inventory createInventoryWith(User user, Long coinAmount) throws NoSuchFieldException, IllegalAccessException {
-        Coin coin = new Coin();
-
-        Field coinField = Coin.class.getDeclaredField("coin");
-        coinField.setAccessible(true);
-        coinField.set(coin, coinAmount);
-
-        Inventory inventory = Inventory.of(user);
-
-        Field coinFieldOfInventory = Inventory.class.getDeclaredField("coin");
-        coinFieldOfInventory.setAccessible(true);
-        coinFieldOfInventory.set(inventory, coin);
-
-        return inventory;
-    }
 }
