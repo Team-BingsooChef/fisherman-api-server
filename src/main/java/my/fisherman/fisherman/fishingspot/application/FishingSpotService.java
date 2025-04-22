@@ -28,8 +28,6 @@ import my.fisherman.fisherman.smelt.repository.LetterRepository;
 import my.fisherman.fisherman.smelt.repository.QuestionRepository;
 import my.fisherman.fisherman.smelt.repository.QuizRepository;
 import my.fisherman.fisherman.smelt.repository.SmeltRepository;
-import my.fisherman.fisherman.user.domain.User;
-import my.fisherman.fisherman.user.repository.UserRepository;
 
 
 @Service
@@ -40,7 +38,6 @@ public class FishingSpotService {
     private final InventoryRepository inventoryRepository;
     private final SmeltRepository smeltRepository;
     private final LetterRepository letterRepository;
-    private final UserRepository userRepository;
     private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
 
@@ -124,12 +121,14 @@ public class FishingSpotService {
 
     @Transactional
     public void updatePublic(FishingSpotCommand.UpdatePublic command) {
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
+
         FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
             .orElseThrow(() -> new FishermanException(
                 FishingSpotErrorCode.NOT_FOUND,
                 "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
 
-        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
         fishingSpot.updatePublic(userId, command.isPublic());
     }
 }
