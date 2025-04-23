@@ -42,7 +42,7 @@ public class SmeltTest {
         @Test
         @DisplayName("퀴즈 없이 보낼 수 있다")
         void succeed_withoutQuiz() {
-            Inventory inventory = TestFixtureUtil.createInventoryWith(sender);
+            Inventory inventory = TestFixtureUtil.createInventoryWith(1L ,sender);
             FishingSpot fishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
             Smelt smelt = TestFixtureUtil.createSmeltWith(inventory, smeltType);
 
@@ -55,7 +55,7 @@ public class SmeltTest {
         @Test
         @DisplayName("퀴즈와 보낼 수 있다")
         void succeed_withQuiz() {
-            Inventory inventory = TestFixtureUtil.createInventoryWith(sender);
+            Inventory inventory = TestFixtureUtil.createInventoryWith(1L ,sender);
             FishingSpot fishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
             Smelt smelt = TestFixtureUtil.createSmeltWith(inventory, smeltType);
             Quiz quiz = TestFixtureUtil.createQuizWith("title", QuizType.OX);
@@ -70,7 +70,7 @@ public class SmeltTest {
         @Test
         @DisplayName("내 낚시터에 보낼 수 없다")
         void fail_toMyFishingSpot() {
-            Inventory inventory = TestFixtureUtil.createInventoryWith(sender);
+            Inventory inventory = TestFixtureUtil.createInventoryWith(1L ,sender);
             FishingSpot fishingSpot = TestFixtureUtil.createFishingSpotWith(sender);
             Smelt smelt = TestFixtureUtil.createSmeltWith(inventory, smeltType);
 
@@ -83,10 +83,10 @@ public class SmeltTest {
         @Test
         @DisplayName("타인의 빙어를 보낼 수 없다")
         void fail_smeltOfOther() {
-            Inventory otherInventory = TestFixtureUtil.createInventoryWith(other);
+            Inventory otherInventory = TestFixtureUtil.createInventoryWith(2L ,other);
             FishingSpot fishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
             Smelt smelt = TestFixtureUtil.createSmeltWith(otherInventory, smeltType);
-            Inventory senderInventory = TestFixtureUtil.createInventoryWith(sender);
+            Inventory senderInventory = TestFixtureUtil.createInventoryWith(1L ,sender);
 
             assertThatThrownBy(() -> smelt.send(senderInventory, fishingSpot, letter, null))
                     .isInstanceOf(FishermanException.class)
@@ -97,7 +97,7 @@ public class SmeltTest {
         @Test
         @DisplayName("이미 보냈던 빙어는 다시 보낼 수 없다")
         void fail_alreadySentSmelt() {
-            Inventory inventory = TestFixtureUtil.createInventoryWith(sender);
+            Inventory inventory = TestFixtureUtil.createInventoryWith(1L ,sender);
             FishingSpot fishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
             Letter prevLetter = TestFixtureUtil.createLetterWith(2L, "Test letter");
             Smelt smelt = TestFixtureUtil.createSmeltWith(inventory, smeltType, fishingSpot, prevLetter, SmeltStatus.UNREAD);
@@ -127,7 +127,7 @@ public class SmeltTest {
                 receiver = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "receiver");
                 other = TestFixtureUtil.createUserWith(3L, "test@gmail.com", "password", "other");
 
-                Inventory senderInventory = TestFixtureUtil.createInventoryWith(sender);
+                Inventory senderInventory = TestFixtureUtil.createInventoryWith(1L ,sender);
                 FishingSpot receiverFishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
                 Letter letter = TestFixtureUtil.createLetterWith(1L, "sender");
@@ -177,7 +177,7 @@ public class SmeltTest {
                 receiver = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "receiver");
                 other = TestFixtureUtil.createUserWith(3L, "test@gmail.com", "password", "other");
 
-                Inventory senderInventory = TestFixtureUtil.createInventoryWith(sender);
+                Inventory senderInventory = TestFixtureUtil.createInventoryWith(1L ,sender);
                 FishingSpot receiverFishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
                 Letter letter = TestFixtureUtil.createLetterWith(1L, "sender");
@@ -228,7 +228,7 @@ public class SmeltTest {
                 receiver = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "receiver");
                 other = TestFixtureUtil.createUserWith(3L, "test@gmail.com", "password", "other");
 
-                Inventory senderInventory = TestFixtureUtil.createInventoryWith(sender);
+                Inventory senderInventory = TestFixtureUtil.createInventoryWith(1L ,sender);
                 FishingSpot receiverFishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
                 Letter letter = TestFixtureUtil.createLetterWith(1L, "sender");
@@ -272,7 +272,7 @@ public class SmeltTest {
                 receiver = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "receiver");
                 other = TestFixtureUtil.createUserWith(3L, "test@gmail.com", "password", "other");
 
-                Inventory senderInventory = TestFixtureUtil.createInventoryWith(sender);
+                Inventory senderInventory = TestFixtureUtil.createInventoryWith(1L ,sender);
                 FishingSpot receiverFishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
                 Letter letter = TestFixtureUtil.createLetterWith(1L, "sender");
@@ -322,7 +322,7 @@ public class SmeltTest {
                 owner = TestFixtureUtil.createUserWith(1L, "test@gmail.com", "password", "owner");
                 other = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "other");
 
-                Inventory ownerInventory = TestFixtureUtil.createInventoryWith(owner);
+                Inventory ownerInventory = TestFixtureUtil.createInventoryWith(1L, owner);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
 
                 smelt = TestFixtureUtil.createSmeltWith(ownerInventory, smeltType);
@@ -366,7 +366,7 @@ public class SmeltTest {
                 receiver = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "receiver");
                 other = TestFixtureUtil.createUserWith(3L, "test@gmail.com", "password", "other");
 
-                Inventory senderInventory = TestFixtureUtil.createInventoryWith(sender);
+                Inventory senderInventory = TestFixtureUtil.createInventoryWith(1L ,sender);
                 FishingSpot receiverFishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
                 Letter letter = TestFixtureUtil.createLetterWith(1L, "sender");
@@ -419,7 +419,7 @@ public class SmeltTest {
                 receiver = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "receiver");
                 other = TestFixtureUtil.createUserWith(3L, "test@gmail.com", "password", "other");
 
-                Inventory senderInventory = TestFixtureUtil.createInventoryWith(sender);
+                Inventory senderInventory = TestFixtureUtil.createInventoryWith(1L ,sender);
                 FishingSpot receiverFishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
                 Comment comment = TestFixtureUtil.createCommentWith("test comment");
@@ -476,7 +476,7 @@ public class SmeltTest {
                 receiver = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "receiver");
                 other = TestFixtureUtil.createUserWith(3L, "test@gmail.com", "password", "other");
 
-                Inventory senderInventory = TestFixtureUtil.createInventoryWith(sender);
+                Inventory senderInventory = TestFixtureUtil.createInventoryWith(1L ,sender);
                 FishingSpot receiverFishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
                 Letter letter = TestFixtureUtil.createLetterWith(1L, "sender");
@@ -530,7 +530,7 @@ public class SmeltTest {
                 owner = TestFixtureUtil.createUserWith(1L, "test@gmail.com", "password", "owner");
                 other = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "other");
 
-                Inventory ownerInventory = TestFixtureUtil.createInventoryWith(owner);
+                Inventory ownerInventory = TestFixtureUtil.createInventoryWith(1L, owner);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
 
                 smelt = TestFixtureUtil.createSmeltWith(ownerInventory, smeltType);
@@ -579,7 +579,7 @@ public class SmeltTest {
                 receiver = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "receiver");
                 other = TestFixtureUtil.createUserWith(3L, "test@gmail.com", "password", "other");
 
-                Inventory senderInventory = TestFixtureUtil.createInventoryWith(sender);
+                Inventory senderInventory = TestFixtureUtil.createInventoryWith(1L ,sender);
                 FishingSpot receiverFishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
                 Letter letter = TestFixtureUtil.createLetterWith(1L, "sender");
@@ -706,7 +706,7 @@ public class SmeltTest {
                 receiver = TestFixtureUtil.createUserWith(2L, "test@gmail.com", "password", "receiver");
                 other = TestFixtureUtil.createUserWith(3L, "test@gmail.com", "password", "other");
 
-                Inventory senderInventory = TestFixtureUtil.createInventoryWith(sender);
+                Inventory senderInventory = TestFixtureUtil.createInventoryWith(1L ,sender);
                 FishingSpot receiverFishingSpot = TestFixtureUtil.createFishingSpotWith(receiver);
                 SmeltType smeltType = TestFixtureUtil.createSmeltTypeWith(1L);
                 Letter letter = TestFixtureUtil.createLetterWith(1L, "sender");

@@ -32,17 +32,22 @@ public class TestFixtureUtil {
     }
 
     // Inventory 생성
-    public static Inventory createInventoryWith(User user) {
-        return Inventory.of(user);
+    public static Inventory createInventoryWith(Long id, User user) {
+        Inventory inventory = Inventory.of(user);
+
+        ReflectionTestUtils.setField(inventory, "id", id);
+
+        return inventory;
     }
 
-    public static Inventory createInventoryWith(User user, Long coinAmount) {
+    public static Inventory createInventoryWith(Long id, User user, Long coinAmount) {
         Coin coin = new Coin();
 
         ReflectionTestUtils.setField(coin, "coin", coinAmount);
 
         Inventory inventory = Inventory.of(user);
 
+        ReflectionTestUtils.setField(inventory, "id", id);
         ReflectionTestUtils.setField(inventory, "coin", coin);
 
         return inventory;

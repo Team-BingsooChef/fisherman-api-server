@@ -22,7 +22,7 @@ public class InventoryTest {
     @ValueSource(longs = {3L, 4L, 5L})
     void increaseCoin(long amount) {
         User user = TestFixtureUtil.createUserWith("test@email.com", "password", "nickname");
-        Inventory inventory = TestFixtureUtil.createInventoryWith(user);
+        Inventory inventory = TestFixtureUtil.createInventoryWith(1L ,user);
         Long givenCoin = inventory.getCoin();
         
         inventory.increaseCoin(amount);
@@ -34,7 +34,7 @@ public class InventoryTest {
     @Test
     void increaseCoin_boundedMaxOfLong() {
         User user = TestFixtureUtil.createUserWith("test@email.com", "password", "nickname");
-        Inventory inventory = TestFixtureUtil.createInventoryWith(user, Long.MAX_VALUE - 1);
+        Inventory inventory = TestFixtureUtil.createInventoryWith(1L ,user, Long.MAX_VALUE - 1);
 
         inventory.increaseCoin(5L);
 
@@ -48,7 +48,7 @@ public class InventoryTest {
     @ValueSource(longs = {5L, 10L})
     void decreaseCoin(long amount) {
         User user = TestFixtureUtil.createUserWith("test@email.com", "password", "nickname");
-        Inventory inventory = TestFixtureUtil.createInventoryWith(user);
+        Inventory inventory = TestFixtureUtil.createInventoryWith(1L ,user);
         Long givenCoin = inventory.getCoin();
 
         inventory.decreaseCoin(amount);
@@ -60,7 +60,7 @@ public class InventoryTest {
     @Test
     void fail_decreaseCoinByLackOfCoin() {
         User user = TestFixtureUtil.createUserWith("test@email.com", "password", "nickname");
-        Inventory inventory = TestFixtureUtil.createInventoryWith(user, 1L);
+        Inventory inventory = TestFixtureUtil.createInventoryWith(1L, user, 1L);
         Long givenCoin = inventory.getCoin();
 
         // when & then: 코인 차감 실패

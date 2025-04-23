@@ -48,7 +48,7 @@ public class Quiz {
     }
 
     protected void trySolve(Question question) {
-        if (!this.equals(question.getQuiz())) {
+        if (!this.id.equals(question.getQuiz().getId())) {
             throw new FishermanException(SmeltErrorCode.BAD_QUESTION);
         }
 
@@ -62,19 +62,5 @@ public class Quiz {
         }
 
         this.wrongCount++;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Quiz)) return false;
-
-        Quiz other = (Quiz) o;
-        return id != null && id.equals(other.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 }
