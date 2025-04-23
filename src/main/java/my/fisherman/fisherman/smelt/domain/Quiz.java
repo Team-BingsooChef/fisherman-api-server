@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.SmeltErrorCode;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,8 +47,16 @@ public class Quiz {
         return new Quiz(title, type);
     }
 
-    protected void trySolve(Boolean isCorrect) {
-        if (isCorrect) {
+    protected void trySolve(Question question) {
+        if (!this.id.equals(question.getQuiz().getId())) {
+            throw new FishermanException(SmeltErrorCode.BAD_QUESTION);
+        }
+
+        if (this.isSolved) {
+            throw new FishermanException(SmeltErrorCode.ALREADY_SOLVED);
+        }
+
+        if (question.getIsAnswer()) {
             this.isSolved = true;
             return;
         }

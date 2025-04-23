@@ -57,8 +57,7 @@ public class Inventory {
     }
 
     public void checkReadable(User user) {
-        // TODO: ID 비교로 수정
-        if (this.user == user) {
+        if (this.user.equals(user)) {
             return;
         }
 

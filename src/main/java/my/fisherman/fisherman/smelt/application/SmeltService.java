@@ -2,11 +2,6 @@ package my.fisherman.fisherman.smelt.application;
 
 import java.util.List;
 
-import my.fisherman.fisherman.smelt.repository.SmeltRepository;
-import my.fisherman.fisherman.smelt.repository.SmeltTypeRepository;
-import my.fisherman.fisherman.smelt.repository.QuestionRepository;
-import my.fisherman.fisherman.smelt.repository.LetterRepository;
-import my.fisherman.fisherman.smelt.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +12,15 @@ import my.fisherman.fisherman.global.exception.code.UserErrorCode;
 import my.fisherman.fisherman.security.util.SecurityUtil;
 import my.fisherman.fisherman.smelt.application.dto.QuizInfo;
 import my.fisherman.fisherman.smelt.application.dto.SmeltInfo;
-import my.fisherman.fisherman.smelt.domain.Smelt;
 import my.fisherman.fisherman.smelt.domain.Comment;
 import my.fisherman.fisherman.smelt.domain.Question;
 import my.fisherman.fisherman.smelt.domain.Quiz;
+import my.fisherman.fisherman.smelt.domain.Smelt;
 import my.fisherman.fisherman.smelt.domain.SmeltType;
+import my.fisherman.fisherman.smelt.repository.CommentRepository;
+import my.fisherman.fisherman.smelt.repository.QuestionRepository;
+import my.fisherman.fisherman.smelt.repository.SmeltRepository;
+import my.fisherman.fisherman.smelt.repository.SmeltTypeRepository;
 import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
 

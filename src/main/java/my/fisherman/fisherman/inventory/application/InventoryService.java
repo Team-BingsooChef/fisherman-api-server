@@ -37,9 +37,7 @@ public class InventoryService {
         Long userId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
-        Inventory inventory = inventoryRepository.findByUser(user)
+        Inventory inventory = inventoryRepository.findByUserId(userId)
             .orElseThrow(() -> new FishermanException(InventoryErrorCode.NOT_FOUND, "현재 사용자의 인벤토리를 찾을 수 없습니다."));
 
         return InventoryInfo.Simple.from(inventory);

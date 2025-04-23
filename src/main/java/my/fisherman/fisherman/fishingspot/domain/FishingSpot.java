@@ -11,6 +11,8 @@ import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import my.fisherman.fisherman.global.exception.FishermanException;
+import my.fisherman.fisherman.global.exception.code.FishingSpotErrorCode;
 import my.fisherman.fisherman.user.domain.User;
 
 @Getter
@@ -44,5 +46,7 @@ public class FishingSpot {
         if (this.fisherman.getId().equals(userId)) {
             this.isPublic = isPublic;
         }
+
+        throw new FishermanException(FishingSpotErrorCode.FORBIDDEN);
     }
 }

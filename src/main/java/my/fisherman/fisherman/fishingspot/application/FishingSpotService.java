@@ -24,14 +24,10 @@ import my.fisherman.fisherman.smelt.domain.Question;
 import my.fisherman.fisherman.smelt.domain.Quiz;
 import my.fisherman.fisherman.smelt.domain.QuizType;
 import my.fisherman.fisherman.smelt.domain.Smelt;
-import my.fisherman.fisherman.smelt.domain.SmeltType;
 import my.fisherman.fisherman.smelt.repository.LetterRepository;
 import my.fisherman.fisherman.smelt.repository.QuestionRepository;
 import my.fisherman.fisherman.smelt.repository.QuizRepository;
 import my.fisherman.fisherman.smelt.repository.SmeltRepository;
-import my.fisherman.fisherman.smelt.repository.SmeltTypeRepository;
-import my.fisherman.fisherman.user.domain.User;
-import my.fisherman.fisherman.user.repository.UserRepository;
 
 
 @Service
@@ -41,9 +37,7 @@ public class FishingSpotService {
     private final FishingSpotRepository fishingSpotRepository;
     private final InventoryRepository inventoryRepository;
     private final SmeltRepository smeltRepository;
-    private final SmeltTypeRepository smeltTypeRepository;
     private final LetterRepository letterRepository;
-    private final UserRepository userRepository;
     private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
 
@@ -52,10 +46,7 @@ public class FishingSpotService {
         Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
-        User user = userRepository.findById(userId)
-            .orElseThrow(
-                () -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
-        FishingSpot fishingSpot = fishingSpotRepository.findByFisherman(user)
+        FishingSpot fishingSpot = fishingSpotRepository.findByFishermanId(userId)
             .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND,
                 "현재 사용자의 낚시터를 찾을 수 없습니다."));
 
@@ -86,18 +77,13 @@ public class FishingSpotService {
         Long userId = SecurityUtil.getCurrentUserId()
             .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "현재 사용자를 찾을 수 없습니다."));
+        Inventory inventory = inventoryRepository.findByUserId(userId)
+                .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "사용자 %d의 인벤토리를 찾을 수 없습니다.".formatted(userId)));
 
-        Inventory inventory = inventoryRepository.findByUser(user)
-                .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "사용자 %d의 인벤토리를 찾을 수 없습니다.".formatted(user.getId())));
-        SmeltType smeltType = smeltTypeRepository.findById(command.smeltTypeId()).
-                orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "빙어 종류 %d을/를 찾을 수 없습니다.".formatted(command.smeltTypeId())));
-
-        Smelt smelt = smeltRepository.findDrewSmeltByInventoryAndType(inventory.getId(), smeltType.getId())
+        Smelt smelt = smeltRepository.findDrewSmeltByInventoryAndType(inventory.getId(), command.smeltTypeId())
                 .orElseThrow(() -> new FishermanException(
                     FishingSpotErrorCode.NOT_FOUND,
-                    "인벤토리 %d에서 빙어 종류가 %d인 보내지 않은 빙어를 찾을 수 없습니다.".formatted(inventory.getId(), smeltType.getId())));
+                    "인벤토리 %d에서 빙어 종류가 %d인 보내지 않은 빙어를 찾을 수 없습니다.".formatted(inventory.getId(), command.smeltTypeId())));
         FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
                 .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
 
@@ -114,7 +100,7 @@ public class FishingSpotService {
             }
         }
 
-        smelt.send(user, fishingSpot, letter, quiz);
+        smelt.send(inventory, fishingSpot, letter, quiz);
 
         quizRepository.save(quiz);
         letterRepository.save(letter);
@@ -123,7 +109,7 @@ public class FishingSpotService {
 
         Inventory senderInventory = smelt.getInventory();
         senderInventory.increaseCoin(5L);
-        Inventory recieverInventory = inventoryRepository.findByUser(smelt.getFishingSpot().getFisherman())
+        Inventory recieverInventory = inventoryRepository.findByUserId(smelt.getFishingSpot().getFisherman().getId())
                 .orElseThrow(() -> new FishermanException(FishingSpotErrorCode.NOT_FOUND, "낚시꾼의 인벤토리를 찾을 수 없습니다."));
         recieverInventory.increaseCoin(3L);
 
@@ -135,12 +121,14 @@ public class FishingSpotService {
 
     @Transactional
     public void updatePublic(FishingSpotCommand.UpdatePublic command) {
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
+
         FishingSpot fishingSpot = fishingSpotRepository.findById(command.fishingSpotId())
             .orElseThrow(() -> new FishermanException(
                 FishingSpotErrorCode.NOT_FOUND,
                 "낚시터 %d을/를 찾을 수 없습니다.".formatted(command.fishingSpotId())));
 
-        Long userId = SecurityUtil.getCurrentUserId().orElseThrow();
         fishingSpot.updatePublic(userId, command.isPublic());
     }
 }

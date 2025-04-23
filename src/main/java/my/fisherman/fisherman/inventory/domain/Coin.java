@@ -16,7 +16,11 @@ public class Coin {
     }
 
     public void add(Long amount) {
-        this.coin += amount;
+        if (amount > 0 && this.coin > Long.MAX_VALUE - amount) {
+            this.coin = Long.MAX_VALUE;
+        } else {
+            this.coin += amount;
+        }
     }
 
     public void sub(Long amount) {
