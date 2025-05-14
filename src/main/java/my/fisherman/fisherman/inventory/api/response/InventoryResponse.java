@@ -76,6 +76,7 @@ public class InventoryResponse {
             String fishermanNickname,
             Long smeltTypeId,
             String status,
+            Short wrongCount,
             Letter letter
     ) {
         static SmeltDetail from(InventoryInfo.DetailSmelt info) {
@@ -86,6 +87,7 @@ public class InventoryResponse {
                     info.nickname(),
                     info.smeltInfo().smeltTypeId(),
                     info.smeltInfo().status().name(),
+                    info.wrongCount(),
                     info.letterInfo() != null ? Letter.from(info.letterInfo()) : null
             );
         }

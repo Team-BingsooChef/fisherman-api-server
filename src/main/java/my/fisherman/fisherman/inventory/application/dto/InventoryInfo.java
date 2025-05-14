@@ -57,13 +57,15 @@ public class InventoryInfo {
     public record DetailSmelt(
             String nickname,
             SmeltInfo smeltInfo,
-            LetterInfo letterInfo
+            LetterInfo letterInfo,
+            Short wrongCount
     ) {
         public static DetailSmelt from(Smelt smelt) {
             return new DetailSmelt(
                     smelt.getFishingSpot() != null ? smelt.getFishingSpot().getFisherman().getNickname() : null,
                     SmeltInfo.from(smelt),
-                    smelt.getLetter() != null ? LetterInfo.from(smelt.getLetter()) : null
+                    smelt.getLetter() != null ? LetterInfo.from(smelt.getLetter()) : null,
+                    smelt.getQuiz() == null ? 0 : smelt.getQuiz().getWrongCount()
             );
         }
     }
