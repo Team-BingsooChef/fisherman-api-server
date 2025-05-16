@@ -88,8 +88,8 @@ public class AuthService {
     public Token logout(String refreshToken) {
         refreshTokenRepository.delete(refreshToken);
 
-        ResponseCookie accessCookie = cookieUtil.generateCookie("access_token", null);
-        ResponseCookie refreshCookie = cookieUtil.generateCookie("refresh_token", null);
+        ResponseCookie accessCookie = cookieUtil.deleteCookie("access_token");
+        ResponseCookie refreshCookie = cookieUtil.deleteCookie("refresh_token");
         return new Token(accessCookie, refreshCookie);
 
     }

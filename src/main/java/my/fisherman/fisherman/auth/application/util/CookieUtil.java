@@ -19,4 +19,14 @@ public final class CookieUtil {
             .domain(urlProperties.origin())
             .build();
     }
+
+    public ResponseCookie deleteCookie(String cookieName) {
+        return ResponseCookie.from(cookieName)
+                .secure(true)
+                .path("/")
+                .httpOnly(true)
+                .domain(urlProperties.origin())
+                .maxAge(0)
+                .build();
+    }
 }
