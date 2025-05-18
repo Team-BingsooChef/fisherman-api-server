@@ -102,10 +102,12 @@ public class FishingSpotService {
 
         smelt.send(inventory, fishingSpot, letter, quiz);
 
-        quizRepository.save(quiz);
+        if (quiz != null) {
+            quizRepository.save(quiz);
+            questionRepository.saveAll(questions);
+        }
         letterRepository.save(letter);
         smeltRepository.save(smelt);
-        questionRepository.saveAll(questions);
 
         Inventory senderInventory = smelt.getInventory();
         senderInventory.increaseCoin(5L);

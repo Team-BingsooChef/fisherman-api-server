@@ -77,7 +77,7 @@ public class InventoryService {
 
         inventory.checkReadable(user);
 
-        Page<Smelt> smeltPage = smeltRepository.findAllByAndInventoryIsAndFishingSpotIsNotNull(inventory, pageable);
+        Page<Smelt> smeltPage = smeltRepository.findAllByInventoryIsAndFishingSpotIsNotNull(inventory, pageable);
 
         return InventoryInfo.SentSmeltPage.of(smeltPage);
     }

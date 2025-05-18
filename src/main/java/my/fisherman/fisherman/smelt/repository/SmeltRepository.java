@@ -17,11 +17,15 @@ import java.util.Optional;
 
 @Repository
 public interface SmeltRepository extends JpaRepository<Smelt, Long> {
-    Page<Smelt> findAllByAndInventoryIsAndFishingSpotIsNotNull(Inventory inventory, Pageable pageable);
+    Page<Smelt> findAllByInventoryIsAndFishingSpotIsNotNull(Inventory inventory, Pageable pageable);
 
     Page<Smelt> findAllByFishingSpot(FishingSpot fishingSpot, Pageable pageable);
 
-    @Query("select new my.fisherman.fisherman.smelt.repository.dto.SmeltTypeCount(s.type.id, count(*)) from Smelt s where s.inventory = :inventory and s.status = :status group by s.type")
+    @Query("""
+            select new my.fisherman.fisherman.smelt.repository.dto.SmeltTypeCount(s.type.id, count(*))
+            from Smelt s
+            where s.inventory = :inventory and s.status = :status
+            group by s.type""")
     List<SmeltTypeCount> countAllByInventoryAndStatusGroupByType(Inventory inventory, SmeltStatus status);
 
     @Query(value = "select * from smelt where inventory_id = :inventoryId and smelt_type_id = :smeltTypeId and smelt_status = 'DREW' limit 1", nativeQuery = true)
