@@ -13,7 +13,7 @@ public class FishingSpotCommand {
         String quizTitle,
         String quiztype,
         List<String> questions,
-        int answerIndex
+        Integer answerIndex
     ) {
 
     }
