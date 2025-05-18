@@ -1,5 +1,6 @@
 package my.fisherman.fisherman.security.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -8,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import my.fisherman.fisherman.auth.application.util.CookieUtil;
 import my.fisherman.fisherman.security.application.JwtService;
 import my.fisherman.fisherman.security.application.dto.UserPrinciple;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -17,17 +17,17 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     private final CookieUtil cookieUtil;
+    private final ObjectMapper objectMapper;
     private final JwtService jwtService;
-    private final String frontUrl;
 
     public CustomSuccessHandler(
         JwtService jwtService,
-        @Value("${frontend.url}") String frontUrl,
+        ObjectMapper objectMapper,
         CookieUtil cookieUtil
     ) {
         this.jwtService = jwtService;
-        this.frontUrl = frontUrl;
         this.cookieUtil = cookieUtil;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -47,8 +47,25 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         response.addHeader(HttpHeaders.SET_COOKIE,
             cookieUtil.generateCookie("access_token", accessToken).toString());
 
-        response.sendRedirect(
-            frontUrl + "/redirect?isFreshUser=" + info.isFreshUser()
-        );
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        LoginResponse loginResponse = new LoginResponse(info.isFreshUser());
+        response.getWriter()
+            .write(objectMapper.writeValueAsString(loginResponse));
+        response.getWriter().flush();
+        response.getWriter().close();
+    }
+
+    private static class LoginResponse {
+
+        private boolean isFreshUser;
+
+        public LoginResponse(boolean isFreshUser) {
+            this.isFreshUser = isFreshUser;
+        }
+
+        public boolean isFreshUser() {
+            return isFreshUser;
+        }
     }
 }

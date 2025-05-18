@@ -1,9 +1,9 @@
 package my.fisherman.fisherman.security.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import my.fisherman.fisherman.auth.application.util.CookieUtil;
 import my.fisherman.fisherman.security.application.JwtService;
-import my.fisherman.fisherman.security.config.property.UrlProperties;
 import my.fisherman.fisherman.security.handler.CustomFailureHandler;
 import my.fisherman.fisherman.security.handler.CustomSuccessHandler;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class SecurityHandlerConfig {
 
-    private final UrlProperties urlProperties;
-
     @Bean
     public CustomFailureHandler customFailureHandler() {
         return new CustomFailureHandler();
@@ -23,9 +21,9 @@ public class SecurityHandlerConfig {
     @Bean
     public CustomSuccessHandler customSuccessHandler(
         JwtService jwtService,
-        UrlProperties urlProperties,
+        ObjectMapper objectMapper,
         CookieUtil cookieUtil
     ) {
-        return new CustomSuccessHandler(jwtService, urlProperties.frontend(), cookieUtil);
+        return new CustomSuccessHandler(jwtService, objectMapper, cookieUtil);
     }
 }
