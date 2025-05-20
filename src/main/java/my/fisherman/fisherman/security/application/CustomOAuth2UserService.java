@@ -52,8 +52,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         Map<String, String> attributes = new HashMap<>();
         attributes.put("email", (String) oAuth2User.getAttribute("email"));
         attributes.put("name", (String) oAuth2User.getAttribute("name"));
-        //TODO: 프로필 사진이 없는 경우 예외처리 추가
-        attributes.put("picture", (String) oAuth2User.getAttribute("picture"));
+        attributes.put("picture",
+            (String) oAuth2User.getAttributes().getOrDefault("picture", null));
         return attributes;
     }
 

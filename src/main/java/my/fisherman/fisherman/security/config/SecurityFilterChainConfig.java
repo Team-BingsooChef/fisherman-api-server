@@ -41,7 +41,7 @@ public class SecurityFilterChainConfig {
             .formLogin((formLogin) -> formLogin
                 .failureHandler(customFailureHandler)
                 .successHandler(customSuccessHandler)
-                .loginProcessingUrl("/login") // TODO: 경로 설정 필요
+                .loginProcessingUrl("/login")
                 .usernameParameter("email")
             ).userDetailsService(securityUserService)
             .oauth2Login((oauth2Login) -> oauth2Login
@@ -50,10 +50,10 @@ public class SecurityFilterChainConfig {
                 .successHandler(customSuccessHandler)
                 .failureHandler(customFailureHandler)
                 .authorizationEndpoint(endpoint -> endpoint
-                    .baseUri("/oauth2/authorize") // TODO: 경로 설정 필요
+                    .baseUri("/oauth2/authorize")
                 )
                 .redirectionEndpoint(endpoint -> endpoint
-                    .baseUri("/oauth2/callback/*")// TODO: 경로 설정 필요
+                    .baseUri("/oauth2/callback/*")
                 )
             )
             .exceptionHandling((exceptionHandling) -> exceptionHandling
