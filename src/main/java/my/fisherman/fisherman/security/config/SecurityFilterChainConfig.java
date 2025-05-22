@@ -5,7 +5,8 @@ import my.fisherman.fisherman.security.application.CustomOAuth2UserService;
 import my.fisherman.fisherman.security.application.SecurityUserService;
 import my.fisherman.fisherman.security.filter.JwtAuthenticationFilter;
 import my.fisherman.fisherman.security.handler.CustomFailureHandler;
-import my.fisherman.fisherman.security.handler.CustomSuccessHandler;
+import my.fisherman.fisherman.security.handler.NormalLoginSuccessHandler;
+import my.fisherman.fisherman.security.handler.OAuthLoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -25,7 +26,8 @@ public class SecurityFilterChainConfig {
 
     private final CustomOAuth2UserService customOauth2UserService;
     private final SecurityUserService securityUserService;
-    private final CustomSuccessHandler customSuccessHandler;
+    private final NormalLoginSuccessHandler normalLoginSuccessHandler;
+    private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
     private final CustomFailureHandler customFailureHandler;
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -40,14 +42,14 @@ public class SecurityFilterChainConfig {
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .formLogin((formLogin) -> formLogin
                 .failureHandler(customFailureHandler)
-                .successHandler(customSuccessHandler)
+                .successHandler(normalLoginSuccessHandler)
                 .loginProcessingUrl("/login")
                 .usernameParameter("email")
             ).userDetailsService(securityUserService)
             .oauth2Login((oauth2Login) -> oauth2Login
                 .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                     .userService(customOauth2UserService))
-                .successHandler(customSuccessHandler)
+                .successHandler(oAuthLoginSuccessHandler)
                 .failureHandler(customFailureHandler)
                 .authorizationEndpoint(endpoint -> endpoint
                     .baseUri("/oauth2/authorize")
