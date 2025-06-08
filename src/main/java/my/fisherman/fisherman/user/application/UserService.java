@@ -14,6 +14,7 @@ import my.fisherman.fisherman.security.util.SecurityUtil;
 import my.fisherman.fisherman.user.application.command.UserCommand;
 import my.fisherman.fisherman.user.application.command.UserCommand.UpdatePassword;
 import my.fisherman.fisherman.user.application.dto.UserInfo;
+import my.fisherman.fisherman.user.domain.OAuthProvider;
 import my.fisherman.fisherman.user.domain.User;
 import my.fisherman.fisherman.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,7 +41,7 @@ public class UserService {
             throw new FishermanException(AuthErrorCode.EMAIL_NOT_VERIFIED);
         }
 
-        userRepository.findUserByEmailWithWriteLock(email)
+        userRepository.findUserByEmailWithWriteLock(email, OAuthProvider.SELF)
             .ifPresent(user -> {
                 throw new FishermanException(UserErrorCode.ALREADY_EXISTS);
             });
@@ -86,7 +87,7 @@ public class UserService {
     @Transactional
     public void updateNickname(Long userId, UserCommand.UpdateNickname command) {
         Long currentUserId = SecurityUtil.getCurrentUserId()
-        .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         if (!currentUserId.equals(userId)) {
             throw new FishermanException(UserErrorCode.FORBIDDEN);
@@ -101,7 +102,7 @@ public class UserService {
     @Transactional
     public void updatePassword(Long userId, UpdatePassword command) {
         Long currentUserId = SecurityUtil.getCurrentUserId()
-        .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
+            .orElseThrow(() -> new FishermanException(UserErrorCode.FORBIDDEN));
 
         if (!currentUserId.equals(userId)) {
             throw new FishermanException(UserErrorCode.FORBIDDEN);
