@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Lock(PESSIMISTIC_WRITE)
-    @Query("SELECT u FROM User u WHERE u.email = :email")
-    Optional<User> findUserByEmailWithWriteLock(String email);
+    @Query("SELECT u FROM User u WHERE u.email = :email AND u.oauthType = :oauthType")
+    Optional<User> findUserByEmailWithWriteLock(String email, OAuthProvider oauthType);
 
     Optional<User> findUserByEmailAndOauthType(String email, OAuthProvider oauthType);
 }

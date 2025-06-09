@@ -26,7 +26,8 @@ public class SecurityUserService implements UserDetailsService {
 
     @Transactional
     public UserPrinciple signUp(SecurityUserCommand.OAuthSignUp command) {
-        userRepository.findUserByEmailWithWriteLock(command.email())
+        userRepository.findUserByEmailWithWriteLock(command.email(),
+                OAuthProvider.of(command.provider()))
             .ifPresent(user -> {
                 throw new OAuth2AuthenticationException(
                     "이미 가입된 이메일입니다.[%s]".formatted(user.getOauthType()));
