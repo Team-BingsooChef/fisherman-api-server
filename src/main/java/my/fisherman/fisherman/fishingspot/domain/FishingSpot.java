@@ -45,6 +45,7 @@ public class FishingSpot {
     public void updatePublic(Long userId, Boolean isPublic) {
         if (this.fisherman.getId().equals(userId)) {
             this.isPublic = isPublic;
+            return;
         }
 
         throw new FishermanException(FishingSpotErrorCode.FORBIDDEN);
