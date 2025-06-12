@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta content="light dark" name="color-scheme">
+	<title>Fisherman 인증코드</title>
+	<style>
+        :root {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #fff;
+            --border-color: #dee2e6;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-tertiary: #999;
+            --accent-color: #0056b3;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1a1a1a;
+                --bg-secondary: #2d2d2d;
+                --border-color: #404040;
+                --text-primary: #e0e0e0;
+                --text-secondary: #b0b0b0;
+                --text-tertiary: #808080;
+                --accent-color: #4d94ff;
+            }
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .auth-code {
+            background-color: var(--bg-secondary);
+            padding: 20px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 32px;
+            letter-spacing: 5px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin: 20px 0;
+            border: 2px dashed var(--accent-color);
+        }
+
+        .message {
+            text-align: center;
+            color: var(--text-secondary);
+            margin: 20px 0;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 30px;
+        }
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="header">
+		<div class="logo">🎣 Fisherman</div>
+	</div>
+
+	<div class="message">
+		<p>안녕하세요!</p>
+		<p>Fisherman를 이용해주셔서 감사합니다.</p>
+		<p>귀한 물고기를 낚아올리듯,<br>
+			소중한 당신의 계정을 인증하기 위해<br>
+			아래의 인증번호를 회원가입 창에 입력해주세요.</p>
+	</div>
+
+	<div class="auth-code">
+		<span th:text="${authCode}">000000</span>
+	</div>
+
+	<div class="message">
+		<p>인증번호는 5분 동안 유효합니다.</p>
+		<p>본인이 요청하지 않은 인증번호라면 무시해주세요.</p>
+	</div>
+
+	<div class="footer">
+		<p>본 메일은 발신전용입니다.</p>
+		<p>© 2025 Fisherman. All rights reserved.</p>
+	</div>
+</div>
+</body>
+</html>

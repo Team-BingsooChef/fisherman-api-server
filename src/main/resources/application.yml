@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: fisherman
+  config:
+    import:
+      - optional:file:.env[.properties]
+  profiles:
+    include:
+      - datasource
+      - security
+      - redis
+      - mail
+      - redis
+      - jwt
+      - actuator
+springdoc:
+  use-fqn: true
