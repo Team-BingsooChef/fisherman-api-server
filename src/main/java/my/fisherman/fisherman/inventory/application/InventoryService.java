@@ -101,7 +101,7 @@ public class InventoryService {
     private SmeltType drawSmeltType() {
         int randomNumber = ThreadLocalRandom.current().nextInt(101);
 
-        List<SmeltType> smeltTypes = smeltTypeRepository.findAllByOrderByNameAsc();
+        List<SmeltType> smeltTypes = smeltTypeRepository.findAll();
 
         int sumOfProbability = 0;
         for (SmeltType type : smeltTypes) {

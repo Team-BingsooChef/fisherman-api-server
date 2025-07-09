@@ -112,7 +112,7 @@ public class SmeltService {
 
     @Transactional(readOnly = true)
     public List<SmeltInfo.Type> getSmeltTypes() {
-        List<SmeltType> smeltTypes = smeltTypeRepository.findAll();
+        List<SmeltType> smeltTypes = smeltTypeRepository.findAllByOrderByProbabilityAsc();
 
         return smeltTypes.stream().map(SmeltInfo.Type::from).toList();
     }
