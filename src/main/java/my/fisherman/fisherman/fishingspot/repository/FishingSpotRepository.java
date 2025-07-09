@@ -14,7 +14,7 @@ public interface FishingSpotRepository extends JpaRepository<FishingSpot, Long> 
     @Query("""
           SELECT f FROM FishingSpot f
           JOIN FETCH User u ON f.fisherman.id = u.id
-          WHERE u.nickname LIKE %:keyword%
+          WHERE u.nickname LIKE %:keyword% AND f.isPublic = true
         """)
     List<FishingSpot> searchByKeyword(String keyword);
 
